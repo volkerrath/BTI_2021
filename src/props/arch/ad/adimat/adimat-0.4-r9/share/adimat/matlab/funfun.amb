@@ -1,0 +1,97 @@
+% Function functions and ODE solvers.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.2  2004/04/20 12:21:36  af116ve
+% Removed typos.
+%
+% Revision 1.1  2004/01/28 17:47:05  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Optimization and root finding.
+BMFUNC [$$1, $$#]=fminbnd($1, $2, $3, $#) NODIFF
+BMFUNC [$$1, $$#]=fminsearch($1, $2, $3, $#) NODIFF
+BMFUNC [$$1, $$#]=fzero($1, $2, $#) NODIFF
+
+% Optimization Option handling
+BMFUNC $$=optimset($#) IGNORE
+BMFUNC $$=optimget($1, $2, $#) IGNORE
+
+% Numerical integration (quadrature).
+BMFUNC [$$1, $$#]=quad($1, $2, $3, $#) NODIFF
+BMFUNC [$$1, $$#]=quadl($1, $2, $3, $#) NODIFF
+BMFUNC $$=dblquad($1, $2, $3, $4, $5, $#) NODIFF
+BMFUNC $$=triplequad($1, $2, $3, $4, $5, $6, $7, $#) NODIFF
+
+% Plotting.
+% no .m-files
+
+% Inline function object.
+BMFUNC $$=inline($#) NODIFF
+BMFUNC $$=argnames($1) NODIFF
+BMFUNC $$=formula($1) NODIFF
+% char.m has different (overloaded) meaning
+
+% Differential equation solvers.
+BMFUNC [$$#]=ode45($1, $2, $3, $#) NODIFF
+BMFUNC [$$#]=ode23($1, $2, $3, $#) NODIFF
+BMFUNC [$$#]=ode113($1, $2, $3, $#) NODIFF
+BMFUNC [$$#]=ode23t($1, $2, $3, $#) NODIFF
+BMFUNC [$$#]=ode15s($1, $2, $3, $#) NODIFF
+BMFUNC [$$#]=ode23s($1, $2, $3, $#) NODIFF
+BMFUNC [$$#]=ode23tb($1, $2, $3, $#) NODIFF
+
+% Initial value problem solvers for delay differential equations (DDEs). 
+BMFUNC $$=dde23($1, $2, $3, $4, $#) NODIFF
+
+% Boundary value problem solver for ODEs.
+BMFUNC $$=bvp4c($1, $2, $3, $#) NODIFF
+
+% 1D Partial differential equation solver.
+BMFUNC $$=pdepe($1, $2, $3, $4, $5, $6, $#) NODIFF
+
+% Option handling.
+BMFUNC $$=odeset($#) IGNORE
+BMFUNC $$=odeget($1, $2, $#) IGNORE
+BMFUNC $$=ddeset($#) IGNORE
+BMFUNC $$=ddeget($1, $2, $#) IGNORE
+BMFUNC $$=bvpset($#) IGNORE
+BMFUNC $$=bvpget($1, $2, $#) IGNORE
+
+% Input and Output functions.
+BMFUNC $$=deval($1, $2, $#) NODIFF
+BMFUNC $$=odeplot($#) IGNORE
+BMFUNC $$=odephas2($#) IGNORE
+BMFUNC $$=odephas3($#) IGNORE
+BMFUNC $$=odeprint($#) NODIFF
+BMFUNC $$=bvpinit($1, $2, $#) NODIFF
+BMFUNC [$$1, $$2]=pdeval($1, $2, $3, $4) NODIFF
+% helpfile: odefile.m
+
+% Helper functions.
+BMFUNC [$$1, $$2, $$#]=numjac($1, $2, $3, $4, $5, $6, $7, $#) NODIFF
+BMFUNC [$$1, $$#]=fcnchk($1, $#) NODIFF
+BMFUNC $$=symvar($1) IGNORE
+% no isvarname.m
+BMFUNC $$=vectorize($1) IGNORE
+BMFUNC $$=inlineeval($1, $2, $3) ERROR "Inline functions are currently not differentiable."
+
+% Grandfathered functions
+BMFUNC [$$1, $$#]=fmin($1, $2, $3, $#) NODIFF
+BMFUNC [$$1, $$#]=fmins($1, $2, $#) NODIFF
+BMFUNC $$=foptions($1) IGNORE
+% no quad8.m
+
+% Remaining... (obsolete)
+BMFUNC $$=bvpval($1, $2) NODIFF
+

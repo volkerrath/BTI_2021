@@ -1,0 +1,106 @@
+- Add note about consuming of ADiMat-directives to the documentation.
+  (21.02.2005)
+
+- Add sparsity support to derivative class. (23.09.2003)
+
+- Examine, why ADiMat does not differentiate an active sub-sub-function of a
+   project. (12.08.2003)
+
+   - This is caused by the symbols varargin and varargout in the signature of
+      the function. The active variables are not propagated correctly.
+
+- Implement support for varargin/varargout.
+   - Add correct dependency tracking. (collectVars())
+   - Add index evaluation.
+      - Therefore extend scalar constant visitor to give a state of
+         {const, semi-const, non-const}
+         ° const being a scalar-constant
+         ° semi-const an expression with constants and non-const expressions.
+         ° non-const an expression which is totally non-constant
+      - Enable the result of a constant expression to be a list of constants
+         and not only a single scalar.
+
+- Reuse of (temporary) variables in MATLAB code, causes global activation, if
+   the temp is used in derivative context somewhere. (22.10.2003)
+   
+- Think about one baseclass for all control structure classes, and one for all
+   commands. (25.09.2003)
+
+- Implement a way to specify an active signature of an already differentiated
+   function. I.e., the function does not need to be differentiated. (02.09.2003)
+   This works hand in hand with the concept of project splitting.
+
+- Project splitting: If ADiMat encounters that a code to differentiate will
+  not fit into memory, then the code is to be splitt in parts. Keeping the
+  interfaces between these parts small, each code is to be differentiated on 
+  its own. (03.09.2003)
+   Problems to solve:
+      - activity pattern of the cuts.
+      - identification of the parts
+      - recursive calling of ADiMat for each part
+      - definition of interfaces.
+   
+- Check nolocalmfiles-functionality. Keyes code is example for better running
+  non-localised code.
+
+- Check what happens, if f(a,b) with a and b active is called using f(x,1).
+
+- Check derivative of kronecker-function defined in matlab/ops.amb ~ l.21
+
+- Use C++ STL where possible.
+
+- Implement better user interface. I.e. improve verbprintf.
+
+- In adn_for_cst::getLHSVariables(): Check if the forvar needs to be in the set of
+   lhs-variables.
+
+- Complete implementation of global common subexpression elimination.
+
+- Optimization: remove unneeded temporary variables.
+
+- Derivclass based on matrices (discarding cellarray). mat_derivclass
+
+- Call without driver-file. I.e. all information on the command line.
+
+- Thorough regression tests !!!
+
+   - For all operations with different operands.
+
+   - For all flags and every combination.
+
+   - For switching on and off with correct message.
+
+- Extend builtin macro language to:
+
+   - enable use of default arguments.
+
+   - enable use of multiple definitions for one function, depending on the signature only.
+
+   - enable use of multiple definitions for one function, depending on the type.
+     (Depends on type system.)
+
+   - express side effects.
+
+- Add g_struct-method to the derivative class. (03.09.2003)
+  - Using it in constructor-way is possible. Problems arise if variables,
+     within the struct() are active.
+  - Solving this problem is only possible, if the builtin-system is able
+    to do pattern matching.
+
+- Analyse side effects. I.e. analyse the changes of global variables.
+
+- Add database support for builtin-system (SQLite may be, or db4) (29.09.2003).
+
+- Support XAIF.
+
+- Get serverinterface running.
+
+- Support for classes.
+
+- Implement reverse mode.
+
+- Implement linear combination mode.
+
+- Thorough type system.
+
+ vim:tw=78:

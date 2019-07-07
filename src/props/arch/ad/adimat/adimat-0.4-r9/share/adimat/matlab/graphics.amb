@@ -1,0 +1,113 @@
+% Handle Graphics.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.2  2004/04/20 12:22:58  af116ve
+% Removed typos.
+%
+% Revision 1.1  2004/01/28 17:47:05  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Figure window creation and control
+BMFUNC $$=figure($#) IGNORE
+BMFUNC $$=gcf() IGNORE
+BMFUNC $$=clf($#) IGNORE
+BCOMMAND shg
+BMFUNC $$=close($#) IGNORE
+BCOMMAND refresh($#)
+BMFUNC $$=openfig($#) IGNORE
+
+% Axis creation and control.
+% no subplot: is in graph2d
+BMFUNC $$=axes($#) IGNORE
+BMFUNC $$=gca($#) IGNORE
+BMFUNC $$=cla($#) IGNORE
+% no axis.m : is in graph2d
+% no box.m 
+% no caxis.m 
+BCOMMAND hold($#)
+BMFUNC $$:bool=ishold($#) IGNORE
+
+% Handle Graphics objects.
+BMFUNC $$=line($1, $2, $#) IGNORE
+% no text.m: is in graph2d
+% no patch.m
+BMFUNC $$=rectangle($#) IGNORE
+BMFUNC $$=surface($#) IGNORE
+% no image.m
+BCOMMAND uicontrol($#)
+BCOMMAND uimenu($#)
+BCOMMAND uicontextmenu($#)
+
+% Handle Graphics operations.
+BMFUNC $$=set($#) IGNORE
+BMFUNC $$=get($1, $#) IGNORE
+BCOMMAND reset($1)
+% BCOMMAND delete($1)
+BMFUNC $$=gco($#) IGNORE
+BMFUNC [$$#]=gcbo($#) IGNORE
+BMFUNC $$=gcbf IGNORE
+BCOMMAND drawnow($#) 
+BMFUNC $$=findobj($#) IGNORE
+BMFUNC $$=copyobj($1, $2) IGNORE
+BMFUNC $$:bool=isappdata($1, $2) IGNORE
+BMFUNC $$=getappdata($1, $#) IGNORE
+BCOMMAND setappdata($1, $2, $3)
+BCOMMAND rmappdata($1, $2)
+
+% Hardcopy and printing.
+BMFUNC [$$#]=print($#) IGNORE
+% no printopt.m 
+BMFUNC [$$#]=orient($#) IGNORE
+
+% Utilities.
+BCOMMAND closereq
+BMFUNC $$=newplot($1) IGNORE
+BMFUNC $$:bool=ishandle($1) IGNORE
+
+% ActiveX Client Functions (PC Only)
+% no actxcontrol.m
+% no actxserver.m
+
+% Printing utilities.
+BMFUNC $$=bwcontr($1) IGNORE
+BCOMMAND hardcopy($1, $2, $3)
+BCOMMAND nodither($1, $2)
+BCOMMAND savtoner($1, $#)
+BCOMMAND noanimate($1, $#)
+
+% I/O utilities.
+BMFUNC $$=handle2struct($1) IGNORE
+BMFUNC $$=struct2handle($1, $#) IGNORE
+
+% Other utilities.
+BMFUNC [$$#]=parseparams($1) IGNORE
+BMFUNC $$=datachildren($1) IGNORE
+BMFUNC $$=opengl($1) IGNORE
+
+% Obsolete
+BCOMMAND clg($1)
+
+% Remaining ...
+BCOMMAND colornone($1, $#)
+BCOMMAND figcopytemplatelistener($1, $#)
+BCOMMAND figuredeletedlistener($1, $#)
+BMFUNC $$=getprinttemplate($1) IGNORE
+BMFUNC $$=light($#) IGNORE
+BMFUNC $$=printdmfile($#) IGNORE
+BMFUNC $$=printjob IGNORE
+BMFUNC $$=printprepare($1, $#) IGNORE
+BMFUNC $$=printrestore($1, $#) IGNORE
+BMFUNC [$$#]=printtables($1) IGNORE
+BMFUNC $$=printtemplate($#) IGNORE
+

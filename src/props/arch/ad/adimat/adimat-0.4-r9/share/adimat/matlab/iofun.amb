@@ -1,0 +1,163 @@
+% File input/output.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.1  2004/01/28 17:47:05  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% File import/export functions
+BMFUNC $$=dlmread($1, $2, $#) NODIFF
+BMFUNC dlmwrite($1, $2, $3, $#) NODIFF
+% no load.m
+BMFUNC [$$1, $$#]=importdata($#) NODIFF
+BMFUNC [$$1, $$#]=wk1read($1, $#) NODIFF
+BMFUNC wk1write($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=xlsread($1, $#) NODIFF
+
+% Image file import/export.
+BMFUNC [$$1, $$#]=imfinfo($1, $2) NODIFF
+BMFUNC [$$1, $$#]=imread($#) NODIFF
+BMFUNC imwrite($#) NODIFF
+% no im2java.m
+
+% Internet resource
+BMFUNC [$$1, $$#]=urlread($1, $#) NODIFF
+BMFUNC [$$#]=urlwrite($1, $2, $#) NODIFF
+BMFUNC sendmail($1, $2, $3, $#) IGNORE
+
+% Zip file access.
+BMFUNC zip($1, $2, $#) IGNORE
+BMFUNC unzip($1, $#) IGNORE
+
+% Video file import/export.
+BMFUNC $$=aviread($1, $#) NODIFF
+BMFUNC $$=aviinfo($1, $#) IGNORE
+% no avifile.m
+BMFUNC movie2avi($1, $2, $#) IGNORE
+
+% Formatted file I/O.
+BMFUNC $$=fgetl($1) NODIFF
+BMFUNC [$$1, $$#]=fgets($1, $#) NODIFF
+BMFUNC $$=fprintf($1, $2, $#) IGNORE
+BMFUNC [$$1, $$#]=fscanf($1, $2, $#) NODIFF
+% no input.m
+BMFUNC [$$#]=textread($#) NODIFF
+
+% String conversion
+% no sprintf.m
+% no sscanf.m
+BMFUNC [$$#]=strread($#) NODIFF
+
+% File opening and closing.
+BMFUNC [$$1, $$#]=fopen($1, $#) IGNORE
+BMFUNC $$=fclose($1) IGNORE
+
+% File positioning.
+BMFUNC $$=feof($1) IGNORE
+BMFUNC [$$1, $$#]=ferror($1) IGNORE
+BMFUNC frewind($1) IGNORE
+BMFUNC $$=fseek($1, $2, $3) IGNORE
+BMFUNC $$=ftell($1) IGNORE
+
+% File name handling
+BMFUNC [$$1, $$2, $$#]=fileparts($1) IGNORE
+BMFUNC $$=filesep IGNORE
+BMFUNC $$=fullfile($#) IGNORE
+BMFUNC $$=matlabroot IGNORE
+BMFUNC $$=mexext($1) IGNORE
+% helpfile: partialpath.m
+BMFUNC $$=pathsep IGNORE
+BMFUNC $$=prefdir($1) IGNORE
+BMFUNC $$=tempdir IGNORE
+BMFUNC $$=tempname IGNORE
+
+% CDF file handling
+BMFUNC [$$1, $$#]=cdfread($1, $#) NODIFF
+BMFUNC $$=cdfinfo($1) IGNORE
+BMFUNC cdfwrite($1, $2, $#) IGNORE
+% no cdfepoch.m
+
+% HDF library interface help.
+BMFUNC [$$#]=hdf($#) NODIFF
+BMFUNC [$$#]=hdfan($#) NODIFF
+BMFUNC [$$#]=hdfdf24($#) NODIFF
+BMFUNC [$$#]=hdfdfr8($#) NODIFF
+BMFUNC [$$#]=hdfh($#) NODIFF
+BMFUNC [$$#]=hdfhd($#) NODIFF
+BMFUNC [$$#]=hdfhe($#) NODIFF
+BMFUNC [$$#]=hdfv($#) NODIFF
+BMFUNC [$$#]=hdfvf($#) NODIFF
+BMFUNC [$$#]=hdfvh($#) NODIFF
+BMFUNC [$$#]=hdfvs($#) NODIFF
+
+% HDF-EOS library interface help.
+BMFUNC [$$#]=hdfgd($1) NODIFF
+BMFUNC [$$#]=hdfpt($1) NODIFF
+BMFUNC [$$#]=hdfsw($1) NODIFF
+
+% XML file handling
+BMFUNC [$$1, $$#]=xmlread($1, $#) NODIFF
+BMFUNC [$$#]=xmlwrite($#) IGNORE
+BMFUNC [$$1, $$#]=xslt($#) NODIFF
+
+% Command window I/O
+BCOMMAND clc
+% no disp.m
+BCOMMAND home
+% no pause.m
+
+% FIG file support for plotedit and printframes.
+BMFUNC [$$1, $$#]=hgload($1, $#) NODIFF
+BMFUNC hgsave($#) IGNORE
+
+% Utilities.
+BMFUNC $$=str2rng($1) IGNORE
+BCOMMAND wk1const
+BMFUNC wk1wrec($1, $2, $3) IGNORE
+
+% Obsolete functions.
+BMFUNC $$=csvread($1, $#) NODIFF
+BMFUNC csvwrite($1, $2, $#) IGNORE
+
+% Remaining ...
+BMFUNC $$=avifinfo($1, $#) IGNORE
+BMFUNC [$$1, $$2]=aufinfo($1) IGNORE
+BMFUNC [$$1, $$#]=daqread($1, $#) NODIFF
+% helptext: dataread.m
+% helptext: fileformats.m
+BMFUNC $$=fileread($1) NODIFF
+BMFUNC $$=fitsinfo($1) IGNORE
+BMFUNC $$=fitsread($#) NODIFF
+BMFUNC [$$1, $$#]=fread($1, $2, $#) NODIFF
+BMFUNC freeserial($1) IGNORE
+BMFUNC $$=fwrite($1, $2, $#) IGNORE
+BMFUNC $$=hdf5info($1, $#) IGNORE
+BMFUNC [$$1, $$#]=hdf5read($#) NODIFF
+BMFUNC [$$#]=hdfhx($#) NODIFF
+BMFUNC $$=hdfinfo($#) IGNORE
+BMFUNC [$$#]=hdfml($#) NODIFF
+BMFUNC [$$#]=hdfsd($#) NODIFF
+BMFUNC [$$#]=hdfread($#) NODIFF
+BMFUNC $$=hdftool($1) NODIFF
+BMFUNC [$$#]=hdftoolswitchyard($1, $#) NODIFF
+BMFUNC [$$#]=imformats($#) NODIFF
+BMFUNC instrcb($1, $2, $3) IGNORE
+BMFUNC $$=instrfind($#) NODIFF
+BMFUNC [$$1, $$#]=matfinfo($1) IGNORE
+BMFUNC $$=multibandread($1, $2, $3, $4, $5, $#) NODIFF
+BMFUNC multibandwrite($1, $2, $3, $4, $5, $#) IGNORE
+BMFUNC $$=timerfind($#) IGNORE
+BMFUNC [$$1, $$#]=wavfinfo($1) IGNORE
+BMFUNC [$$1, $$#]=wk1finfo($1) IGNORE
+BMFUNC [$$1, $$#]=xlsfinfo($1) IGNORE
+

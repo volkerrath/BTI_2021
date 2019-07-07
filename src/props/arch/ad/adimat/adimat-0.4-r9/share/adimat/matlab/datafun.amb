@@ -1,0 +1,77 @@
+% Data analysis and Fourier transforms.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.2  2004/07/29 09:15:47  af116ve
+% Added derivative for prod-function.
+%
+% Revision 1.1  2004/01/28 17:47:05  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+%adImAT MIN_VERSION=0.2
+
+% Basic operations
+BMFUNC [$$1, $$#]=max($1, $#) NODIFF
+% BMFUNC [$$1, $$#]= max($1, $2) REPLACEWITH g_max($@1, $1, $@2, $2)
+% BMFUNC [$$1, $$#]= max($1, $2, $3) REPLACEWITH g_max($@1, $1, $@2, $2, $3)
+BMFUNC [$$1, $$#]=min($1, $#) NODIFF
+% BMFUNC [$$1, $$#]= min($1, $2) REPLACEWITH g_min($@1, $1, $@2, $2)
+% BMFUNC [$$1, $$#]= min($1, $2, $3) REPLACEWITH g_min($@1, $1, $@2, $2, $3)
+BMFUNC $$=mean($1, $#) DIFFSTO call(@mean, $@1, $#)
+BMFUNC $$=median($1, $#) NODIFF
+BMFUNC $$=std($1, $#) NODIFF
+BMFUNC $$=var($1, $#) NODIFF
+BMFUNC $$=sort($1, $#) NODIFF
+BMFUNC [$$1, $$#]=sortrows($1, $#) NODIFF
+% The signature of sum() is sum(vector or matrix, dimension to sum)
+BMFUNC $$=sum($1, $#) DIFFTO call(@sum, $@1, $#)
+%BMFUNC $$=prod($1, $#) NODIFF
+BMFUNC $$=prod($1, $2) DIFFTO g_prod($@1, $1, $2)
+BMFUNC [$$1, $$#]=hist($1, $#) NODIFF
+BMFUNC [$$1, $$#]=histc($1, $#) NODIFF
+BMFUNC $$=trapz($1, $#) NODIFF
+BMFUNC $$=cumprod($1, $#) NODIFF
+BMFUNC $$=cumsum($1, $#) DIFFSTO call(@cumsum, $@1, $#)
+BMFUNC $$=cumtrapz($1, $#) NODIFF
+
+% Finite differences.
+BMFUNC $$=diff($1, $#) NODIFF
+BMFUNC [$$#]=gradient($1, $#) NODIFF
+BMFUNC $$=del2($1, $#) NODIFF
+
+% Correlation.
+BMFUNC [$$1, $$#]=corrcoef($1, $#) NODIFF
+BMFUNC $$=cov($1, $#) NODIFF
+BMFUNC $$=subspace($1, $2) NODIFF
+
+% Filtering and convolution.
+BMFUNC [$$1, $$#]=filter($1, $2, $3, $#) NODIFF
+BMFUNC $$=filter2($1, $2, $#) NODIFF
+BMFUNC $$=conv($1, $2) NODIFF
+BMFUNC $$=conv2($1, $2, $#) NODIFF
+BMFUNC $$=convn($1, $2, $#) NODIFF
+BMFUNC [$$1, $$2]=deconv($1, $2) NODIFF
+BMFUNC $$=detrend($1, $#) NODIFF
+
+% Fourier transforms.
+BMFUNC $$=fft($1, $#) NODIFF
+BMFUNC $$=fft2($1, $#) NODIFF
+BMFUNC $$=fftn($1, $#) NODIFF
+BMFUNC $$=ifft($1, $#) NODIFF
+BMFUNC $$=ifft2($1, $#) NODIFF
+BMFUNC $$=ifftn($1, $#) NODIFF
+BMFUNC $$=fftshift($1, $#) NODIFF
+BMFUNC $$=ifftshift($1, $#) NODIFF
+
+% Remaining...
+BMFUNC $$=issorted($1, $#) NODIFF
+

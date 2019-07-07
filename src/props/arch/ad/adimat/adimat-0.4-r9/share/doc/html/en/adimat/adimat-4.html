@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.20">
+ <TITLE>The ADiMat Handbook: Getting started</TITLE>
+ <LINK HREF="adimat-5.html" REL=next>
+ <LINK HREF="adimat-3.html" REL=previous>
+ <LINK HREF="adimat.html#toc4" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="adimat-5.html">Next</A>
+<A HREF="adimat-3.html">Previous</A>
+<A HREF="adimat.html#toc4">Contents</A>
+<HR>
+<H2><A NAME="s4">4.</A> <A HREF="adimat.html#toc4">Getting started</A></H2>
+
+
+<P>It is assumed, that the reader is familiar with the general technique of
+automatic differentiation. That is, the keywords independent and dependent
+variable and top-level function are familiar to him. If this is not the case,
+reading the book 
+<A HREF="adimat-13.html#Griewank">Evaluating Derivative</A> or the
+papers 
+<A HREF="adimat-13.html#Iri">The history od AD</A> or 
+<A HREF="adimat-13.html#adifor">ADiFor user manual</A> is adviced.</P>
+
+<H2><A NAME="ss4.1">4.1</A> <A HREF="adimat.html#toc4.1">General description</A>
+</H2>
+
+
+<P>ADiMat applies the source transformation approach of automatic differentiation
+to a Matlab program. A Matlab program consists of several files, where one
+file is considered to be the one starting the program. This file is called
+the 'driver' in the following section. The driver defines all parameters
+needed for the program to run and sets up all data. Furthermore, the driver
+calls the function(s) to execute the desired operations. We propose to setup
+the Matlab program this way, that is, without the need of user interaction,
+to simplify its differentiation.</P>
+<P>The differentiation of the program is done in four steps (an example will be
+shown later on):
+<OL>
+<LI> Insert the information needed for the differentiation into the driver.
+This includes specifying the independent and dependent variables and the
+function to be differentiated. Additional options may be given here, too. The
+independent variables are declared using the ADiMat directive
+'<CODE>%ADiMat AD_IVAR=&lt;ivar_1&gt;, ... &lt;ivar_n&gt;</CODE>'. These
+variables have to be used to call the function to differentiate (the actual
+parameters). The dependent variables have to be declared using the directive
+'<CODE>%ADiMat AD_DVAR=&lt;dvar_1&gt;, ... &lt;dvar_n&gt;</CODE>', likewise.
+The top-level function has to be delcared, too. The directive
+'<CODE>%ADiMat AD_TOP=&lt;funcname&gt;</CODE>' tells ADiMat about the
+top-level function. One top-level function is allowed, only.
+</LI>
+<LI> ADiMat is executed using the name of the driver as parameter and
+specifying the include-path using the option '-I' (see 
+<A HREF="adimat-6.html#-I">include option</A>. If all files of the current project reside in the
+current directory and no additional files are needed the include path is
+'.:@BUILTINS'. The special-tag '@BUILTINS' tells ADiMat, when
+to look in the list of functions that are built into Matlab (builtins).
+Usually this special tag is the last entry in the include path.
+
+If ADiMat produces any errors, these have to be corrected and ADiMat has to be
+reapplied to the program. If ADiMat issues warnings, check the code where
+the warnings occured.
+</LI>
+<LI> Extent the driver to initialise the derivative objects along with the
+independent variables. It is recommended to copy the driver to a new file, for
+convenience called '<CODE>ad_run.m</CODE>', here. Add the call to the
+<CODE>createZeroGradients()</CODE>-function provided with the ADiMat-package, and
+initialse the directional derivatives correctly. More information about
+the derivative class is provided in section 
+<A HREF="adimat-5.html#derivclass">The derivative class</A>.
+</LI>
+<LI> Run the <CODE>ad_run.m</CODE>-file in Matlab and evaluate the derivatives.
+The path to the derivative class of ADiMat has to be set correctly within
+Matlab. The Matlab-statement
+'<CODE>addpath('${ADIMAT_HOME}/share/adimat/derivclass/');</CODE>'
+does the job . Now the <CODE>ad_run.m</CODE>-file may be executed. The derivative
+class and its interface is discussed in section 
+<A HREF="adimat-5.html#derivclass">The derivative class</A> in greater detail.</LI>
+</OL>
+</P>
+
+<H2><A NAME="ss4.2">4.2</A> <A HREF="adimat.html#toc4.2">Applying AD to an example</A>
+</H2>
+
+
+<P>The above steps are applied to an example code now, which is introduced by
+<A HREF="adimat-13.html#Griewank">A. Griewank: Evaluating derivatives</A> as the
+lighthouse example. The function describing the coordinate where the beam of
+a lighthouse hits a wall is given by:</P>
+<P>
+<PRE>
+function y=lighthouse(nu, gamma, omega, t)
+% The lighthouse example from the book:
+% A. Griewank "Evaluating Derivatives" SIAM 2000 p. 16
+
+y(1) = (nu * tan(omega*t))/(gamma-tan(omega*t));
+
+y(2) = gamma*(nu * tan(omega*t))/(gamma-tan(omega*t));
+</PRE>
+</P>
+<P>Look into the book for a more detailed description. The driver is given by the
+file:</P>
+<P>
+<PRE>
+n= 10; % (m)
+g= 0.375* pi; % (bogenmass)
+o= 0.0001* pi; % (bogenmass)
+t= 2; % (s)
+
+y= lighthouse(n, g, o, t);
+</PRE>
+</P>
+<P>Adding the lines:</P>
+<P>
+<PRE>
+%ADiMat AD_DVARS= y
+%ADiMat AD_IVARS= n, g, o, t
+%ADiMat AD_TOP= lighthouse
+</PRE>
+</P>
+<P>to the above file, tells ADiMat about the (in-)dependent variables and the
+top-level function. Invoking ADiMat using the following the command:</P>
+<P>
+<PRE>
+adimat -v10 -I.:@BUILTINS -p ad_out/ driver.m
+</PRE>
+</P>
+<P>produced the following output:</P>
+<P>
+<PRE>
+ADiMat Version 0.1(beta)
+Initializing AD-project.
+Scanning for builtin-declarations.
+Switched to file '/home/af116ve/.adimat/matlab/general.amb'.
+Switched back to file '/home/af116ve/.adimat/ADiMat.amb'.
+Switched to file '/home/af116ve/.adimat/matlab/elfun.amb'.
+Switched back to file '/home/af116ve/.adimat/ADiMat.amb'.
+Switched to file '/home/af116ve/.adimat/unsorted.amb'.
+Switched back to file '/home/af116ve/.adimat/ADiMat.amb'.
+Scan for builtin-declarations passed.
+Starting parser.
+Parsing master-file: './driver.m'.
+Opened file: './driver.m' successfull.
+Scanner initialized.
+File 'driver.m' closed and lexer terminated.
+Masterfile parsed.
+Scanning the path for missing ids.
+Step 1 of identifier resolving.
+Opened file: './lighthouse.m' successfull.
+Scanner initialized.
+File 'lighthouse.m' closed and lexer terminated.
+1 unbound identifiers left.
+Step 2 of identifier resolving.
+0 unbound identifiers left.
+Parsing succeded.
+Constructing call tree.
+Call tree construction succeeded.
+Creating dependencygraph.
+Dependencygraph creation successfull.
+Outlining expensive subexpressions.
+Rewriting line 5 of file './lighthouse.m'
+Rewriting line 5 of file './lighthouse.m'
+Rewriting line 5 of file './lighthouse.m'
+Rewriting line 7 of file './lighthouse.m'
+Rewriting line 7 of file './lighthouse.m'
+Rewriting line 7 of file './lighthouse.m'
+Rewriting line 7 of file './lighthouse.m'
+Outlining of expensive subexpressions done.
+Selected global mode is: forward-mode AD.
+Augmenting file './lighthouse.m'.
+Augmentation of file './lighthouse.m' done.
+Writing file: 'ad_out/driver.m'.
+Writing file: 'ad_out/g_lighthouse.m'.
+AD-project finalized. Thanks for using this software.
+</PRE>
+</P>
+<P>The program is differentiated and all output files are written. The
+flags supplied at the command line, tell ADiMat to print more
+information than usual (the '-v10') and to write all output-files to the
+directory 'ad_out/'. If the flag '-p' is not specified the output-files will
+be written to the current directory, where they may overwrite existing files.</P>
+
+<P>Next the driver has to be extended to initialse the derivative objects along
+with the parameters. In this example the derivatives of the lighthouse
+function are sought with respect to all four inputs. Because of this all
+input-objects (scalars in this case), need a derivative object, accordingly.
+First all derivative objects are initialised using a call to the
+createZeroGradients()-functions supplying the number of directional
+derivatives desired, and all independent variables. The function returns the
+proper initialised derivative objects in the same order the independent
+variables were supplied to it. In the example:
+<PRE>
+[g_n, g_g, g_o, g_t]= createZeroGradients(4, n, g, o, t);
+</PRE>
+
+If you mix up the order, it is your fault. There is no way to ensure, that the
+derivative object is correctly associated to the independent variable.</P>
+<P>In the example each derivative object contains four instances of its
+undifferentiated object, because the number of directional derivatives is set
+to four in the call of <CODE>createZeroGradients()</CODE>. Each directional
+derivative of a derivative object may be adressed using the
+cell-array index operator '{ }'. Initialising the directional
+derivatives in this example is done by executing the following commands:</P>
+<P>
+<PRE>
+g_n{1}=1;
+g_g{2}=1;
+g_o{3}=1;
+g_t{4}=1;
+</PRE>
+</P>
+<P>This process is called 'seeding'. In this example and with this seeding the
+influence of n is stored in the first component of every derivative object. This
+is because of the choosen seeding and convenience. The second component of each
+derivative object stores the influence the variable 'g' has upon this object. If
+one would set 'g_g{1}=1;', one would get the influence of the variable
+'n' and the variable 'g' in every derivative object. The influence would be
+combined in some way depending on the executed function.</P>
+<P>After installing the seeding the function-call to the differentiated function
+has to be set up. The differentiated function-name is the name of the original
+name prefixed with 'g_'. Each active variable in the function call is preceeded
+by its derivative object. In the example the function-call looks like this:</P>
+<P>
+<PRE>
+[g_y, y]= g_lighthouse(g_n, n, g_g, g, g_o, o, g_t, t);
+</PRE>
+</P>
+<P>The derivative object of 'y' is constructed by the function and does not need to
+be initialized by the user. After execution of this function 'g_y'
+stores four directional derivatives. Because of the seeding the first component
+stores the influence 'n' had on the result. In our example accessing this
+information is done by:</P>
+<P>
+<PRE>
+>> g_y{1}
+
+ans =
+
+   1.0e-03 *
+
+    0.5336 0.6287
+</PRE>
+</P>
+<P>The influences of the other independents may be accessed likewise using the i-th
+component, which was used during the seeding of the variable. For more
+information about the derivative class see section 
+<A HREF="adimat-5.html#derivclass">The derivative class</A>.</P>
+
+<HR>
+<A HREF="adimat-5.html">Next</A>
+<A HREF="adimat-3.html">Previous</A>
+<A HREF="adimat.html#toc4">Contents</A>
+</BODY>
+</HTML>

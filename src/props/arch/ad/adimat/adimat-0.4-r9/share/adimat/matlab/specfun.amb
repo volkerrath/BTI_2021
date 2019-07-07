@@ -1,0 +1,75 @@
+% Specialized math functions.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.2  2004/04/20 12:24:02  af116ve
+% Removed typos.
+%
+% Revision 1.1  2004/01/28 17:47:06  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Specialized math functions.
+BMFUNC [$$1, $$#]=airy($1, $#) NODIFF
+BMFUNC [$$1, $$#]=besselj($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=bessely($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=besselh($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=besseli($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=besselk($1, $2, $#) NODIFF
+BMFUNC $$=beta($1, $2) NODIFF
+BMFUNC $$=betainc($1, $2, $3) NODIFF
+BMFUNC $$=betaln($1, $2) NODIFF
+BMFUNC [$$1, $$2, $$3]=ellipj($1, $2, $#) NODIFF
+BMFUNC [$$1, $$2]=ellipke($1, $#) NODIFF
+BMFUNC $$=erf($1) NODIFF
+BMFUNC $$=erfc($1) NODIFF
+BMFUNC $$=erfcx($1) NODIFF
+BMFUNC $$=erfinv($1) NODIFF
+BMFUNC $$=expint($1) NODIFF
+BMFUNC $$=gamma($1, $#) NODIFF
+BMFUNC $$=gammainc($1, $#) NODIFF
+BMFUNC $$=gammaln($1) NODIFF
+BMFUNC $$=psi($1) NODIFF
+BMFUNC $$=legendre($1, $2, $#) NODIFF
+BMFUNC $$=cross($1, $2, $#) NODIFF
+BMFUNC $$=dot($1, $2, $#) NODIFF
+
+% Number theoretic functions.
+BMFUNC $$=factor($1) NODIFF
+BMFUNC $$=isprime($1) NODIFF
+BMFUNC $$=primes($1) NODIFF
+BMFUNC [$$1, $$#]=gcd($1, $2) NODIFF
+BMFUNC $$=lcm($1, $2) NODIFF
+BMFUNC [$$1, $$#]=rat($1, $#) NODIFF
+BMFUNC $$=rats($1, $2) NODIFF
+BMFUNC $$=perms($1) NODIFF
+BMFUNC $$=nchoosek($1, $2) NODIFF
+BMFUNC $$=factorial($1) NODIFF
+
+% Coordinate transforms.
+BMFUNC [$$1, $$2, $$3]=cart2sph($1, $2, $3) NODIFF
+BMFUNC [$$1, $$2, $$3]=cart2pol($1, $2, $3) NODIFF
+BMFUNC [$$1, $$2, $$#]=pol2cart($1, $2, $3) NODIFF
+BMFUNC [$$1, $$2, $$3]=sph2cart($1, $2, $3) NODIFF
+BMFUNC [$$1, $$#]=hsv2rgb($1, $2, $3) NODIFF
+BMFUNC [$$1, $$#]=rgb2hsv($1, $2, $3) NODIFF
+
+% Others
+BMFUNC [$$1, $$2, $$3]=besschk($1, $2) NODIFF
+BMFUNC [$$1, $$2]=bessela($1, $2) NODIFF
+BMFUNC $$=betacore($1, $2, $3) NODIFF
+BMFUNC $$=erfcore($1, $2) NODIFF
+
+% Remaining ...
+BMFUNC [$$1, $$2]=bessel($1, $2) NODIFF
+BMFUNC $$=erfcinv($1) NODIFF
+

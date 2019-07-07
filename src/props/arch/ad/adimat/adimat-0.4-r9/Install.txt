@@ -1,0 +1,47 @@
+              QUICKINSTALLATION-GUIDE
+	      =======================
+
+Step 1:
+
+If you copy this directory to '/usr/local' then you are nearly done. 
+
+If this directory resides in '/new/location' then you have the set the
+environment variable ADIMAT_HOME to '/new/location/adimat-0.4'. In the bash
+and ksh shell this is done by:
+
+export ADIMAT_HOME=/new/location/adimat-0.4
+
+(Add this line to ~/.bashrc or ~/.kshrc, resp., to set it at startup time.)
+
+in the (t)csh shell this is done by
+
+setenv ADIMAT_HOME /new/location/adimat-0.4
+
+(Add this line to ~/.cshrc to set it permanently.)
+
+
+	---------------------------------------------------
+	
+Step 2:
+	
+The last thing you have to do is copy the file  
+
+share/adimat/opt_derivclass/ADiMat_startup.m 
+
+to your ~/matlab directory and call the script from ~/matlab/startup.m by
+adding the line:
+
+ADiMat_startup
+
+to the end of the ~/matlab/startup.m file. If ~/matlab/startup.m does not
+exist yet, create it and add the line.
+
+
+	---------------------------------------------------
+
+	
+For any questions feel free to contact me at:
+
+vehreschild@sc.rwth-aachen.de
+
+

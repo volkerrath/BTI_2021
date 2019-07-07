@@ -1,0 +1,83 @@
+% Two dimensional graphs.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.2  2004/04/20 12:22:19  af116ve
+% Removed typos.
+%
+% Revision 1.1  2004/01/28 17:47:05  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Elementary X-Y graphs.
+BCOMMAND plot($#) 
+BCOMMAND loglog($#)
+BCOMMAND semilogx($#)
+BCOMMAND semilogy($#)
+BMFUNC $$=polar($#) IGNORE
+BMFUNC [$$#]=plotyy($#) IGNORE
+
+% Axis control.
+BMFUNC [$$#]=axis($#) IGNORE
+BMFUNC $$=zoom($#) IGNORE
+BCOMMAND grid($#) 
+BCOMMAND box($#) 
+% no hold.m
+% no axes.m
+BMFUNC $$=subplot($1, $2, $3, $#) IGNORE
+
+% Graph annotation.
+BMFUNC [$$#]=plotedit($#) IGNORE
+BMFUNC [$$#]=legend($#) IGNORE
+BMFUNC [$$#]=title($1, $#) IGNORE
+BMFUNC [$$#]=xlabel($1, $#) IGNORE
+BMFUNC [$$#]=ylabel($1, $#) IGNORE
+BMFUNC [$$#]=texlabel($#) IGNORE
+BMFUNC [$$#]=text($1, $2, $3, $#) IGNORE
+BMFUNC [$$#]=gtext($1, $#) IGNORE
+
+% Hardcopy and printing.
+% no print.m
+% no printopt.m
+% no orient.m
+
+% Utilities
+BMFUNC [$$#]=lscan($#) IGNORE
+BCOMMAND moveaxis($#) 
+
+% Scribe utilties.
+BCOMMAND doclick($1)
+BCOMMAND dokeypress($1)
+BCOMMAND domymenu($1, $2, $3)
+BCOMMAND doresize($1)
+BCOMMAND enddrag($1)
+BCOMMAND middrag($1)
+BCOMMAND prepdrag($#)
+BMFUNC [$$#]=putdowntext($#) IGNORE
+BCOMMAND scribeaxesdlg($#)
+BCOMMAND scribelinedlg($#)
+BCOMMAND scribeclearmode($1, $#)
+BCOMMAND scribeeventhandler($#)
+BCOMMAND scriberestoresavefcn
+BCOMMAND scribetextdlg($1)
+
+% Remaining... 
+BMFUNC [$$#]=basicfitdatastat($1, $#) IGNORE
+BCOMMAND figtoolset($1, $2)
+BMFUNC $$=getobj($1) IGNORE
+BMFUNC $$=getorcreateobj($1) IGNORE
+BMFUNC $$=getscribecontextmenu($1) IGNORE
+BMFUNC $$=getscribeobjectdata($1) IGNORE
+BCOMMAND scribefiglisten($1, $2)
+BCOMMAND setscribecontextmenu($1, $2)
+BCOMMAND setscribeobjectdata($1, $2)
+

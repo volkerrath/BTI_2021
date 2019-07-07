@@ -1,0 +1,72 @@
+
+            ADiMat -- Automatic Differentiation for Matlab
+                      ^         ^^                  ^^^
+
+
+??? What is ADiMat?
+
+  ADiMat extends Matlab code to automatically compute derivatives. The tool 
+applies the techniques of automatic differentiation (AD) (see for instance:
+http://www.autodiff.org for basic knowledge). The source code of the Matlab
+program has to be available and modifyable by you. It has to be completely
+written in Matlab. I.e. no Java method calls, no custom library calls
+(builtins are ok, though), no custom mex-fife calls (again Matlab provided are
+ok).
+
+                              ---------------
+                              
+??? How can I use it?
+
+  Reading this file ADiMat is installed on your system. Generate a small
+test-function like:
+
+function res=test(x)
+res= x^2;
+
+and store in a file test.m in the current directory. Apply addiff to it:
+
+> addiff(@test);
+
+Their should be some output on the screen and last line should tell you
+'Success!'. If not go the Matlab directory, browse to toolbox subdirectory and
+then to adimat\doc. The file adimat.html is the beginning of ADiMat's
+documentation.
+
+                              ---------------
+                              
+??? What are the prerequisites?
+
+  ADiMat is under development. Currently not all functions provided with
+Matlab are known to ADiMat. This database will be extend in future. Do not
+hesitate to read the documentation about builtins.
+
+Furthermore, a few constructions of Matlab are not understood be ADiMat yet.
+These are:
+
+- classes
+- calls to (f)eval-functions
+- functions in private directories.
+
+Please read the documenation for a more complete list.
+
+                              ---------------
+
+??? Am I allowed to distribute the augmented code?
+
+  Yes, the augmented code is your code with some enhancements. 
+
+                              ---------------
+  
+??? Am I allowed to distribute the derivative class along with my augmented
+code?
+  
+  Yes, you are allowed to distribute the derivative class and its support
+functions along with your augmented program, but not the executable and the
+builtin database. Furthermore you are not allowed to modify the derivative
+class. This includes especially the copyright statement in each file.
+
+
+!!! Anything else: Please read the documentation before contacting the
+authors.
+
+

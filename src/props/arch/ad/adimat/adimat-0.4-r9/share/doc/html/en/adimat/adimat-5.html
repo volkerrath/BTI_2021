@@ -1,0 +1,650 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.20">
+ <TITLE>The ADiMat Handbook: The derivative class</TITLE>
+ <LINK HREF="adimat-6.html" REL=next>
+ <LINK HREF="adimat-4.html" REL=previous>
+ <LINK HREF="adimat.html#toc5" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="adimat-6.html">Next</A>
+<A HREF="adimat-4.html">Previous</A>
+<A HREF="adimat.html#toc5">Contents</A>
+<HR>
+<H2><A NAME="derivclass"></A> <A NAME="s5">5.</A> <A HREF="adimat.html#toc5">The derivative class</A></H2>
+
+
+<P>The derivative class is essential for the computation of derivatives. The term
+'derivative class' is merely an abbreviation for the underlying functionality.
+The derivative class has to be seen as a package containing support functions,
+constructor functions, interface wrappers and the Matlab classes needed to run
+a differentiated program. Currently two versions of the derivative class
+exist. One straight forward implementation resides in the directory
+'${ADIMAT_HOME}/share/adimat/derivclass/' and the optimized
+version is stored in the directory
+'${ADIMAT_HOME}/share/adimat/opt3_derivclass/'. The latter one
+is under construction. The straight forward implementation is no longer
+maintained. It is usable for simple projects, but will fail for more complex
+ones. The 'opt3_derivclass' adds support for two-dimensional derivatives, i.e.
+Hessians, and implements several optimizations. </P>
+
+<P>The creation of derivative objects is done using constructor functions. These
+functions create seedings that are often used. See section 
+<A HREF="#constructorfunctions">constructor functions</A> for more information
+on all available functions.</P>
+
+
+<H2><A NAME="ss5.1">5.1</A> <A HREF="adimat.html#toc5.1">Structure of derivatives objects</A>
+</H2>
+
+<P>A derivative object should be regarded as a container storing directional
+derivatives. Derivative objects are associated to MATLAB-objects, but do not
+store references to them. The association is by name only.</P>
+<P>A derivative object stores a number of objects in it that have the same shape
+as the associated MATLAB-object. E.g., the derivative object <CODE>g_t</CODE>
+associated to a 3&times;3-matrix <CODE>t</CODE> stores a number of 3&times;3-matrices.
+The number of 3&times;3-matrices stored in the derivative object is defined by
+the number of directional derivatives of interest in the program.</P>
+<P>Derivate objects may be one- or two-dimensional. One-dimesional derivative
+objects are called gradients or Jacobians depending on the context, while
+two-dimensional derivative objects are called Hessians.</P>
+<P>The data within a derivative object is accessed using the standart Matlab
+cellarray-assignment- and indexing-operators. The derivative class is named
+'adgradobj' in the old implementation and 'adderiv' in the new one. These
+names occur in the list displayed by the MATLAB&apos;s 'whos' command, if
+derivative objects are present in the current workspace. Conventionally only
+one kind, i.e. only adgradobj or adderiv, should occur. Intermixing them is a
+bad idea.</P>
+
+<H2><A NAME="ss5.2">5.2</A> <A HREF="adimat.html#toc5.2">Creation of derivative objects</A>
+</H2>
+
+
+<P>Derivative objects are created using constructor functions.
+'<CODE>createZeroGradients()</CODE>' is one of them. The function is able to
+initialise several derivative objects at once and may be called several times.
+If calling the function several times, the number of directional derivatives
+has to be the same in each call. Additional constructor functions exist, see
+section 
+<A HREF="#constructorfunctions">Constructor functions</A>.</P>
+<P>
+<DL>
+<DT><B>Function:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<PRE>
+[g_v1, g_v2, ..., g_vn]= createZeroGradients(ndd, v1, v2, ..., vn);
+</PRE>
+</CODE></BLOCKQUOTE>
+
+or
+<BLOCKQUOTE><CODE>
+<PRE>
+g_v1= createZeroGradients(ndd, v1);
+g_v2= createZeroGradients(ndd, v2);
+   ...
+g_vn= createZeroGradients(ndd, vn);
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Short description:</B><DD><P>Initialise one or more derivative objects.</P>
+
+<DT><B>Description:</B><DD><P>This function initialises one or more derivative objects. The
+number of directional derivatives created per derivative object is denoted by
+the parameter '<CODE>ndd</CODE>'. If using the vectorised call---the upper one---, the
+order of the variables '<CODE>vi</CODE>' and the order of the corresponding derivative
+objects have to be ensured by the user. There is no way to ensure this
+automaticaly or check for a proper order.</P>
+<P>The derivative object '<CODE>g_vi</CODE>' of the variable '<CODE>vi</CODE>' stores '<CODE>ndd</CODE>'
+many copies of the variable '<CODE>vi</CODE>', but all entries are set to zero. That
+is why this function is named <CODE>create<B>Zero</B>Gradients()</CODE>.</P>
+<P>All derivative objects have to store the same number of directional
+derivatives. It is therefore advised to use the vectorised function, which
+ensures that all derivative objects have the same number. It may be possible
+to change the number of directional derivatives in future version of ADiMat,
+but upto now this is not supported. Messing around with the number of
+directional derivatives during one run of the differentiated program is done
+on your own risk, so do not complain about wrong derivatives.</P>
+<P>
+<A NAME="createZeroGradientsExample"></A> </P>
+<DT><B>Examples:</B><DD><P>The lighthouse example, which uses scalars only:</P>
+<P>
+<BLOCKQUOTE><CODE>
+<PRE>
+n= 10; % (m)
+g= 0.375* pi; % (bogenmass)
+o= 0.0001* pi; % (bogenmass)
+t= 2; % (s)
+
+[g_n, g_g, g_o, g_t]= createZeroGradients(4, n, g, o, t);
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+<P>The derivative objects are all initialised to zero now. The contents of
+'<CODE>g_n</CODE>' is:</P>
+<P>
+<BLOCKQUOTE><CODE>
+<PRE>
+>> g_n
+
+adderiv: number of directional derivatives: 4
+
+     0
+
+     0
+
+     0
+
+     0
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+<P>Each line containing a zero shows one directional derivative. The example
+above is to simple to see the effect, therefore a more complex one is
+introduced here. Suppose a row-vector '<CODE>v</CODE>' containing five float numbers
+and a scalar '<CODE>s</CODE>' are the independent variables a function is
+differentiated with respect to. The derivatives of interest are the first
+three entries of the vector and the scalar. That is, four directional
+derivatives are needed. The call to the constructor function is given by:</P>
+<P>
+<BLOCKQUOTE><CODE>
+<PRE>
+>> v= [1, 2, 3, 4, 5]; % Same like 1:5
+>> s= 42;
+>> [g_v, g_s]= createZeroGradients(4, v, s);
+>> g_v
+
+adderiv: number of directional derivatives: 4
+
+     0 0 0 0 0
+
+     0 0 0 0 0
+
+     0 0 0 0 0
+
+     0 0 0 0 0
+
+
+>>
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+<P>The output of the gradient object of '<CODE>g_v</CODE>' is shown above. There are four
+row-vectors each containig five zeros. This is because the original vector had
+5 entries and four directional derivatives are of interest. The output of
+'<CODE>g_s</CODE>' is identical to the output of '<CODE>g_n</CODE>' shown in the lighthouse
+example above.</P>
+</DL>
+</P>
+
+<H2><A NAME="ss5.3">5.3</A> <A HREF="adimat.html#toc5.3">Accessing the derivative data</A>
+</H2>
+
+
+<P>Each derivative object is an object of the user-defined Matlab-class
+'adderiv'. This class overloads several operators and (re-)implements some
+functions. The cellarray-indexing-operator '{n}' is the most
+interesting operator to access the data within a derivative object.
+Additionally a '<CODE>get()</CODE>' method is implemented, which basically does the
+same job. The drawback of the <CODE>get()</CODE> method is, that it implements a
+restricted set of adressing only. I.e., it is not possible to select the third
+derivative of an object and get ist (2,3)-th element in one statement.</P>
+<P>
+<DL>
+<DT><B>Operator:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<PRE>
+g_v{n}= ...;
+</PRE>
+</CODE></BLOCKQUOTE>
+
+or
+<BLOCKQUOTE><CODE>
+<PRE>
+t= g_v{n};
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Short description:</B><DD><P>Write or read data of the n-th directional derivative
+of an object '<CODE>g_v</CODE>'.</P>
+
+<DT><B>Description:</B><DD><P>The cellarray-indexing-operator either in assigning mode or
+in referencing mode is used to assign data to a directional derivative or to
+read it, respectively. If the expression '<CODE>g_v{n}</CODE>' appears on
+the left-hand side of an assignment the cellarray-indexing-operator is in
+assigning mode. If the expression occurs on the left-hand side of an
+assignment or in no assignment at all, it is treated to be in referencing
+mode.</P>
+<P>Indexing operators may be concatenated. Suppose that v is a higher
+dimensional object, a vector for example. The expression
+'g_v{i}(j)' accesses the j-th element of the i-th
+directional derivative of the object '<CODE>g_v</CODE>'. This is possible in assigning
+and in referencing mode.</P>
+
+<DT><B>Examples:</B><DD><P>The cellarray-indexing-operators are often used to do the seeding or to look
+at one directional derivative. The example presented with the
+<CODE>createZeroGradient()</CODE>-function is repeated here to show one possible
+seeding to get the desired derivatives. Remember the derivatives of interest
+are the first three entries of the vector v and the scalar. Create the
+derivative objects first:</P>
+<P>
+<BLOCKQUOTE><CODE>
+<PRE>
+>> v= [1, 2, 3, 4, 5]; % Same like 1:5
+>> s= 42;
+>> [g_v, g_s]= createZeroGradients(4, v, s);
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+<P>The seeding is done by inserting ones at the desired positions of the
+derivative objects:</P>
+<P>
+<BLOCKQUOTE><CODE>
+<PRE>
+>> g_v{1}(1)= 1;
+>> g_v{2}(2)= 1;
+>> g_v{3}(3)= 1;
+>> g_s{4}= 1;
+>> g_v
+
+adderiv: number of directional derivatives: 4
+
+     1 0 0 0 0
+
+     0 1 0 0 0
+
+     0 0 1 0 0
+
+     0 0 0 0 0
+
+>>g_s
+
+adderiv: number of directional derivatives: 4
+
+     0
+
+     0
+
+     0
+
+     1
+
+>>
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+</DL>
+</P>
+
+<H2><A NAME="constructorfunctions"></A> <A NAME="ss5.4">5.4</A> <A HREF="adimat.html#toc5.4">Constructor functions <CODE>create...()</CODE></A>
+</H2>
+
+
+<P>ADiMat provides some functions to easily create one or more derivative
+objects. The---so called---constructor functions provided, create derivative
+objects with all elements set to zero, the diagonal of all ojects set to one,
+and to create the full Jacobian.</P>
+<P>
+<DL>
+<DT><B>Function:</B><DD><P>
+<A NAME="createZeroGradients"></A> 
+<BLOCKQUOTE><CODE>
+<PRE>
+[g_v1, g_v2, ..., g_vn]= createZeroGradients(ndd, v1, v2, ..., vn);
+</PRE>
+</CODE></BLOCKQUOTE>
+
+or
+<BLOCKQUOTE><CODE>
+<PRE>
+g_v1= createZeroGradients(ndd, v1);
+g_v2= createZeroGradients(ndd, v2);
+   ...
+g_vn= createZeroGradients(ndd, vn);
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Short description:</B><DD><P>Initialise one or more derivative objects with zeros.</P>
+
+<DT><B>Description:</B><DD><P>This function initialises one or more derivative objects. The
+number of directional derivatives created per derivative object is denoted by
+the parameter '<CODE>ndd</CODE>'. If using the vectorised call---the upper one---, the
+order of the variables '<CODE>vi</CODE>' and the order of the corresponding derivative
+objects have to be ensured by the user. There is no way to ensure this
+automaticaly or check for a proper order.</P>
+<P>The derivative object '<CODE>g_vi</CODE>' of the variable '<CODE>vi</CODE>' stores '<CODE>ndd</CODE>'
+many copies of the variable '<CODE>vi</CODE>', but all entries are set to zero. That
+is why this function is named <CODE>create<B>Zero</B>Gradients()</CODE>.</P>
+<P>All derivative objects have to store the same number of directional
+derivatives. It is therefore advised to use the vectorised function, which
+ensures that all derivative objects have the same number. It may be possible
+to change the number of directional derivatives in future version of ADiMat,
+but upto now this is not supported. Messing around with the number of
+directional derivatives during one run of the differentiated program is done
+on your own risk, so do not complain about wrong derivatives.</P>
+
+<DT><B>Examples:</B><DD><P>Have a look at 
+<A HREF="#createZeroGradientsExample">createZeroGradients-example</A>.</P>
+
+<DT><B>Function:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<PRE>
+[g_v1, g_v2, ..., g_vn]= createFullGradients(v1, v2, ..., vn);
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Short description:</B><DD><P>Create full Jacobian for all <CODE>vi</CODE>.</P>
+
+<DT><B>Description:</B><DD><P>Creates derivative objects for all <CODE>vi</CODE>. The number of the
+directional derivatives stored in each <CODE>g_vi</CODE> is computed from the sum of
+the product of the sizes of all <CODE>vi</CODE>. Or to spell it in speudo-MATLAB:
+<CODE>ndd=sum(prod(size(vi))) for i=1:n</CODE>. The seeding is done in a way, that the
+derivatives are computed with respect to each input element.</P>
+<P>The function is restricted to arrays for inputs. I.e. structures and
+cellarrays are rejected. This function can be called once, only, in a program,
+or after reseting the ADoptions (see 
+<A HREF="#clearADoptions">clearADoptions</A>).</P>
+
+<DT><B>Example:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<PRE>
+>> t=magic(3);
+>> g_t=createFullGradients(t)
+
+adderiv: number of directional derivatives: 9
+
+     1 0 0
+     0 0 0
+     0 0 0
+
+     0 1 0
+     0 0 0
+     0 0 0
+
+     0 0 1
+     0 0 0
+     0 0 0
+
+  ... and so on ...
+
+     0 0 0
+     0 0 0
+     0 1 0
+
+     0 0 0
+     0 0 0
+     0 0 1
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Function:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<PRE>
+[g_v1, g_v2, ..., g_vn]= createEyeGradients(v1, v2, ..., vn);
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Short description:</B><DD><P>Create derivatives with the diagonal elements set to
+one.</P>
+
+<DT><B>Description:</B><DD><P>Creates derivative objects for all <CODE>vi</CODE>. The number of the
+directional derivatives is the sum of minimum of the size of each <CODE>vi</CODE>, or
+in pseudo-MATLAB: <CODE>ndd=sum(min(size(vi))) forall i=1:n</CODE>.</P>
+<P>This function can be applied only once per program, or after reseting the
+ADoptions (see 
+<A HREF="#clearADoptions">clearADoptions</A>).</P>
+
+<DT><B>Example:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<PRE>
+>> t=magic(3);
+>> g_t=createEyeGradients(t)
+
+adderiv: number of directional derivatives: 3
+
+     1 0 0
+     0 0 0
+     0 0 0
+
+     0 0 0
+     0 1 0
+     0 0 0
+
+     0 0 0
+     0 0 0
+     0 0 1
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Function:</B><DD><P>
+<A NAME="createHessians"></A> 
+<BLOCKQUOTE><CODE>
+<PRE>
+[h_v1, h_v2, ..., h_vn]= createHessians([ndd ndd], v1, v2, ..., vn);
+</PRE>
+</CODE></BLOCKQUOTE>
+
+or
+<BLOCKQUOTE><CODE>
+<PRE>
+[h_v1, h_v2, ..., h_vn]= createHessians([], v1, v2, ..., vn);
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Short description:</B><DD><P>Create Hessians.</P>
+
+<DT><B>Description:</B><DD><P>Creates twodimensional derivative objects for all <CODE>vi</CODE>.
+The number of the directional derivatives stored in each <CODE>h_vi</CODE> is
+specified by <CODE>[ndd ndd]</CODE> or if the empty matrix is supplied, taken from the
+options-system (see 
+<A HREF="#getOption">getOption(...)</A>). The dimension
+of a <CODE>h_vi</CODE> object is ensured to be twodimensional.</P>
+<P>Each <CODE>h_vi</CODE> contains sparse objects with all elements set to zero.</P>
+
+<DT><B>Example:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<PRE>
+>> t=magic(3);
+>> h_t= createHessians([], t)
+
+adderiv: total number of directional derivatives: 3x3
+
+  (1,:)
+  (2,:)
+  (3,:)
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Functions:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<PRE>
+g_v= g_zeros(size(v));
+h_v= h_zeros(size(v));
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Short description:</B><DD><P>Create one/two-dimensional derivative objects with all
+elements set to zero.</P>
+
+<DT><B>Description:</B><DD><P>These functions create zero-objects. They are for internal
+use only. Essentially, the functions give the derivative of a MATLAB&apos;s
+<CODE>zeros(),ones(),eye()...</CODE> matrix constructor functions. The call of these
+functions is insert everywhere, where no derivative can be computed. This may
+be the cause for the assignment of constant arrays (scalars).</P>
+<P>Direct use of these functions is not recommend, because the functions may
+change without further notice!</P>
+</DL>
+</P>
+
+<H2><A NAME="options"></A> <A NAME="ss5.5">5.5</A> <A HREF="adimat.html#toc5.5">The options system of the MATLAB-class</A>
+</H2>
+
+
+<P>The options system implements a way to store global information needed by the
+process of computing derivatives invisibly. Traditionally, a flag used by
+MATLAB&apos;s toolboxes is stored in the global workspace, where it is lost after a
+<CODE>clear all</CODE>. The information maintained by the options systems survives,
+because it is stored as persistent data in a private member-function. (If you
+did not understand the previous sentence, do not bother anymore, because it
+was developer language).</P>
+<P>
+<DL>
+<DT><B>Function:</B><DD><P>
+<A NAME="clearADoptions"></A> 
+<BLOCKQUOTE><CODE>
+<PRE>
+clearADoptions(g_t)
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Short description:</B><DD><P>Reset all options stored in the persistent to their
+defaults.</P>
+
+<DT><B>Description:</B><DD><P>All options maintained by the options system are set back to
+their hard coded default values. The function needs a derivate object to be
+called with. The object is needed, because MATLAB identifies to function to
+belong to derivative class by one of the arguments to belong to the derivative
+class.</P>
+<P>Usually, this function is not needed. But the highly advanced ADiMat user, may
+become in need for it, if more than one differentiated code is to be combined
+and the codes have distinct numbers of directional derivatives.</P>
+<P>A warning is issued whenever the function is called (can be switched off).</P>
+
+<DT><B>Example:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<PRE>
+>> clearADoptions(g_dummy);
+Warning: All AD-options are set back to defaults.
+(Type "warning off ADiMat:clearOptionswarning" to suppress this warning.)
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Function:</B><DD><P>
+<A NAME="getOption"></A> 
+<BLOCKQUOTE><CODE>
+<PRE>
+val=getADoption(g_t,optionname);
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Short description:</B><DD><P>Get the option&apos;s value specified by <CODE>optionname</CODE>.</P>
+
+<DT><B>Description:</B><DD><P>Get the value of a specific option. Use <CODE>help
+getADoption</CODE> to get a list of available options. As in the
+<CODE>clearADoptions()</CODE> command <CODE>g_t</CODE> is a dummy object needed for
+dispatching, only.</P>
+
+<DT><B>Example:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<PRE>
+>> getADoption(g_dummy, 'NumberOfDirectionalDerivatives');
+ans =
+      3
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Function:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<PRE>
+setADoption(...)
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Short description:</B><DD><P>Exists, but hands off. Internal use, only.</P>
+
+<DT><B>Description:</B><DD><P>This function is intentionally undocumented. It is for
+internal use only. Messing around with it, will cause unexpected behaviour.</P>
+</DL>
+</P>
+
+<H2><A NAME="ss5.6">5.6</A> <A HREF="adimat.html#toc5.6">MATLAB&apos;s cellarrays/structures and the derivative class</A>
+</H2>
+
+
+<P>MATLAB implements two datatypes that get special treatment by the derivative
+class. The first one is the cellarray-datatype and the second one are
+structures.</P>
+<P>
+<DL>
+<DT><B>cellarray: { }</B><DD><P>Cellarrays are able to store objects of different types. I.e. a cellarray may
+store a string, an array, and a scalar. The cellarray is organized like a
+standart MATLAB-array. I.e., it is indexable.</P>
+<P>In conjunction with the derivative class: A cellarray can never be stored
+within a derivative object. But the derivative object can be stored within the
+cellarray. In fact, there is no need to modify codes containing cellarray when
+they are to be differentiated by ADiMat. The source transformation component
+ensures correct treatment of the cellarray and the derivative objects. The
+only issue to take off is the access of the data. The derivative object is in
+the cellarray. I.e. the first index accesses the derivative object, the second
+the data within it.</P>
+<P>Example:</P>
+<P>Let <CODE>a</CODE>, <CODE>b</CODE>, and <CODE>c</CODE> be active variables and
+<CODE>ca={a,b,c}</CODE> be the cellarray combining them to a vector. The
+derivative expression for <CODE>ca</CODE> is: <CODE>g_ca={g_a,g_b,g_c}</CODE>.</P>
+<P>The expression <CODE>g_ca{1}</CODE> will access the first derivative object
+in the vector, namely <CODE>g_a</CODE>. To access the second component of first item of
+<CODE>g_ca</CODE> the expression: <CODE>g_ca{1}{2}</CODE> has to be used.</P>
+
+<DT><B>structures: struct.field</B><DD><P>Structures enable the storage of distinct data in a hierarchical way. The
+source transformation component of ADiMat ensures that the base object, i.e.
+the variable storing the structure, is a derivative object. This has to be
+taken into account when creating structures that are active and the derivative
+has to created. At first a dummy-derivative objects has to be created and then
+the fields have to be inserted. In this way a structure is stored within a
+derivative object. The other way around, a derivative object is not to be
+stored within a structure. This is enforced, because during the activity
+analysis of the source transformation component the variable containing the
+structure is taken into account only and the fields are of no interest.</P>
+<P>Derivative objects of structures may created using the constructor functions
+<A HREF="#createZeroGradients">createZeroGradients()</A> for gradients and
+Jacobians and 
+<A HREF="#createHessians">createHessians()</A> for Hessians.
+The constructor functions <CODE>createFullGradients()</CODE> and
+<CODE>createEyeGradients()</CODE> can not be used to create a derivative object for a
+structure.</P>
+<P>Example:</P>
+<P><CODE>str.field1=[1, 2] str.field2=42;</CODE> create a simple structure. The
+constructor function <CODE>g_str= createZeroGradients(3, str);</CODE> creates a
+suitable derivative object:
+<BLOCKQUOTE><CODE>
+<PRE>
+>> g_str
+
+adderiv: number of directional derivatives: 3
+
+    field1: [0 0]
+    field2: 0
+
+    field1: [0 0]
+    field2: 0
+
+    field1: [0 0]
+    field2: 0
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+
+</DL>
+</P>
+
+<HR>
+<A HREF="adimat-6.html">Next</A>
+<A HREF="adimat-4.html">Previous</A>
+<A HREF="adimat.html#toc5">Contents</A>
+</BODY>
+</HTML>

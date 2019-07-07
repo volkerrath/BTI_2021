@@ -1,0 +1,120 @@
+% Three dimensional graphs.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.2  2004/04/20 12:22:42  af116ve
+% Removed typos.
+%
+% Revision 1.1  2004/01/28 17:47:05  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Elementary 3-D plots.
+BCOMMAND plot3($#)
+BMFUNC $$=mesh($#) IGNORE
+BMFUNC $$=surf($#) IGNORE
+BMFUNC $$=fill3($#) IGNORE
+
+% Color control.
+BMFUNC $$=colormap($1, $#) IGNORE
+BMFUNC [$$#]=caxis($1, $#) IGNORE
+BCOMMAND shading($1, $#)
+BMFUNC $$=hidden($1) IGNORE
+BMFUNC $$=brighten($1, $#) IGNORE
+BMFUNC $$=colordef($1, $#) IGNORE
+BCOMMAND graymon
+
+% Lighting.
+BMFUNC $$=surfl($#) IGNORE
+BCOMMAND lighting($1, $#)
+BMFUNC [$$#]=material($#) IGNORE
+BMFUNC $$=specular($1, $2, $3, $4, $5, $#) IGNORE
+BMFUNC $$=diffuse($1, $2, $3, $4) IGNORE
+BMFUNC [$$1, $$2, $$3]=surfnorm($#) IGNORE
+
+% Color maps.
+BMFUNC $$=hsv($1) IGNORE
+BMFUNC $$=hot($1) IGNORE
+BMFUNC $$=gray($1) IGNORE
+BMFUNC $$=bone($1) IGNORE
+BMFUNC $$=copper($1) IGNORE
+BMFUNC $$=pink($1) IGNORE
+BMFUNC $$=white($1) IGNORE
+BMFUNC $$=flag($1) IGNORE
+BMFUNC $$=lines($1) IGNORE
+BMFUNC $$=colorcube($1) IGNORE
+BMFUNC $$=vga($1) IGNORE
+BMFUNC $$=jet($1) IGNORE
+BMFUNC $$=prism($1) IGNORE
+BMFUNC $$=cool($1) IGNORE
+BMFUNC $$=autumn($1) IGNORE
+BMFUNC $$=spring($1) IGNORE
+BMFUNC $$=winter($1) IGNORE
+BMFUNC $$=summer($1) IGNORE
+
+% Transparency.
+BCOMMAND alpha($1, $#)
+BMFUNC [$$#]=alphamap($1, $#) IGNORE
+BMFUNC $$=alim($1, $#) IGNORE
+
+% Axis control.
+% no axis.m, zoom.m, grid.m ...: file in graph2d
+BMFUNC $$=daspect($1, $#) IGNORE
+BMFUNC $$=pbaspect($1, $#) IGNORE
+BMFUNC $$=xlim($1, $#) IGNORE
+BMFUNC $$=ylim($1, $#) IGNORE
+BMFUNC $$=zlim($1, $#) IGNORE
+
+% Viewpoint control.
+BMFUNC [$$#]=view($#) IGNORE
+BMFUNC $$=viewmtx($1, $2, $#) IGNORE
+
+% Camera control.
+BMFUNC $$=campos($1, $#) IGNORE
+BMFUNC $$=camtarget($1, $#) IGNORE
+BMFUNC $$=camva($1, $#) IGNORE
+BMFUNC $$=camup($1, $#) IGNORE
+BMFUNC $$=camproj($1, $#) IGNORE
+
+% Viewpoint control
+BCOMMAND rotate3d($1)
+
+% High level camera control.
+BCOMMAND camorbit($1, $#)
+BCOMMAND campan($1, $#)
+BCOMMAND camdolly($#)
+BCOMMAND camzoom($#)
+BCOMMAND camroll($#)
+BCOMMAND camlookat($1)
+BMFUNC $$=cameratoolbar($#) IGNORE
+
+% High level light control.
+BMFUNC $$=camlight($#) IGNORE
+BMFUNC [$$#]=lightangle($1, $#) IGNORE
+
+% Graph annotation.
+BMFUNC $$=colorbar($1, $#) IGNORE
+BMFUNC $$=zlabel($1, $#) IGNORE
+
+% Hardcopy and printing.
+BCOMMAND vrml($1, $#)
+
+% Utilities
+BMFUNC [$$#]=camrotate($#) IGNORE
+BMFUNC $$=objbounds($1) IGNORE
+BCOMMAND whitebg($1, $#)
+
+% Remaining...
+BCOMMAND cameramenu($#)
+BCOMMAND cmapeditor
+BCOMMAND colormapeditor
+

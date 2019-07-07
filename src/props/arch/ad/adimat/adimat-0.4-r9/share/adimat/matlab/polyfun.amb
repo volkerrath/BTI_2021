@@ -1,0 +1,100 @@
+% Interpolation and polynomials.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.2  2004/04/20 12:23:37  af116ve
+% Removed typos.
+%
+% Revision 1.1  2004/01/28 17:47:06  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Data interpolation.
+BMFUNC $$=pchip($1, $2, $#) NODIFF
+BMFUNC $$=interp1($#) NODIFF
+BMFUNC $$=interp1q($1, $2, $#) NODIFF
+BMFUNC $$=interp2($#) NODIFF
+BMFUNC $$=interp3($#) NODIFF
+BMFUNC $$=interpn($#) NODIFF
+BMFUNC [$$1, $$#]=griddata($1, $2, $3, $4, $5, $#) NODIFF
+BMFUNC $$=griddata3($1, $2, $3, $4, $5, $6, $7, $#) NODIFF
+BMFUNC $$=griddatan($1, $2, $3, $#) NODIFF
+
+% Spline interpolation.
+BMFUNC $$=spline($1, $2, $#) NODIFF
+BMFUNC $$=ppval($1, $2) NODIFF
+
+% Geometric analysis
+BMFUNC $$=delaunay($1, $2, $#) NODIFF
+BMFUNC $$=delaunay3($1, $2, $3) NODIFF
+BMFUNC $$=delaunayn($1) NODIFF
+BMFUNC $$=dsearch($#) NODIFF
+BMFUNC [$$1, $$#]=dsearchn($1, $2, $#) NODIFF
+BMFUNC $$=tsearch($1, $2, $3, $4, $5) NODIFF
+BMFUNC [$$1, $$#]=tsearchn($1, $2, $3) NODIFF
+BMFUNC [$$1, $$#]=convhull($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=convhulln($1) NODIFF
+% no voronoi.m
+BMFUNC [$$1, $$2]=voronoin($1) NODIFF
+BMFUNC [$$1, $$#]=inpolygon($1, $2, $3, $4) NODIFF
+BMFUNC $$=rectint($1, $2) NODIFF
+BMFUNC $$=polyarea($1, $2, $#) NODIFF
+
+% Polynomials.
+BMFUNC $$=roots($1) NODIFF
+BMFUNC $$=poly($1) NODIFF
+% The derivative of polyval is defined for x being a row vector only. 
+% More complex computations are possible in ADiMat V0.5+ only.
+BMFUNC $$=polyval($1,$2,$#) DIFFTO (($@1)*repmat($2,size(($1)')).^repmat((length($1)-1:-1:0)', size($2))+ polyval(polyder($1),$2,$#).*($@2))
+% BMFUNC [$$1, $$#]=polyval($1, $2, $#) NODIFF
+BMFUNC $$=polyvalm($1, $2) NODIFF
+BMFUNC [$$1, $$#]=residue($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=polyfit($1, $2, $3) NODIFF
+BMFUNC [$$1, $$#]=polyder($1, $2) NODIFF
+BMFUNC $$=polyint($1, $#) NODIFF
+% no conv.m
+% no deconv.m
+
+% Utilities
+BMFUNC [$$1, $$2, $$#]=xychk($#) NODIFF
+BMFUNC [$$1, $$2, $$3, $$4, $$5, $$#]=xyzchk($1, $#) NODIFF
+BMFUNC [$$1, $$2, $$3, $$4, $$5, $$6, $$7, $$8]=xyzvchk($1, $2, $3, $4, $5, $6, $7) NODIFF
+BMFUNC $$=automesh($1) NODIFF
+BMFUNC $$=mkpp($1, $2, $#) NODIFF
+BMFUNC [$$1, $$2, $$3, $$4, $$5]=unmkpp($1) NODIFF
+BMFUNC $$=splncore($1, $2, $3, $#) NODIFF
+BMFUNC $$=resi2($1, $2, $3, $4, $5) NODIFF
+BMFUNC [$$1, $$#]=tzero($1, $#) NODIFF
+BMFUNC [$$1, $$2, $$3, $$4, $$5]=abcdchk($1, $2, $3, $4) NODIFF
+BMFUNC [$$1, $$2]=ss2tf($1, $2, $3, $4, $5) NODIFF
+BMFUNC [$$1, $$2, $$3]=ss2zp($1, $2, $3, $4, $5) NODIFF
+BMFUNC [$$1, $$2, $$3, $$4]=tf2ss($1, $2) NODIFF
+BMFUNC [$$1, $$2, $$3]=tf2zp($1, $2) NODIFF
+BMFUNC [$$1, $$2, $$3, $$4]=zp2ss($1, $2, $3) NODIFF
+BMFUNC [$$1, $$2]=zp2tf($1, $2, $3) NODIFF
+BMFUNC [$$1, $$2]=mpoles($1, $2, $#) NODIFF
+% no qhullmx.m
+BMFUNC [$$#]=qhull($#) NODIFF
+BMFUNC [$$1, $$2]=padecoef($1, $2) NODIFF
+
+% Obsolete functions.
+BMFUNC $$=icubic($#) NODIFF
+BMFUNC $$=interp4($#) NODIFF
+BMFUNC $$=interp5($#) NODIFF
+BMFUNC $$=interp6($#) NODIFF
+BMFUNC $$=table1($1, $2) NODIFF
+BMFUNC $$=table2($1, $2, $3) NODIFF
+
+% Remaining...
+BMFUNC $$=interpft($1, $2, $#) NODIFF
+BMFUNC [$$1, $$2, $$#]=tfchk($1, $2) NODIFF
+

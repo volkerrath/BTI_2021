@@ -1,0 +1,78 @@
+% Matrix functions - numerical linear algebra.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.2  2004/04/20 12:25:18  af116ve
+% Added test entries for norm function.
+%
+% Revision 1.1  2004/01/28 17:47:06  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Matrix analysis.
+BMFUNC $$=norm($1, $#) DIFFTO g_norm($$, $@1, $1, $#)
+BMFUNC [$$1, $$#]=normest($1, $#) NODIFF
+BMFUNC $$=rank($1, $#) NODIFF
+BMFUNC $$=det($1) DIFFTO (($$)* call(@trace, inv($1)* $@1))
+BMFUNC $$=trace($1) DIFFSTO call(@trace, $@1)
+BMFUNC $$=null($1, $#) NODIFF
+BMFUNC $$=orth($1) NODIFF
+BMFUNC [$$1, $$#]=rref($1, $#) NODIFF
+% no subspace.m
+
+% Linear equations.
+BMFUNC $$=inv($1) NODIFF
+BMFUNC $$=rcond($1) NODIFF
+BMFUNC $$=cond($1, $#) NODIFF
+BMFUNC [$$1, $$#]=condest($1, $#) NODIFF
+BMFUNC [$$1, $$#]=normest1($1, $#) NODIFF
+BMFUNC [$$1, $$#]=chol($1) NODIFF
+% no cholinc.m
+BMFUNC [$$1, $$#]=lu($1, $#) NODIFF
+% no luinc.m
+BMFUNC [$$1, $$#]=qr($1, $#) NODIFF
+BMFUNC [$$1, $$#]=lsqnonneg($1, $2, $#) NODIFF
+BMFUNC $$=pinv($1, $#) NODIFF
+BMFUNC [$$1, $$#]=lscov($1, $2, $3) NODIFF
+
+% Eigenvalues and singular values.
+BMFUNC [$$1, $$#]=eig($1, $#) NODIFF
+BMFUNC [$$1, $$#]=svd($1, $#) NODIFF
+BMFUNC [$$1, $$#]=gsvd($1, $2, $#) NODIFF
+% no eigs.m
+% no svds.m
+% no poly.m
+BMFUNC [$$1, $$#]=polyeig($#) NODIFF
+BMFUNC [$$1, $$#]=condeig($1) NODIFF
+BMFUNC [$$1, $$#]=hess($1) NODIFF
+BMFUNC [$$1, $$2, $$3, $$#]=qz($1, $#) NODIFF
+BMFUNC [$$1, $$#]=schur($1, $#) NODIFF
+
+% Matrix functions.
+BMFUNC $$=expm($1) NODIFF
+BMFUNC [$$1, $$#]=logm($1) NODIFF
+BMFUNC [$$1, $$#]=sqrtm($1) NODIFF
+BMFUNC [$$1, $$#]=funm($1, $2) NODIFF % Madman fooling around!
+
+% Factorization utilities
+BMFUNC [$$1, $$#]=qrdelete($1, $2, $3, $#) NODIFF
+BMFUNC [$$1, $$2]=qrinsert($1, $2, $3, $4, $#) NODIFF
+BMFUNC [$$1, $$2]=rsf2csf($1, $2) NODIFF
+BMFUNC [$$1, $$2]=cdf2rdf($1, $2) NODIFF
+BMFUNC [$$1, $$#]=balance($1) NODIFF
+BMFUNC [$$1, $$2]=planerot($1) NODIFF
+BMFUNC [$$1, $$#]=cholupdate($1, $#) NODIFF
+BMFUNC [$$1, $$2]=qrupdate($1, $2, $3, $4) NODIFF
+
+% Obsolete functions
+BMFUNC [$$1, $$#]=nnls($1, $2, $#) NODIFF
+

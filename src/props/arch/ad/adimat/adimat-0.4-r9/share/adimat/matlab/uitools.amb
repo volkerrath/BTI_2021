@@ -1,0 +1,138 @@
+% Graphical user interface tools.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.1  2004/01/28 17:47:06  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% UI-Tools can be differentiated, but they are assumed to have no influence
+% on any numerical value. I.e., all uitool-functions are delcared to be 
+% ignored and accept as many results and parameters as are specified.
+
+BMFUNC [$$#]=addpref($#) IGNORE
+BMFUNC [$$#]=align($#) IGNORE
+BMFUNC [$$#]=allchild($#) IGNORE
+BMFUNC [$$#]=arrayviewfunc($#) IGNORE
+BMFUNC [$$#]=axlimdlg($#) IGNORE
+BMFUNC [$$#]=btndown($#) IGNORE
+BMFUNC [$$#]=btngroup($#) IGNORE
+BMFUNC [$$#]=btnicon($#) IGNORE
+BMFUNC [$$#]=btnpress($#) IGNORE
+BMFUNC [$$#]=btnresize($#) IGNORE
+BMFUNC [$$#]=btnstate($#) IGNORE
+BMFUNC [$$#]=btnup($#) IGNORE
+BMFUNC [$$#]=cbedit($#) IGNORE
+BMFUNC [$$#]=clipboard($#) IGNORE
+BMFUNC [$$#]=clruprop($#) IGNORE
+BMFUNC [$$#]=copyoptionsfcn($#) IGNORE
+BMFUNC [$$#]=cshelp($#) IGNORE
+BMFUNC [$$#]=ctlpanel($#) IGNORE
+BMFUNC [$$#]=dialog($#) IGNORE
+BMFUNC [$$#]=dragrect($#) IGNORE
+BMFUNC [$$#]=editmenufcn($#) IGNORE
+BMFUNC [$$#]=edtext($#) IGNORE
+BMFUNC [$$#]=errordlg($#) IGNORE
+BMFUNC [$$#]=extent($#) IGNORE
+BMFUNC [$$#]=figflag($#) IGNORE
+BMFUNC [$$#]=fignamer($#) IGNORE
+BMFUNC [$$#]=filemenufcn($#) IGNORE
+BMFUNC [$$#]=findall($#) IGNORE
+BMFUNC [$$#]=findfigs($#) IGNORE
+BMFUNC [$$#]=getpref($#) IGNORE
+BMFUNC [$$#]=getptr($#) IGNORE
+BMFUNC [$$#]=getstatus($#) IGNORE
+BMFUNC [$$#]=getuprop($#) IGNORE
+BMFUNC [$$#]=ginput($#) IGNORE
+BMFUNC [$$#]=guidata($#) IGNORE
+BMFUNC [$$#]=guidefunc($#) IGNORE
+BMFUNC [$$#]=guide($#) IGNORE
+BMFUNC [$$#]=guidemfile($#) IGNORE
+BMFUNC [$$#]=guideopts($#) IGNORE
+BMFUNC [$$#]=guidetemplate($#) IGNORE
+BMFUNC [$$#]=guihandles($#) IGNORE
+BMFUNC [$$#]=gui_mainfcn($#) IGNORE
+BMFUNC [$$#]=helpdlg($#) IGNORE
+BMFUNC [$$#]=hidegui($#) IGNORE
+BMFUNC [$$#]=hthelp($#) IGNORE
+BMFUNC [$$#]=htpp($#) IGNORE
+BMFUNC [$$#]=icondisp($#) IGNORE
+BMFUNC [$$#]=ideinitfonts($#) IGNORE
+BMFUNC [$$#]=imageview($#) IGNORE
+BMFUNC [$$#]=inputdlg($#) IGNORE
+BMFUNC [$$#]=inspect($#) IGNORE
+BMFUNC [$$#]=ispref($#) IGNORE
+BMFUNC [$$#]=jpropeditutils($#) IGNORE
+BMFUNC [$$#]=layout($#) IGNORE
+BMFUNC [$$#]=listdlg($#) IGNORE
+BMFUNC [$$#]=listfonts($#) IGNORE
+BMFUNC [$$#]=loadhtml($#) IGNORE
+BMFUNC [$$#]=makemenu($#) IGNORE
+BMFUNC [$$#]=matq2ws($#) IGNORE
+BMFUNC [$$#]=matqdlg($#) IGNORE
+BMFUNC [$$#]=matqparse($#) IGNORE
+BMFUNC [$$#]=matqueue($#) IGNORE
+BMFUNC [$$#]=menubar($#) IGNORE
+BMFUNC [$$#]=menueditfunc($#) IGNORE
+BMFUNC [$$#]=menuedit($#) IGNORE
+BMFUNC [$$#]=menulabel($#) IGNORE
+BMFUNC [$$#]=menu($#) IGNORE
+BMFUNC [$$#]=movegui($#) IGNORE
+BMFUNC [$$#]=movieview($#) IGNORE
+BMFUNC [$$#]=msgbox($#) IGNORE
+BMFUNC [$$#]=overobj($#) IGNORE
+BMFUNC [$$#]=pagedlg($#) IGNORE
+BMFUNC [$$#]=pagesetupdlg($#) IGNORE
+BMFUNC [$$#]=popupstr($#) IGNORE
+BMFUNC [$$#]=preferences($#) IGNORE
+BMFUNC [$$#]=printdlg($#) IGNORE
+BMFUNC [$$#]=printmenu($#) IGNORE
+BMFUNC [$$#]=printpreview($#) IGNORE
+BMFUNC [$$#]=propedit($#) IGNORE
+BMFUNC [$$#]=questdlg($#) IGNORE
+BMFUNC [$$#]=rbbox($#) IGNORE
+BMFUNC [$$#]=remapfig($#) IGNORE
+BMFUNC [$$#]=rmpref($#) IGNORE
+BMFUNC [$$#]=selectmoveresize($#) IGNORE
+BMFUNC [$$#]=setpref($#) IGNORE
+BMFUNC [$$#]=setptr($#) IGNORE
+BMFUNC [$$#]=setstatus($#) IGNORE
+BMFUNC [$$#]=setuprop($#) IGNORE
+BMFUNC [$$#]=soundview($#) IGNORE
+BMFUNC [$$#]=tabdlg($#) IGNORE
+BMFUNC [$$#]=textwrap($#) IGNORE
+BMFUNC [$$#]=uiclearmode($#) IGNORE
+BMFUNC [$$#]=uigetdir($#) IGNORE
+BMFUNC [$$#]=uigetfile($#) IGNORE
+BMFUNC [$$#]=uigetpref($#) IGNORE
+BMFUNC [$$#]=uiimport($#) IGNORE
+BMFUNC [$$#]=uiload($#) IGNORE
+BMFUNC [$$#]=uiopen($#) IGNORE
+BMFUNC [$$#]=uiputfile($#) IGNORE
+BMFUNC [$$#]=uirestore($#) IGNORE
+BMFUNC [$$#]=uiresume($#) IGNORE
+BMFUNC [$$#]=uisave($#) IGNORE
+BMFUNC [$$#]=uisetcolor($#) IGNORE
+BMFUNC [$$#]=uisetfont($#) IGNORE
+BMFUNC [$$#]=uisetpref($#) IGNORE
+BMFUNC [$$#]=uistack($#) IGNORE
+BMFUNC [$$#]=uisuspend($#) IGNORE
+BMFUNC [$$#]=uiwait($#) IGNORE
+BMFUNC [$$#]=umtoggle($#) IGNORE
+BMFUNC [$$#]=waitbar($#) IGNORE
+BMFUNC [$$#]=waitforbuttonpress($#) IGNORE
+BMFUNC [$$#]=waitfor($#) IGNORE
+BMFUNC [$$#]=warndlg($#) IGNORE
+BMFUNC [$$#]=winmenu($#) IGNORE
+BMFUNC [$$#]=wizard($#) IGNORE
+BMFUNC [$$#]=ws2matq($#) IGNORE
+

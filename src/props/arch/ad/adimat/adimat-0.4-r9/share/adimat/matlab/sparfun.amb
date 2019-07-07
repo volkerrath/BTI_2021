@@ -1,0 +1,93 @@
+% Sparse matrices.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.2  2004/04/20 12:23:50  af116ve
+% Removed typos.
+%
+% Revision 1.1  2004/01/28 17:47:06  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Elementary sparse matrices
+BMFUNC $$=speye($1, $#) NODIFF
+BMFUNC $$=sprand($1, $#) NODIFF
+BMFUNC $$=sprandn($1, $#) NODIFF
+BMFUNC $$=sprandsym($1, $#) NODIFF
+BMFUNC [$$1, $$#]=spdiags($1, $#) NODIFF
+
+% Full to sparse conversio
+BMFUNC $$=sparse($1, $#) NODIFF
+BMFUNC $$=full($1) NODIFF
+% no find.m
+BMFUNC $$=spconvert($1) NODIFF
+
+% Working with sparse matrices
+BMFUNC $$=nnz($1) NODIFF
+BMFUNC $$=nonzeros($1) NODIFF
+BMFUNC $$=nzmax($1) NODIFF
+BMFUNC $$=spones($1) NODIFF
+BMFUNC $$=spalloc($1, $2, $3) NODIFF
+BMFUNC $$=issparse($1) NODIFF
+BMFUNC $$=spfun($1, $2) NODIFF
+BCOMMAND spy($1, $#)
+
+% Reordering algorithms.
+BMFUNC [$$1, $$#]=colamd($1, $#) NODIFF
+BMFUNC [$$1, $$#]=symamd($1, $#) NODIFF
+BMFUNC $$=colmmd($1) NODIFF
+BMFUNC $$=symmmd($1) NODIFF
+BMFUNC $$=symrcm($1) NODIFF
+BMFUNC $$=colperm($1) NODIFF
+BMFUNC $$=randperm($1) NODIFF
+BMFUNC [$$1, $$#]=dmperm($1) NODIFF
+
+% Linear algebra
+BMFUNC [$$#]=eigs($#) NODIFF
+BMFUNC [$$1, $$#]=svds($#) NODIFF
+BMFUNC [$$1, $$#]=luinc($1, $#) NODIFF
+BMFUNC [$$1, $$#]=cholinc($1, $#) NODIFF
+% no normest.m
+% no condest.m
+BMFUNC $$=sprank($1) NODIFF
+
+% Linear Equations (iterative methods
+BMFUNC [$$1, $$#]=pcg($1, $2, $3, $#) NODIFF
+BMFUNC [$$1, $$#]=bicg($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=bicgstab($1, $2, $3, $#) NODIFF
+BMFUNC [$$1, $$#]=cgs($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=gmres($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=lsqr($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=minres($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=qmr($1, $2, $#) NODIFF
+BMFUNC [$$1, $$#]=symmlq($1, $2, $#) NODIFF
+
+% Operations on graphs (trees)
+BMFUNC [$$1, $$2, $$3, $$4]=treelayout($1, $2) NODIFF
+BCOMMAND treeplot($1, $#)
+BMFUNC [$$1, $$#]=etree($1, $#) NODIFF
+BCOMMAND etreeplot($1, $#)
+BMFUNC [$$1, $$#]=gplot($1, $2, $#) NODIFF
+
+% Miscellaneous
+BMFUNC [$$1, $$#]=symbfact($1, $#) NODIFF
+BMFUNC [$$1, $$2]=spparms($1, $2) NODIFF
+BMFUNC $$=spaugment($1, $2) NODIFF
+
+% Utility functions
+BMFUNC $$=rjr($1, $#) NODIFF
+BMFUNC $$=sparsfun($1, $2) NODIFF
+BMFUNC [$$1, $$2]=unmesh($1) NODIFF
+BMFUNC [$$#]=eigs2($1, $2, $3, $#) NODIFF
+BMFUNC [$$#]=arpackc($#) NODIFF
+% Helptext: umfpack.m
+

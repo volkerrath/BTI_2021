@@ -1,0 +1,97 @@
+% Data types and structures.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.2  2004/04/20 12:25:00  af116ve
+% Commented function keyword because of conflict within parser.
+%
+% Revision 1.1  2004/01/28 17:47:05  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Data types (classes)
+BMFUNC $$=double($1) DIFFSTO call(@double, $@1)
+% no sparse.m
+% no char.m
+BMFUNC $$=cell($#) NODIFF
+BMFUNC $$=struct($#) NODIFF
+BMFUNC $$=single($1) DIFFSTO call(@single, $@1)
+BMFUNC $$=uint8($1) ERROR "Conversion to (unsigned) integer in derivative computation. Trouble!!!"
+BMFUNC $$=uint16($1) ERROR "Conversion to (unsigned) integer in derivative computation. Trouble!!!"
+BMFUNC $$=uint32($1) ERROR "Conversion to (unsigned) integer in derivative computation. Trouble!!!"
+BMFUNC $$=uint64($1) ERROR "Conversion to (unsigned) integer in derivative computation. Trouble!!!"
+BMFUNC $$=int8($1) ERROR "Conversion to (signed) integer in derivative computation. Trouble!!!"
+BMFUNC $$=int16($1) ERROR "Conversion to (signed) integer in derivative computation. Trouble!!!"
+BMFUNC $$=int32($1) ERROR "Conversion to (signed) integer in derivative computation. Trouble!!!"
+BMFUNC $$=int64($1) ERROR "Conversion to (signed) integer in derivative computation. Trouble!!!"
+% no inline.m
+% Help text: function_handle.m
+BMFUNC $$=javaArray($1, $#) NODIFF
+BMFUNC $$=javaMethod($1, $2, $#) NODIFF
+BMFUNC $$=javaObject($1, $#) NODIFF
+
+% Multi-dimensional array functions
+% no cat.m
+% no ndims.m
+% no ndgrig.m
+% no permute.m
+% no ipermute.m
+% no shiftdim.m
+% no squeeze.m
+
+% Cell array functions.
+BMFUNC $$=cellfun($1, $2, $#) NODIFF
+BCOMMAND celldisp($1, $#)
+BMFUNC $$=cellplot($1, $#) IGNORE
+BMFUNC $$=cell2mat($1) DIFFSTO call(@cell2mat, $@1)
+BMFUNC $$=mat2cell($1, $#) DIFFSTO call(@mat2cell, $@1, $#)
+BMFUNC $$=num2cell($1, $#) DIFFSTO call(@num2cell, $@1, $#)
+BMFUNC [$$#]=deal($#) DIFFSTO call(@deal, $@1)
+BMFUNC $$=cell2struct($1, $2, $3) NODIFF
+BMFUNC $$=struct2cell($1) NODIFF
+BMFUNC $$:bool=iscell($1) IGNORE
+
+% Structure functions.
+% no struct.m
+BMFUNC $$=fieldnames($1, $#) IGNORE
+BMFUNC $$=getfield($1, $#) IGNORE
+BMFUNC $$=setfield($1, $#) IGNORE
+BMFUNC $$=rmfield($1, $2) IGNORE
+BMFUNC $$:bool=isfield($1, $2) IGNORE
+BMFUNC $$:bool=isstruct($1) IGNORE
+BMFUNC [$$1, $$#]=orderfields($1, $#) IGNORE
+
+% Function handle functions.
+BMFUNC $$=func2str($1) IGNORE
+BMFUNC $$=str2func($1) IGNORE
+% BMFUNC $$=functions($1) IGNORE
+
+% Object oriented programming functions.
+BMFUNC $$=class($1, $#) IGNORE
+BMFUNC $$=methods($1, $#) IGNORE
+BCOMMAND methodsview($1, $#)
+BMFUNC $$:bool=isa($1, $2) IGNORE
+BMFUNC $$:bool=isjava($1) IGNORE
+BMFUNC $$:bool=isobject($1) IGNORE
+BCOMMAND inferiorto($1, $#)
+BCOMMAND superiorto($1, $#)
+BMFUNC $$=substruct($#) IGNORE
+
+% Overloadable operators.
+% no minus.m, plus.m ...
+BMFUNC $$=loadobj($1) NODIFF
+BMFUNC $$=saveobj($1) NODIFF
+
+% Remaining ...
+BMFUNC $$:bool=ismethod($1, $2) IGNORE
+BMFUNC $$:bool=isprop($1, $2) IGNORE
+

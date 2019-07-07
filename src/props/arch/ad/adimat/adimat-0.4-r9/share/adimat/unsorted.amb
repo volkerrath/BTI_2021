@@ -1,0 +1,51 @@
+% A test file, not for distribution
+%
+% Copyright 2003-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+
+% The signature of sum() is sum(vector or matrix, dimension to sum)
+BMFUNC $$= sum($1, $#) DIFFTO call(@sum, $@1, $#)
+BMFUNC $$= prod($#) DIFFTO calln(@prod, $@#)
+BMFUNC $$= cumsum($1) NODIFF
+BMFUNC $$= mean($1) IGNORE
+BMFUNC $$= cov($1) IGNORE
+BMFUNC $$= det($1) NODIFF
+BMFUNC $$= chol($1) NODIFF
+BMFUNC $$= min($#) NODIFF
+BMFUNC $$= pinv($1) NODIFF
+BMFUNC $$= max($#) NODIFF
+BMFUNC fprintf($#) IGNORE
+BMFUNC $$= fopen($1, $2) IGNORE
+%BMFUNC $$= struct($#) IGNORE
+BMFUNC plot($#) IGNORE
+BMFUNC close($1) IGNORE
+BMFUNC axis($#) IGNORE
+BMFUNC figure IGNORE
+BMFUNC $$=equal($1,$2) IGNORE
+BMFUNC off IGNORE
+BMFUNC hold($1) IGNORE
+BMFUNC on IGNORE
+BMFUNC title($1) IGNORE
+% Handle next line with care: check if it is correct. 
+%BMFUNC $$= norm($1, $2) DIFFSTO (($@1).*(abs($1).^($2-1))/(norm($1,$2).^($2-1)))
+BMFUNC $$= norm($1) DIFFSTO ((($@1).'*abs($1))/norm($1))
+% BMFUNC $$= norm($1) NODIFF
+BMFUNC $$= cond($1,$2,$3) IGNORE
+BMFUNC $$= clc($#) IGNORE
+BMFUNC $$= sprintf($#) IGNORE
+BCOMMAND set($#)
+BCOMMAND gcf($#)
+BMFUNC $$=square($1) NODIFF
+BCOMMAND xlabel($#)
+BCOMMAND ylabel($#)
+BMFUNC $$=bar($#) NODIFF
+BMFUNC $$=setstr($1) NODIFF
+BCOMMAND grid($#)
+BCOMMAND legend($#)
+BMFUNC $$=inv($1) DIFFSTO ($1\eye(size($1,1)))
+BMFUNC $$:string=num2str($1) IGNORE
+BMFUNC $$=spdiags($1, $#) DIFFTO call(@spdiags, $@1, $#)
+

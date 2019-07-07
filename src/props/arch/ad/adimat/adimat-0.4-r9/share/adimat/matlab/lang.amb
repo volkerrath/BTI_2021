@@ -1,0 +1,103 @@
+% Programming language constructs.
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.5  2004/04/20 12:23:16  af116ve
+% Removed typos.
+%
+% Revision 1.4  2004/01/05 15:41:44  af116ve
+% Added copyright notice.
+%
+% Revision 1.3  2003/11/03 11:08:56  af116ve
+% Added coment to never define the vararg(in|out) builtins in the builtin database. These ids are defined internaly.
+%
+% Revision 1.2  2003/04/24 15:54:17  af116ve
+% Corrected typos.
+%
+% Revision 1.1  2003/04/24 15:26:49  af116ve
+% Initial version! Support Matlab 6.5 R13
+%
+%
+%
+
+% Control flow.
+% Recognized by the ADiMat-parser directly: 
+% BMFUNC if
+% BMFUNC elseif
+% BMFUNC else
+BMFUNC $$= end() IGNORE
+% BMFUNC for($#)
+% BMFUNC while($#)
+% BMFUNC break($#)
+% BMFUNC continue($#)
+% BMFUNC switch($#)
+% BMFUNC case($#)
+% BMFUNC otherwise($#)
+% BMFUNC try($#)
+% BMFUNC catch($#)
+% BMFUNC return($#)
+BMFUNC error($#) IGNORE
+BMFUNC rethrow($1) IGNORE
+
+% Evaluation and execution.
+BMFUNC [$$#]= eval($#) NODIFF
+BMFUNC [$$#]= evalc($#) NODIFF
+BMFUNC [$$#]= feval($#) NODIFF
+BMFUNC [$$#]= evalin($#) NODIFF
+BMFUNC [$$#]= builtin($#) NODIFF
+BCOMMAND assignin($#)
+BCOMMAND run($#)
+
+% Scripts, functions, and variables.
+% script, fucntion, and global are a help texts, only.
+% BMFUNC script
+% BMFUNC function($#)
+% BMFUNC global($#)
+BCOMMAND persistent($#) % Attention, wrong semantic!
+BMFUNC $$:string= mfilename($#) IGNORE
+% BMFUNC lists explanation file
+BMFUNC $$= exist($#) IGNORE
+BMFUNC $$:bool= isglobal($1) IGNORE
+BCOMMAND mlock($#)
+BCOMMAND munlock($#)
+BMFUNC $$:bool= mislocked($1) IGNORE
+% BMFUNC precedence($#) Help file!
+BMFUNC $$:bool= isvarname($1) IGNORE
+BMFUNC $$:bool= iskeyword($1) IGNORE
+BVAR namelengthmax:real
+
+% Argument handling.
+BMFUNC $$:string= nargchk($1, $2, $3) IGNORE
+BMFUNC $$:string= nargoutchk($1, $2, $3) IGNORE
+BMFUNC $$= nargin($1) IGNORE
+BMFUNC $$= nargout($1) IGNORE
+% BMFUNC varargin($#) % Help text! The ids. need to be defined in the 
+% BMFUNC varargout($#) % signature of the functions.
+% Never define vararg(in|out) in an .amb-file!!! ADiMat has to treat it
+% differently. The ids are therefore defined internally.
+BMFUNC $$:string= inputname($1) IGNORE
+
+% Message display.
+BCOMMAND warning($#)
+BMFUNC [$$#]= lasterr($#) IGNORE
+BMFUNC [$$#]= lasterror($#) IGNORE
+BMFUNC [$$#]= lastwarn($#) IGNORE
+BCOMMAND disp($#)
+BCOMMAND display($#)
+
+% Interactive input.
+BMFUNC $$= input($#) NODIFF
+BMFUNC keyboard ERROR "Function call of 'keyboard' in file to differentiate! Wondering why!"
+
+% Remaining files in directory
+BMFUNC check_syntactic_warnings IGNORE
+BMFUNC $$= javachk($#) IGNORE
+% BMFUNC matrix_element_separators % help text
+
+% vim:nocindent:noautoindent:nowrap:
+

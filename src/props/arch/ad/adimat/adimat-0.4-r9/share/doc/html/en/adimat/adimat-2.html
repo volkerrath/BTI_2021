@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.20">
+ <TITLE>The ADiMat Handbook: Installation</TITLE>
+ <LINK HREF="adimat-3.html" REL=next>
+ <LINK HREF="adimat-1.html" REL=previous>
+ <LINK HREF="adimat.html#toc2" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="adimat-3.html">Next</A>
+<A HREF="adimat-1.html">Previous</A>
+<A HREF="adimat.html#toc2">Contents</A>
+<HR>
+<H2><A NAME="s2">2.</A> <A HREF="adimat.html#toc2">Installation</A></H2>
+
+
+<H2><A NAME="ss2.1">2.1</A> <A HREF="adimat.html#toc2.1">How to obtain ADiMat</A>
+</H2>
+
+<P>Currently ADiMat is available only by contacting the author.</P>
+
+<H2><A NAME="ss2.2">2.2</A> <A HREF="adimat.html#toc2.2">Requirements</A>
+</H2>
+
+<P>ADiMat was successfully compiled on:
+<UL>
+<LI>Intel series PCs running Fedora Core 1 Linux systems using gcc 3.3.2.</LI>
+<LI>Intel series PCs running Windows 2k and Cygwin 1.5.5-1 using gcc 3.3.1.</LI>
+<LI>Intel series PCs running Windows 2k with mingw32-support.</LI>
+<LI>Intel series PCs running RedHat 8.0 Linux systems using the gcc 3.2 and
+3.2.2.</LI>
+<LI>Intel series PCs running RedHat 7.1 Linux systems using the gcc 2.96 and
+3.0.1.</LI>
+<LI>Sun UltraSparc III running Solaris 8 (SunOs 5.8) using Sun Workshop 6
+update 2 C 5.3 and gcc 2.96.</LI>
+</UL>
+</P>
+<P>The c-code of the scanners and parsers used by this application may be
+obtained from their specification files using bison &gt; version 1.28 and flex
+&gt; version 2.5.4. The c-source files of all scanners and parsers are
+distributed in the tar-ball. Therefore, bison and flex are only needed,
+if the scanner&apos;s or parser&apos;s specifications are modified.</P>
+<P>Matlab version 6 or higher is of course needed to run the resulting code.
+Rumors are that ADiMat runs with Matlab version 5, too. But this not
+officially supported.</P>
+
+
+<H2><A NAME="ss2.3">2.3</A> <A HREF="adimat.html#toc2.3">Compilation and installation on Unices</A>
+</H2>
+
+
+<P>In order to compile and install ADiMat on your system, type the following in
+the base directory of the ADiMat distribution:</P>
+<P>
+<BLOCKQUOTE><CODE>
+<PRE>
+% ./configure --prefix=/usr/local/
+% make
+% make install
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+<P>Now all files are where they got to be, but Matlab does not know about ADiMat
+yet. This can be accomblished in many ways. Some are shown here exemplarily:
+<UL>
+<LI> Use the startup_ADiMat.m file: In the directory
+${prefix}/share/adimat/opt_derivclass the file startup_ADiMat.m tries
+to find the ADiMat executable and inserts the path into Matlab. Copy the file
+to your $HOME/.matlab directory and call it by adding the line
+startup_ADiMat to your personal startup.m file.</LI>
+<LI> Add an addpath-line to your personal startup.m: Add the line
+'addpath('$prefix/share/adimat/opt_derivclass');' to your startup.m
+file.</LI>
+<LI> If have the permission to modify the Matlab installation add the
+addpath directive to the installation. (We do not describe it in more detail
+assuming that an adiminstrator knows were to find the appropiate file and
+stopping the unexperienced user from corrupting his Matlab installation.)</LI>
+</UL>
+</P>
+
+<P>If you habe choosen a different installation directory then /usr/local, do
+not forget to set the ADIMAT_HOME environment variable appropiately. (Setting
+this variable in the shell startup files is a good idea in any case.)</P>
+
+
+<P>Since ADiMat uses 
+<A HREF="adimat-13.html#autoconf">autoconf</A> there should be no
+trouble compiling it. If you run into problems please report them to the
+author 
+<A HREF="mailto:vehreschild@sc.rwth-aachen.de">Andre Vehreschild</A></P>
+
+<H2><A NAME="ss2.4">2.4</A> <A HREF="adimat.html#toc2.4">Installation on Windows</A>
+</H2>
+
+
+<P>Installation on Windows is done by a setup.exe. Administrator-privileges are
+needed to sucessfully install ADiMat, because a new toolbox is added to the
+directory of Matlab and some information is stored in the registry. The
+installation is done by a setup-program, because several components have to be
+installed and each component has to know where its parts are located.</P>
+<P>Execute the setup.exe as user Adiministrator or as any other user, who has the
+privileges to write into the Matlab directory and modify the Windows registry.
+The setup tries to find the most recent version of Matlab on your system. Then
+it displays a dialog to choose the installation location. It is recommended
+that ADiMat is installed in the Matlab toolbox directory, but another location
+is possible, too. Next the groupname has to be selected. This is the name
+ADiMat is refered to in the Windows start-menu. In this group a link to this
+documentation is installed and a link to the uninstall application.</P>
+<P>The next setup dialog page cares about the <B>integration of ADiMat into
+MATLAB</B>. Because ADiMat is a MATLAB toolbox, this has to be introduced to
+MATLAB. That is, the directory where the MATLAB files of ADiMat are stored has
+to be added to MATLAB&apos;s search path. The dialog page offers at least two
+possibilities to do this for you:
+<UL>
+<LI> Do not integrate. : The setup will not add the path of the ADiMat
+installation to the search path of Matlab. You have to do it yourself to get
+ADiMat running. This option is the fall-back if any of the other options
+failed.</LI>
+<LI> MATLAB X.X in (C:\someplace\somewhere): Setup integrates ADiMat in this
+Matlab version in the named install location by adding the file adimat.phl to
+C:\someplace\somewhere\toolbox\local\path and modifying the file pathdef.m in
+C:\someplace\somewhere\toolbox\local.</LI>
+<LI> Modify startup.m in personal work directory. : This options prompts
+for a directory you keep your Matlab work files and esp. your startup.m file
+in and adds an 'addpath(...)' command to this file. The file is created, if
+it does not exist jet.</LI>
+</UL>
+</P>
+
+<P>The next page gives a summary of all options selected. Clicking 'Install'
+starts the installation and the files are copied. Errors, hopefully none, are
+prompted in a seperate message box.</P>
+<P>ADiMat installs an uninstall feature. This programs enable a complete
+removal of ADiMat, so do not delete any of its components manually.</P>
+
+<H3>Windows installation without Adiminstrator privileges</H3>
+
+
+<P>Installation of ADiMat on Windows systems without Adminstrator privileges is
+possible, too.</P>
+<P>
+<OL>
+<LI>Select an installation directory where you have write permissions.</LI>
+<LI>Select a groupname as above.</LI>
+<LI>Select 'Modify startup.m in personal work directory'.</LI>
+</OL>
+</P>
+<P>The setup will complain about being unable to modify the registry, select
+'Ignore' to proceed. All files are installed now. Usually ADiMat stores its
+installation path in the registry. Due to not being able to do this, the user
+has to tell ADiMat, where it is installed by setting the environment variable
+ADIMAT_HOME to the path of adimat root directory (e.g:
+&apos;C:\User Data\Some User\adimat\&apos;). Environment variables can be
+set using the <B>set</B> command in a .bat file, or in the enviroment
+preferences of the current user. Because of the many variants of
+Windows-systems we can not describe here it for every system.</P>
+
+
+<HR>
+<A HREF="adimat-3.html">Next</A>
+<A HREF="adimat-1.html">Previous</A>
+<A HREF="adimat.html#toc2">Contents</A>
+</BODY>
+</HTML>

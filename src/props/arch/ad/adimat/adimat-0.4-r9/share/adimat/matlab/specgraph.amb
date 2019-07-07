@@ -1,0 +1,141 @@
+% Specialized graphs.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.1  2004/01/28 17:47:06  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Specialized 2-D graphs.
+BMFUNC $$=area($#) IGNORE
+BMFUNC [$$#]=bar($#) IGNORE
+BMFUNC $$=barh($#) IGNORE
+BCOMMAND comet($1, $#)
+BMFUNC $$=compass($1, $#) IGNORE
+BMFUNC $$=errorbar($1, $2, $3, $#) IGNORE
+BCOMMAND ezplot($1, $#) 
+BCOMMAND ezpolar($#)
+BMFUNC $$=feather($1, $#) IGNORE
+BMFUNC $$=fill($1, $2, $#) IGNORE
+BMFUNC [$$#]=fplot($1, $2, $#) IGNORE
+% no hist.m
+BMFUNC [$$#]=pareto($1, $#) IGNORE
+BMFUNC $$=pie($1, $#) IGNORE
+BMFUNC [$$#]=plotmatrix($#) IGNORE
+BMFUNC [$$#]=rose($1, $#) IGNORE
+BMFUNC $$=scatter($#) IGNORE
+BMFUNC $$=stem($#) IGNORE
+BMFUNC [$$#]=stairs($#) IGNORE
+
+% Contour and 2-1/2 D graphs.
+BMFUNC [$$#]=contour($#) IGNORE
+BMFUNC [$$#]=contourf($#) IGNORE
+BMFUNC [$$#]=contour3($#) IGNORE
+BMFUNC $$=clabel($1, $#) IGNORE
+BCOMMAND ezcontour($1, $#) 
+BCOMMAND ezcontourf($1, $#)
+BMFUNC $$=pcolor($1, $#) IGNORE
+BMFUNC [$$#]=voronoi($1, $2, $#) IGNORE
+
+% Specialized 3-D graphs.
+BMFUNC $$=bar3($#) IGNORE
+BMFUNC $$=bar3h($#) IGNORE
+BCOMMAND comet3($1, $#)
+BCOMMAND ezgraph3($1, $#) 
+BCOMMAND ezmesh($1, $#)
+BCOMMAND ezmeshc($1, $#)
+BMFUNC $$=ezplot3($#) IGNORE
+BCOMMAND ezsurf($1, $#)
+BCOMMAND ezsurfc($1, $#)
+BMFUNC $$=meshc($1, $2, $#) IGNORE
+BMFUNC $$=meshz($1, $2, $#) IGNORE
+BMFUNC $$=pie3($1, $#) IGNORE
+BMFUNC $$=ribbon($#) IGNORE
+BMFUNC $$=scatter3($#) IGNORE
+BMFUNC $$=stem3($#) IGNORE
+BMFUNC $$=surfc($#) IGNORE
+BMFUNC $$=trisurf($1, $2, $3, $4, $#) IGNORE
+BMFUNC $$=trimesh($1, $2, $3, $4, $#) IGNORE
+BMFUNC $$=waterfall($1, $2, $3, $4) IGNORE
+
+% Volume and vector visualization.
+% helpfile: vissuite.m
+BMFUNC [$$#]=isosurface($#) IGNORE
+BMFUNC $$=isonormals($#) IGNORE
+BMFUNC [$$#]=isocaps($#) IGNORE
+BMFUNC $$=isocolors($#) IGNORE
+BMFUNC $$=contourslice($#) IGNORE
+BMFUNC $$=slice($#) IGNORE
+BMFUNC $$=streamline($#) IGNORE
+BMFUNC $$=stream3($#) IGNORE
+BMFUNC $$=stream2($#) IGNORE
+BMFUNC $$=quiver3($#) IGNORE
+BMFUNC $$=quiver($#) IGNORE
+BMFUNC $$=divergence($#) IGNORE
+BMFUNC [$$#]=curl($#) IGNORE
+BMFUNC $$=coneplot($#) IGNORE
+BMFUNC $$=streamtube($#) IGNORE
+BMFUNC $$=streamribbon($#) IGNORE
+BMFUNC [$$#]=streamslice($#) IGNORE
+BMFUNC $$=streamparticles($#) IGNORE
+BMFUNC $$=interpstreamspeed($#) IGNORE
+BMFUNC [$$#]=subvolume($#) IGNORE
+BMFUNC [$$#]=reducevolume($#) IGNORE
+BMFUNC [$$#]=shrinkfaces($#) IGNORE
+
+% Images display and file I/O.
+BMFUNC $$=image($1) IGNORE
+BMFUNC $$=imagesc($#) IGNORE
+% no colormap.m
+% no gray.m: is in graphics
+BMFUNC $$=contrast($1, $2) IGNORE
+% no brighten.m : is in graphics
+% no colorbar.m : in in graphics
+% no imread.m: is in graphics
+% no imwrite.m : is in grahics
+% no imfinfo: is in graphics
+BMFUNC $$=im2java($#) IGNORE
+
+% Movies and animation.
+BMFUNC [$$#]=capture($1) IGNORE
+BMFUNC $$=moviein($#) IGNORE
+BMFUNC [$$#]=getframe($#) IGNORE
+BMFUNC $$=movie($#) IGNORE
+BCOMMAND rotate($1, $#)
+BMFUNC [$$#]=frame2im($1) IGNORE
+BMFUNC $$=im2frame($1, $2) IGNORE
+
+% Color related functions.
+BCOMMAND spinmap($1, $#)
+BCOMMAND rgbplot($1)
+BMFUNC [$$#]=colstyle($1) IGNORE
+BMFUNC [$$#]=ind2rgb($1, $2) IGNORE
+
+% Solid modeling.
+BMFUNC [$$1, $$2, $$3]=cylinder($1, $#) IGNORE
+BMFUNC [$$1, $$2, $$3]=sphere($1) IGNORE
+BMFUNC [$$1, $$2, $$3]=ellipsoid($1, $2, $3, $4, $5, $6, $#) IGNORE
+BMFUNC $$=patch($1, $#) IGNORE
+BMFUNC [$$#]=surf2patch($#) IGNORE
+
+% Utilities.
+BMFUNC [$$1, $$2, $$3, $$#]=makebars($#) IGNORE
+BMFUNC $$=contourc($1, $2, $#) IGNORE
+BMFUNC [$$1, $$#]=contours($#) IGNORE
+
+% Remaining ...
+BMFUNC [$$1, $$#]=reducepatch($#) IGNORE
+BMFUNC $$=smooth3($1, $#) IGNORE
+BMFUNC $$=tetramesh($1, $2, $#) IGNORE
+BMFUNC $$=triplot($1, $2, $3, $#) IGNORE
+BMFUNC $$=volumebounds($1, $2, $3, $4, $#) IGNORE
+

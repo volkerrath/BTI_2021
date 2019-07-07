@@ -1,0 +1,432 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.20">
+ <TITLE>The ADiMat Handbook: Builtins</TITLE>
+ <LINK HREF="adimat-11.html" REL=next>
+ <LINK HREF="adimat-9.html" REL=previous>
+ <LINK HREF="adimat.html#toc10" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="adimat-11.html">Next</A>
+<A HREF="adimat-9.html">Previous</A>
+<A HREF="adimat.html#toc10">Contents</A>
+<HR>
+<H2><A NAME="builtins"></A> <A NAME="s10">10.</A> <A HREF="adimat.html#toc10">Builtins</A></H2>
+
+
+<P>Builtin-declarations are 'equations' that define a function of MatLab and its
+differentiated function or code. MatLab has a set of builtin- or
+intrinsic-functions, that are not defined in a .m-file (allthough one may
+exists!), but are known to the MatLab-executable. The code ot this functions
+can not be differentiated by ADiMat, because the .m-file of these
+functions only contains a description (some comments) and no code. Furthermore
+the differentiating such a function is done by replacing the function
+call using a different function (e.g. The derivative of sin(x) is
+cos(x)). Another way had to be choosen to specify the derivative of these
+functions: builtin-declarations.</P>
+<P>A builtin-declaration specifies the signature of a function, (e.g. the
+signature of the sinus is: $$=sin($1)) and the
+corresponding actions of ADiMat when differentiating this function. Possible
+actions are 'DIFFTO' (may also be written 'DIFFSTO'), 'IGNORE', 'NODIFF',
+'ERROR' and 'SPEC'. With this actions it is possible to specifiy the
+differentiated code of a function, ignore the function when differentiating
+it, do not differentiate this function, print an error-message and do
+something not yet known to ADiMat in the current version. The last modifier
+is reserved for extensions in future versions of ADiMat. The following
+sections briefly discuss the structure of the file where the
+builtin-declarations are specified in and the builtin-declarations themselves.</P>
+
+<H2><A NAME="amb-files"></A> <A NAME="ss10.1">10.1</A> <A HREF="adimat.html#toc10.1">.amb-files</A>
+</H2>
+
+
+<P>The postfix '.amb' is the short form of <B>A</B>Di<B>M</B>at<B>B</B>uiltins. A
+.amb-file may contain zero (does not really make sense) or more
+builtin-declarations. It also may contain empty lines and comments,
+which will be ignored. A comment starts with a '%' and runs to the end
+of the line. !!! A comment starting with '%ADiMat' is not ignored,
+it is treated as a regular builtin-declaration and has to conform to the
+specification of a builtin-declaration. Whenever an error is encountred while
+parsing a .amb-file a message displayed and the line is ignored. The parsing
+of the file continues at the next line.</P>
+<P>ADiMat&apos;s default is to look for the .amb-file 'ADiMat.amb' in the following
+path (in this order):
+<UL>
+<LI>${ADIMAT_HOME}/share/adimat (on Unix)</LI>
+<LI>${ADIMAT_HOME}/builtins (on Windows)</LI>
+<LI>~/.adimat (the directory .adimat in the users home directory)</LI>
+<LI>. (the current directory)</LI>
+</UL>
+</P>
+<P>The lookup-process is terminate as soon as the file is found. The user may
+specify his own .amb-path-list by using the command line option 
+<A HREF="adimat-6.html#builtinspath">--builtinpath=&lt;BUILTINFILELIST&gt;</A> or the
+environment-variable 
+<A HREF="adimat-7.html#BUILTINSPATH">ADIMAT_BUILTINSPATH</A>. Use
+of environment-variables within the .amb-path-list is permitted. ADiMat will
+try to fetch the values from the machine-environment and replace the
+variable-names in the path-list with their values (if not allready done by the
+shell). If a directory is not found or is unreadable, a message is printed
+and the according directory is skipped.</P>
+<P>One special .amb-file exists. It defines the symbols used within the
+MATLAB-class of ADiMat. The file is named 'ADiMat_internal.amb'. Its content
+is essential for a correct differentiation of most MATLAB-files. In the
+current implementation the file is included by 'ADiMat.amb'.</P>
+
+<H2><A NAME="builtindecl"></A> <A NAME="ss10.2">10.2</A> <A HREF="adimat.html#toc10.2">Builtin-declarations </A>
+</H2>
+
+
+<P>This section describes the syntax and keywords of builtin-declarations. First
+some explanations of the language used to define the syntax: Keywords and
+literals are written in single quotes and have to appear in the declaration
+without the quotes. Variable- and function-names are written: &lt;name&gt; and
+have to conform with the MatLab-identifier rules. They may begin with a
+character (upper- and lower-case) or an underscore followed by one or more
+(upper- or lower-case) characters, underscores and numbers in any order.
+Unquoted lowercase words represent rules that will be expanded to their contents.
+NUM represents a non-fractional number starting with one.</P>
+
+<H2><A NAME="funcsig"></A> <A NAME="ss10.3">10.3</A> <A HREF="adimat.html#toc10.3">funcsig </A>
+ </H2>
+
+<P>
+<DL>
+<DT><B>Description:</B><DD><P>Describe the signature of a function.</P>
+
+<DT><B>Syntax:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<CODE>&lt;funcname&gt; <BR>
+&lt;funcname&gt;'('')' <BR>
+&lt;funcname&gt;'('parameters')'<BR><BR>
+'$$''='&lt;funcname&gt; <BR>
+'$$''='&lt;funcname&gt;'('')' <BR>
+'$$''='&lt;funcname&gt;'('parameters')'<BR><BR>
+'['returns']='&lt;funcname&gt; <BR>
+'['returns']='&lt;funcname&gt;'('')' <BR>
+'['returns']='&lt;funcname&gt;'('parameters')' <BR></CODE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Semantic:</B><DD>
+<P>A function signature specifies the name of the function and the number of its
+return arguments and parameters. Optionally a type may be specified with each
+return argument and parameter.</P>
+<P>A function name may be followed by an optional parameterlist. This list may be
+non-existent, that is no parentheses are specified at all, an empty list may
+be specified, that is empty parentheses are following the function name, or
+parameters are specified between the parentheses. A parameter is specified
+using a '$'-sign followed by a non-fractional number. The counting
+starts with one and has to be specified. A function using one parameter has to
+specify the parameter '$1'. If more than one parameter is used, the
+parameters have to be numbered consecutively. The symbol 'NUM' in the syntax
+diagram below denotes the highest number of the parameters. The symbol
+'$#' denotes a variable number of arguments. Any number of
+arguments may be assigned to this symbol including zero. The last two lines of
+the syntax diagram below denote the way of specifying a number of arguments
+that have to be specified for this particular function.</P>
+<P>
+<BLOCKQUOTE><CODE>
+<CODE>$1 <BR>
+$1, ..., $NUM <BR><BR>
+$# <BR>
+$1, $# <BR>
+$1, ..., $NUM, $# <BR></CODE>
+</CODE></BLOCKQUOTE>
+</P>
+<P>ADiMat compares the signature specified by these parameter list with the list
+of arguments the function is called in the program to differentiate with. If
+the numbers do not match, a warning is issued.</P>
+<P>The return arguments are specified similiar. If only one single return
+argument is to be specified, this may be done using the
+'$$'-expression which is an abbreviation for
+'[$$1]'. If more than one return argument is to be
+specified, they have to be written in square brackets. The
+'$$#'-expression has to be specified in square bracktes,
+even if it is the only return argument. The '$$#'-expression
+returns more than one return arguments like the '$#'-expression in
+the parameter list.</P>
+
+<DT><B>Examples:</B><DD>
+<P>These are valid function-signatures:
+<BLOCKQUOTE><CODE>
+ <CODE>$$= g($1, $2:real)<BR>
+f1<BR>
+[$$1:string, $$2]=
+example($1:matrix) <BR>
+[$$#]=varargout_function($1)<BR>
+printf($1:string, $#)<BR></CODE>
+</CODE></BLOCKQUOTE>
+</P>
+</DL>
+</P>
+
+<H2><A NAME="difftostring"></A> <A NAME="ss10.4">10.4</A> <A HREF="adimat.html#toc10.4">difftostring </A>
+ </H2>
+
+<P>
+<DL>
+<DT><B>Description:</B><DD>
+<P>Define what code to insert when differentiating the corresponding function.</P>
+
+<DT><B>Syntax:</B><DD>
+<P>Has to be MatLab-code. '$'NUM and '$@'NUM are replaced with the
+according data, where '$'NUM represents the undifferentiated data
+object and '$@'NUM the differentiated one. The expressions
+'$#' and '$@#' are replaced by the variable length list
+of parameters, that where assigned to the '$#'-expression in the
+identifiers identification phase of ADiMat. '$#' denotes the
+unmodified list on parameters and in the expression that is substituted for
+the '$@#'-expression, every active variable is precedded by its
+derivative object.</P>
+
+<DT><B>Semantic:</B><DD>
+<P>The expression given by difftostring is parsed using the Matlab-syntax
+rules, with the exception that all expressions starting with a '$'-sign
+are replaced with the according data. That is, a '$i' will be replaced
+with the i-th argument of the function, this difftostring presents the
+derivate for. An expression '$@i' will be replaced using the derivative
+code of the i-th argument of the undifferentiated function.</P>
+<P>!!! difftostring is not really a string. No doublequotes are allowed around
+it. A doublequote within it will start a string, that has to end with another
+doublequote in the same difftostring.</P>
+
+<DT><B>Examples:</B><DD>
+<P>Look at 
+<A HREF="#BMFUNC">BMFUNC examples</A> for some applications.</P>
+</DL>
+</P>
+
+<H2><A NAME="types"></A> <A NAME="ss10.5">10.5</A> <A HREF="adimat.html#toc10.5">types </A>
+</H2>
+
+<P>
+<DL>
+<DT><B>Description:</B><DD>
+<P>The names of all available types and their meaning.</P>
+
+<DT><B>Syntax:</B><DD><P>
+<BLOCKQUOTE><CODE>
+ <CODE>'real'<BR>
+'complex'<BR>
+'scalar'<BR>
+'matrix'<BR>
+'generic'<BR>
+'string'<BR>
+'boolean'<BR>
+'function'</CODE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Semantic:</B><DD>
+<P>These identifiers represent simple types. 'real' and 'complex' type a
+parameter as a scaler real or complex number. The type 'scalar' is an alias
+for 'complex', because every real number also is a complex number. 'scalar'
+was introduced to let the user express his intention to specify one single
+number more precisely.</P>
+<P>'matrix' types a real or complex matrix. There is no distinction between these
+two kinds, not yet.</P>
+<P>'generic' types everything that is not explicitly typed. A generic parameter
+accepts every kind of data. 'real', 'complex', 'scalar', 'matrix', 'boolean',
+'function' and 'string' are all accepted by a generic-typed parameter.</P>
+<P>'string' is a number of characters in single-quotes.</P>
+<P>A 'boolean' only knows the two boolean-values true and false.</P>
+<P>A 'function'-typed parameter accepts a functionreference (the @-operator applied
+on a functionname).</P>
+
+<DT><B>Examples:</B><DD>
+<P>Look at 
+<A HREF="#funcsig">funcsig examples</A> for some applications.</P>
+</DL>
+</P>
+
+<H2><A NAME="ss10.6">10.6</A> <A HREF="adimat.html#toc10.6">BVAR</A>
+</H2>
+
+<P>
+<DL>
+
+<DT><B>Description:</B><DD>
+<P>Declare a variable.</P>
+
+<DT><B>Syntax:</B><DD><P>
+<BLOCKQUOTE><CODE>
+ <CODE>'BVAR' &lt;varname&gt;<BR>
+'BVAR' &lt;varname&gt;':'type</CODE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Semantic:</B><DD>
+<P>Declare a variable. If the type is omitted 'generic' is used. This directive
+is used seldom. It is used however to spefify some constants like 'pi' or
+'NaN' to be introduce them to ADiMat in a quick way.</P>
+
+<DT><B>Examples:</B><DD>
+<P>
+<BLOCKQUOTE><CODE>
+ 
+<PRE>
+BVAR test
+BVAR name:string
+BVAR pi:real
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+</DL>
+</P>
+
+<H2><A NAME="BMFUNC"></A> <A NAME="ss10.7">10.7</A> <A HREF="adimat.html#toc10.7">BMFUNC </A>
+</H2>
+
+<P>
+<DL>
+<DT><B>Description:</B><DD>
+<P>Declare a builtin MatLab function and its behaviour on differentiation.</P>
+
+<DT><B>Syntax:</B><DD><P>
+<BLOCKQUOTE><CODE>
+ <CODE>'BMFUNC' funcsig 'DIFFTO' difftostring<BR>
+'BMFUNC' funcsig 'DIFFSTO' difftostring<BR>
+'BMFUNC' funcsig 'IGNORE'<BR>
+'BMFUNC' funcsig 'NODIFF'<BR>
+'BMFUNC' funcsig 'ERROR' errormsg<BR>
+'BMFUNC' funcsig 'SPEC' eol</CODE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Semantic:</B><DD>
+<P>The BMFUNC-directive declares a function specified by <CODE>funcsig</CODE> te
+be built into Matlab. (look at 
+<A HREF="#funcsig">funcsig</A>
+for more information about specifying function-signatures).</P>
+<P>A 'BMFUNC'-directive has two parts:
+<OL>
+<LI> the definition-part ('BMFUNC' funcsig)</LI>
+<LI> the action-part ('DIFFTO' difftostring, IGNORE, ...)</LI>
+</OL>
+</P>
+<P>The first is used to define a function-signature and the second tells ADiMat
+what to do if the function defined by funcsig is to be differentiated. The
+possible actions are:
+<DL>
+<DT><B>'DIFFSTO'/'DIFFTO' difftostring </B><DD><P>The Matlab-expression
+specified by the difftostring is inserted into the code where the derivative
+of the function specified by funsig is needed. Look at 
+<A HREF="#difftostring">'difftostring'</A> for the spefication of a difftostring.</P>
+
+<DT><B>'IGNORE'</B><DD><P>The function declared by funcsig is not differentiated. It will
+occur in the differentiated code the same way like in the undifferentiated
+code (e.g. 'BMFUNC $$=real($1) IGNORE' corresponds to
+'BMFUNC $$=real($1) DIFFTO real($1)').</P>
+
+<DT><B>'NODIFF'</B><DD><P>The function declared by funcsig is not differentiable. When
+trying to differentiated it, ADiMat will stop with an error. The function
+declared by funcsig may be safely used in code-fragment that are not
+differentiated.</P>
+
+<DT><B>'ERROR' errormsg</B><DD><P>Similar behaviour like 'NODIFF', but
+'errormsg' is printed instead. 'errormsg' is a doublequoted string that may
+contain some special tokens:
+<DL>
+<DT><B>$n</B><DD><P>the function-name,</P>
+<DT><B>$f</B><DD><P>the path/filename,</P>
+<DT><B>$l</B><DD><P>the linenumber where the function occured,</P>
+<DT><B>$c</B><DD><P>the character where the function occured.</P>
+</DL>
+
+These special-tokens are replaced at outputtime and may occur in any nummer and
+order in the errorstring. The errormessage is written using printf, which
+means that the control codes like '\n' and so on will act as usuall.</P>
+
+<DT><B>'SPEC' eol</B><DD><P>Is igrnored currently. The spec-action is for future
+enhancements of ADiMat. All builtin-declarations that use this action produce
+a warning and are treated as if 'IGNORE' is specified instead. The line
+is read until its end and the contents is discarded.</P>
+</DL>
+</P>
+
+<DT><B>Examples:</B><DD><P>
+<BLOCKQUOTE><CODE>
+<PRE>
+BMFUNC $$:real=sin($1:real) DIFFSTO cos($@1)
+BMFUNC $$:real=real($1:scalar) IGNORE
+BMFUNC $$=abs($1) NODIFF
+BMFUNC nonlinear($1) ERROR "Function: $n used in file $fline  $l: &lt;newline> Function: is nonlinear -> not differentiable."
+</PRE>
+</CODE></BLOCKQUOTE>
+</P>
+</DL>
+</P>
+
+<H2><A NAME="BCFUNC"></A> <A NAME="ss10.8">10.8</A> <A HREF="adimat.html#toc10.8">BCFUNC</A>
+</H2>
+
+<P>
+<DL>
+<DT><B>Description:</B><DD>
+<P>Declare a function that is implemented in C-code.</P>
+
+<DT><B>Syntax:</B><DD><P>
+<BLOCKQUOTE><CODE>
+ <CODE>'BCFUNC' funcsig 'DIFFTO' difftostring<BR>
+'BCFUNC' funcsig 'DIFFSTO' difftostring<BR>
+'BCFUNC' funcsig 'IGNORE'<BR>
+'BCFUNC' funcsig 'NODIFF'<BR>
+'BCFUNC' funcsig 'ERROR' errormsg<BR>
+'BCFUNC' funcsig 'SPEC' eol</CODE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Semantic:</B><DD>
+<P>Internally this directive is handle the same like BMFUNC. Except that a
+warning message is displayed at time, when this builtin-declaration is read.
+This directive exists for future-enhancment. There may be more support for
+C-code in future. With this version of ADiMat the user has to specify the
+differentiated expression for this function AND provide it. (ADiC is a tool to
+differentiate C-code. It is planned to automatically call ADiC whenever a
+differentiated C-function is needed).</P>
+<DT><B>Examples:</B><DD>
+<P>(see 
+<A HREF="#BMFUNC">'BMFUNC example'</A>)</P>
+</DL>
+</P>
+
+<H2><A NAME="BJFUNC"></A> <A NAME="ss10.9">10.9</A> <A HREF="adimat.html#toc10.9">BJFUNC</A>
+</H2>
+
+<P>
+<DL>
+<DT><B>Description:</B><DD>
+<P>Declare a function that is implemented in Java-code.</P>
+
+<DT><B>Syntax:</B><DD><P>
+<BLOCKQUOTE><CODE>
+ <CODE>'BJFUNC' funcsig 'DIFFTO' difftostring<BR>
+'BJFUNC' funcsig 'DIFFSTO' difftostring<BR>
+'BJFUNC' funcsig 'IGNORE'<BR>
+'BJFUNC' funcsig 'NODIFF'<BR>
+'BJFUNC' funcsig 'ERROR' string<BR>
+'BJFUNC' funcsig 'SPEC' eol</CODE>
+</CODE></BLOCKQUOTE>
+</P>
+
+<DT><B>Semantic:</B><DD>
+<P>Internally this directiv is handle the same as BMFUNC. Except that a warning
+message is displayed when the builtin-delcaration is read. This directive
+exists for future-enhancment. There may be more support for Java-code
+in future (if an ADiJava is existent then). Nowadays the user has to specify
+the differentiated expression for this function AND provide it.</P>
+
+<DT><B>Examples:</B><DD>
+<P>(see 
+<A HREF="#BMFUNC">'BMFUNC example'</A>)</P>
+</DL>
+</P>
+
+<HR>
+<A HREF="adimat-11.html">Next</A>
+<A HREF="adimat-9.html">Previous</A>
+<A HREF="adimat.html#toc10">Contents</A>
+</BODY>
+</HTML>

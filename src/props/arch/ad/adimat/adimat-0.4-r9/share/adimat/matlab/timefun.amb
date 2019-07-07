@@ -1,0 +1,40 @@
+% Time and dates.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.1  2004/01/28 17:47:06  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Current date and time.
+BMFUNC $$=now() IGNORE
+BMFUNC $$=date() IGNORE
+BMFUNC $$=clock() IGNORE
+
+% Basic functions.
+BMFUNC $$=datenum($1, $#) IGNORE
+BMFUNC $$=datestr($1, $2, $#) IGNORE
+BMFUNC [$$1, $$#]=datevec($1, $#) IGNORE
+
+% Date functions.
+BMFUNC $$=calendar($1, $#) IGNORE
+BMFUNC [$$1, $$#]=weekday($1) IGNORE
+BMFUNC $$=eomday($1, $2) IGNORE
+BCOMMAND datetick($#)
+
+% Timing functions.
+BMFUNC $$=cputime() IGNORE
+BMFUNC $$=tic() IGNORE
+BMFUNC $$=toc() IGNORE
+BMFUNC $$=etime($1, $2) IGNORE
+BCOMMAND pause($#)
+

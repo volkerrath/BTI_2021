@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.20">
+ <TITLE>The ADiMat Handbook: Questions and Answers</TITLE>
+ <LINK HREF="adimat-13.html" REL=next>
+ <LINK HREF="adimat-11.html" REL=previous>
+ <LINK HREF="adimat.html#toc12" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="adimat-13.html">Next</A>
+<A HREF="adimat-11.html">Previous</A>
+<A HREF="adimat.html#toc12">Contents</A>
+<HR>
+<H2><A NAME="s12">12.</A> <A HREF="adimat.html#toc12">Questions and Answers</A></H2>
+
+
+<P>
+<DL>
+<DT><B> What is the order of derivative objects and results or parameters in a
+function call?</B><DD><P>The order of derivate objects and results or parameters in a function is: The
+derivative object preceeds its corresponding active result or active
+parameter. For example: Let [y,w]=f(a,b,c) be a function having the
+parameters a,b, and c and the results y and w. Assume that the
+parameters a and c and the output y are active. The correct call
+of this function is: [g_y,y,w]=f(g_a,a,b,g_c,c).</P>
+
+<DT><B>Is the derivative expression put in front of the orginial expression?</B><DD><P>The derivative expression is put in front of the original expression usually.
+The only exception to this rule is the backslash operator, where the original
+expression is assigned to a temporary variable, the derivative expression is
+executed, which uses the temporary variable, and after that the temporary
+expression is assigned to its orinigal variable.</P>
+
+<DT><B>Which prefix do derivative objects get?</B><DD><P>Derivative objects are prefixed using 'g_' by default. This may be
+changed using the command line option 
+<A HREF="adimat-6.html#gradprefix">--gradprefix=''</A>.</P>
+
+<DT><B>Which prefix do differentiated functions get?</B><DD><P>A differentiated function gets the prefix 'g_' by default. This may be
+changed using the command line option 
+<A HREF="adimat-6.html#funcprefix">--funcprefix=''</A>.</P>
+</DL>
+</P>
+<HR>
+<A HREF="adimat-13.html">Next</A>
+<A HREF="adimat-11.html">Previous</A>
+<A HREF="adimat.html#toc12">Contents</A>
+</BODY>
+</HTML>

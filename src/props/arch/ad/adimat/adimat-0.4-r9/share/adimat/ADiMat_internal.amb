@@ -1,0 +1,68 @@
+% All functions that are used within ADiMat, or may occur in its output.
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+% $Log$
+% Revision 1.5  2004/08/02 14:04:19  af116ve
+% Added definition for g_prod.
+%
+% Revision 1.4  2004/01/05 15:39:27  af116ve
+% Added copyright notice.
+%
+% Revision 1.3  2003/10/31 08:51:29  af116ve
+% Signature of ls_hmquot changed. The method now needs the old gradient, too.
+%
+% Revision 1.2  2003/09/30 15:27:35  af116ve
+% Added builtin definitions for new ad-class.
+%
+% Revision 1.1  2003/06/18 13:21:51  af116ve
+% Initial version.
+%
+%
+
+% Support routines for gradient construction
+
+BMFUNC $$=g_zeros($#) DIFFSTO h_zeros($#)
+BMFUNC $$=h_zeros($#) NODIFF
+BMFUNC $$=g_dummy DIFFSTO h_dummy
+BMFUNC $$=h_dummy NODIFF
+BMFUNC $$=getNDD() ERROR "Deprecated function detected. Where did you get this code from?"
+BMFUNC $$=adderiv($1, $#) DIFFSTO adderiv($1, $$, 'object') 
+% Old derivative class. Obsolete now!
+BMFUNC $$=adgradobj($#) ERROR "Old derivative class constructor found. Not supported anymore. Use the new adderiv-class instead!"
+BMFUNC $$=createHessians($#) NODIFF
+
+% The loopsaving routines
+
+BMFUNC $$=ls_prod($1, $2, $3, $4) DIFFSTO ls_hprod($@1, $1, $2, $@3, $3, $4) 
+BMFUNC $$=ls_mprod($1, $2, $3, $4) DIFFSTO ls_hmprod($@1, $1, $2, $@3, $3, $4) 
+BMFUNC $$=ls_quot($1, $2, $3, $4) DIFFSTO ls_hquot($@1, $1, $2, $@3, $3, $4, $$) 
+BMFUNC $$=ls_mquot($1, $2, $3, $4) DIFFSTO ls_hmquot($@1, $1, $2, $@3, $3, $4, $$)
+BMFUNC $$=ls_msolv($1, $2, $3, $4) DIFFSTO ls_hmsolv($@1, $1, $2, $@3, $3, $$, $4)
+BMFUNC $$=ls_exp($1, $2, $3, $4, $5) DIFFSTO ls_hexp($@1, $1, $2, $@3, $3, $4, $$, $5)
+BMFUNC $$=ls_mexp($1, $2, $3, $4, $5) DIFFSTO ls_hmexp($@1, $1, $2, $@3, $3, $4, $$, $5)
+
+% The loopsaving hessian functions
+
+BMFUNC $$=ls_hprod($1, $2, $3, $4, $5, $6) NODIFF
+BMFUNC $$=ls_hmprod($1, $2, $3, $4, $5, $6) NODIFF
+BMFUNC $$=ls_hquot($1, $2, $3, $4, $5, $6, $7) NODIFF
+BMFUNC $$=ls_hmquot($1, $2, $3, $4, $5, $6, $7) NODIFF
+BMFUNC $$=ls_hexp($1, $2, $3, $4, $5, $6, $7) NODIFF
+BMFUNC $$=ls_hmexp($1, $2, $3, $4, $5, $6, $7) NODIFF
+BMFUNC $$=ls_hmsolv($1, $2, $3, $4, $5, $6, $7) NODIFF
+% Mapping functions
+
+BMFUNC [$$#]= call($1, $2, $#) DIFFSTO call($1, $@2, $#) 
+BMFUNC [$$#]= call1n($1, $2, $#) DIFFSTO call1n($1, $2, $@#)
+BMFUNC [$$#]= calln($1, $#) DIFFSTO calln($1, $@#)
+
+% Functions for specific derivatives.
+
+BMFUNC [$$1,$$2]= g_eig($#) NODIFF
+BMFUNC $$=g_abs($#) NODIFF
+BMFUNC $$=g_norm($1, $2, $3, $#) NODIFF
+BMFUNC $$=g_prod($1, $2, $3) NODIFF % Derivative of product-function

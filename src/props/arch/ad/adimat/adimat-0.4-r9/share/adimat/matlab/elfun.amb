@@ -1,0 +1,89 @@
+% Define all symbols in the matlab/elfun package.
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.6  2005/02/03 08:16:07  af116ve
+% Replaced x*x by x^2.
+%
+% Revision 1.5  2004/01/05 15:40:29  af116ve
+% Added copyright notice.
+%
+% Revision 1.4  2003/08/11 07:45:40  af116ve
+% Added support for real() and imag() call which is applied to the derivatives simply.
+%
+% Revision 1.3  2003/04/24 14:46:18  af116ve
+% All identifiers of Matlab 6.5 R13 are now recognized.
+%
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Trigonometric functions:
+BMFUNC $$= sin($1)   DIFFTO (($@1).*cos($1))
+BMFUNC $$= cos($1)   DIFFTO (($@1).*(-sin($1)))
+BMFUNC $$= tan($1)   DIFFTO (($@1).*sec($1).^2)
+BMFUNC $$= cot($1)   DIFFTO (-($@1).*csc($1).^2)
+BMFUNC $$= sec($1)   DIFFTO (($@1).*tan($1).*sec($1))
+BMFUNC $$= csc($1)   DIFFTO (-($@1).*cot($1).*csc($1))
+BMFUNC $$= asin($1)  DIFFTO (($@1)./sqrt(1-($1).^2))
+BMFUNC $$= acos($1)  DIFFTO (-($@1)./sqrt(1-($1).^2))
+BMFUNC $$= atan($1)  DIFFTO (($@1)./(1+($1).^2))
+BMFUNC $$= atan2($1, $2)  DIFFTO ((sign($1).*(sign($2)<0))*pi+ ((($@1).*($2)-($1).*($@2))./(($2).^2+($1).^2)))
+BMFUNC $$= acot($1)  DIFFTO (-($@1)./(1+($1).^2))
+BMFUNC $$= asec($1)  DIFFTO (($@1)./(($1).*sqrt(($1).^2 -1)))
+BMFUNC $$= acsc($1)  DIFFTO (-($@1)./(($1).*sqrt(($1).^2 -1)))
+BMFUNC $$= sinh($1)  DIFFTO (($@1).*cosh($1))
+BMFUNC $$= cosh($1)  DIFFTO (($@1).*sinh($1))
+BMFUNC $$= tanh($1)  DIFFTO (($@1)./cosh($1).^2)
+BMFUNC $$= coth($1)  DIFFTO (-($@1)./sinh($1).^2)
+BMFUNC $$= sech($1)  DIFFTO (-($@1).*tanh($1).*sech($1)) % !!!
+BMFUNC $$= csch($1)  DIFFTO (-($@1).*coth($1).*csch($1)) % !!!
+BMFUNC $$= asinh($1) DIFFTO (($@1)./sqrt(1+ ($1).^2))
+BMFUNC $$= acosh($1) DIFFTO (($@1)./sqrt(($1).^2)- 1)
+BMFUNC $$= atanh($1) DIFFTO (($@1)./(1- ($1).^2))
+BMFUNC $$= acoth($1) DIFFTO (-($@1)./(($1).^2-1))
+BMFUNC $$= asech($1) DIFFTO (($@1).*sinh($1))
+BMFUNC $$= acsch($1) DIFFTO (($@1).*cosh($1))
+
+% Logarithmic and exponential functions
+BMFUNC $$= exp($1)   DIFFTO (($@1).*exp($1))
+BMFUNC $$= log($1)   DIFFTO (($@1)./($1))
+BMFUNC $$= log10($1) DIFFTO (($@1).*log10(exp(1.0)./($1))
+BMFUNC $$= log2($1)  DIFFTO (($@1)./(($1).* log(2.0))
+% replacing log(2.0) with 1.4427... is not accurate enough !
+BMFUNC $$= pow2($1)  DIFFTO (($@1).* log(2.0).* pow2($1))
+BMFUNC $$:real= realpow($1, $2) DIFFTO ((($@2).* log($1)+ $2*(($@1)./ ($1))).* realpow($1, $2))
+BMFUNC $$:real= reallog($1)   DIFFTO (($@1)./($1))
+BMFUNC $$:real= realsqrt($1) DIFFTO (($@1)./(2.*sqrt($1)))
+BMFUNC $$= sqrt($1)  DIFFTO (($@1)./(2.*sqrt($1)))
+BMFUNC $$= nextpow2($1) ERROR "nextpow2() is non-linear. A derivative function does not exist yet."
+
+% Complex functions.
+BMFUNC $$= abs($1:real)  DIFFTO g_abs($@1, $1)
+BMFUNC $$= angle($1)     NODIFF
+BMFUNC $$= complex($1, $2) NODIFF
+BMFUNC $$= conj($1)      NODIFF
+BMFUNC $$= imag($1)      DIFFTO call(@imag, $@1)
+BMFUNC $$= real($1)      DIFFTO call(@real, $@1)
+BMFUNC $$= unwrap($1)    NODIFF
+BMFUNC $$:bool= isreal($1) IGNORE
+BMFUNC $$= cplxpair($1)  NODIFF
+
+% Rounding and remainder
+BMFUNC $$= fix($1) NODIFF
+BMFUNC $$= floor($1) NODIFF
+BMFUNC $$= ceil($1) NODIFF
+BMFUNC $$= round($1) NODIFF
+% This derivative is correct only if the first arg of mod or rem is active.
+BMFUNC $$= mod($1, $2) DIFFTO ($@1)
+BMFUNC $$= rem($1, $2) DIFFTO ($@1)
+BMFUNC $$= sign($1) NODIFF
+
+
+% vim:nocindent:noautoindent:nowrap:

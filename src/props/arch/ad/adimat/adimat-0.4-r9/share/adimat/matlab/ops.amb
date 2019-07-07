@@ -1,0 +1,92 @@
+% Operators in the Matlab language. Currently these are not needed, but added
+% for completeness. A future version of ADiMat, which is able to understand
+% object oriented programming constructs may make more use of this information.
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.2  2004/01/05 15:43:49  af116ve
+% Added copyright notice.
+% Added description.
+%
+% Revision 1.1  2003/08/11 07:43:58  af116ve
+% Initial version.
+% Supplies all operators defined in MATLAB 6.5 R13.
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Operators and special characters.
+%
+% Arithmetic operators.
+BMFUNC $$=plus($1,$2) IGNORE     % $1+$2
+%BMFUNC $$=uplus($1) IGNORE      % +$1 Stored with the number itself
+BMFUNC $$=minus($1,$2) IGNORE    % $1-$2
+BMFUNC $$=uminus($1) IGNORE      % -$1
+BMFUNC $$=mtimes($1,$2) IGNORE   % $1*$2
+BMFUNC $$=times($1,$2) IGNORE    % $1.*$2
+BMFUNC $$=mpower($1,$2) IGNORE   % $1^$2
+BMFUNC $$=power($1,$2) IGNORE    % $1.^$2
+BMFUNC $$=mldivide($1,$2) IGNORE % $1\$2
+BMFUNC $$=mrdivide($1,$2) IGNORE % $1/$2
+BMFUNC $$=ldivide($1,$2) IGNORE  % $1.\$2
+BMFUNC $$=rdivide($1,$2) IGNORE  % $1./$2
+% Supposed derivative. !!!
+BMFUNC $$=kron($1, $2) DIFFTO (call(@kron,($@1),($2))+call(@kron,($1),($@2)))
+
+% Relational operators.
+BMFUNC $$=eq($1,$2) IGNORE % $1==$2
+BMFUNC $$=ne($1,$2) IGNORE % $1!=$2
+BMFUNC $$=lt($1,$2) IGNORE % $1<$2
+BMFUNC $$=gt($1,$2) IGNORE % $1>$2
+BMFUNC $$=le($1,$2) IGNORE % $1<=$2
+BMFUNC $$=ge($1,$2) IGNORE % $1>=$2
+
+% Logical operators.
+BMFUNC $$=and($1,$2) IGNORE % $1&$2
+BMFUNC $$=or($1,$2) IGNORE  % $1|$2
+BMFUNC $$=not($1) IGNORE    % ~$1
+BMFUNC $$=xor($1,$2) IGNORE
+BMFUNC $$=any($1) IGNORE
+BMFUNC $$=all($1) IGNORE
+
+% Special characters.
+BMFUNC $$=colon($#) IGNORE % :
+BMFUNC $$=paren($#) IGNORE % ( ) { } [ ]
+BMFUNC $$=punct($#) IGNORE % @ . .. ..., ; ! = '
+BMFUNC $$=transpose($#) IGNORE % .'
+BMFUNC $$=ctranspose($#) IGNORE % '
+BMFUNC $$=horzcat($#) IGNORE  % [,] 
+BMFUNC $$=vertcat($#) IGNORE  % [;]
+BMFUNC $$=subsasgn($#) IGNORE 
+BMFUNC $$=subsref($#) IGNORE
+BMFUNC $$=subsindex($#) IGNORE
+
+% Bitwise operators.
+BMFUNC $$=bitand($#) IGNORE
+BMFUNC $$=bitcmp($#) IGNORE
+BMFUNC $$=bitor($#) IGNORE
+BMFUNC $$=bitmax($#) IGNORE
+BMFUNC $$=bitxor($#) IGNORE
+BMFUNC $$=bitset($#) IGNORE
+BMFUNC $$=bitget($#) IGNORE
+BMFUNC $$=bitshift($#) IGNORE
+
+% Set operators.
+BMFUNC $$=union($#) NODIFF
+BMFUNC $$=unique($#) NODIFF
+BMFUNC $$=intersect($#) NODIFF
+BMFUNC $$=setdiff($#) NODIFF
+BMFUNC $$=setxor($#) NODIFF
+BMFUNC $$=ismember($#) NODIFF
+
+% Additional help files.
+% BMFUNC $$=arith($#) IGNORE
+% BMFUNC $$=relop($#) IGNORE
+% BMFUNC $$=slash($#) IGNORE
+

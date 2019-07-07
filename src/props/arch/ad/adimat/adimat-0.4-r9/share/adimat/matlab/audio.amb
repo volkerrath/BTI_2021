@@ -1,0 +1,47 @@
+% Audio support
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.1  2004/01/28 17:47:05  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% Audio input/output objects.
+BMFUNC $$=audioplayer($1, $2, $3, $4) NODIFF
+BMFUNC $$=audiorecorder($1, $2, $3, $4) NODIFF
+
+% Audio hardware drivers.
+BCOMMAND sound($1, $2, $3)
+BCOMMAND soundsc($#)
+BCOMMAND wavplay($#)
+BMFUNC $$=wavrecord($#) NODIFF
+
+% Audio file import and export.
+BMFUNC [$$1, $$2, $$3, $$4]=auread($1, $2) NODIFF
+BCOMMAND auwrite($1, $2, $3, $4, $5)
+BMFUNC [$$1, $$2, $$3, $$4]=wavread($1, $2) NODIFF
+BCOMMAND wavwrite($1, $2, $3, $4)
+
+% Utilities.
+BMFUNC $$=lin2mu($1) NODIFF
+BMFUNC $$=mu2lin($1) NODIFF
+
+% Remaining functions.
+BMFUNC $$=audiodevinfo($#) NODIFF
+BCOMMAND audioplayerreg($1)
+BCOMMAND audiorecorderreg($1) 
+BCOMMAND audiouniquename($1, $2, $3)
+BMFUNC $$=getaudiodata($1, $2) NODIFF
+BCOMMAND prefspanel 
+BMFUNC [$$1, $$2]=render_basicaudiotoolbar($1) NODIFF
+BMFUNC [$$1, $$2]=render_fullaudiotoolbar($1) NODIFF
+

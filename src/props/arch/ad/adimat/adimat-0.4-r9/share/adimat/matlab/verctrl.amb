@@ -1,0 +1,39 @@
+% Version control.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.1  2004/01/28 17:47:06  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% As with uitools, the version control tools are assumed to modify no
+% numeric values. They are ignored therefore and accept as many input and
+% outputs as needed.
+
+BMFUNC [$$#]=checkin($#) IGNORE
+BMFUNC [$$#]=checkinwin($#) IGNORE
+BMFUNC [$$#]=checkout($#) IGNORE
+BMFUNC [$$#]=checkoutwin($#) IGNORE
+BMFUNC [$$#]=cleanupcomment($#) IGNORE
+BMFUNC [$$#]=clearcase($#) IGNORE
+BMFUNC [$$#]=cmdispatch($#) IGNORE
+BMFUNC [$$#]=cmoptsdialog($#) IGNORE
+BMFUNC [$$#]=Contents($#) IGNORE
+BMFUNC [$$#]=customverctrl($#) IGNORE
+BMFUNC [$$#]=cvs($#) IGNORE
+BMFUNC [$$#]=issourcecontrolconfigured($#) IGNORE
+BMFUNC [$$#]=pvcs($#) IGNORE
+BMFUNC [$$#]=rcs($#) IGNORE
+BMFUNC [$$#]=reloadsys($#) IGNORE
+BMFUNC [$$#]=sourcesafe($#) IGNORE
+BMFUNC [$$#]=undocheckout($#) IGNORE
+

@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.20">
+ <TITLE>The ADiMat Handbook: Supported Matlab constructs</TITLE>
+ <LINK HREF="adimat-4.html" REL=next>
+ <LINK HREF="adimat-2.html" REL=previous>
+ <LINK HREF="adimat.html#toc3" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="adimat-4.html">Next</A>
+<A HREF="adimat-2.html">Previous</A>
+<A HREF="adimat.html#toc3">Contents</A>
+<HR>
+<H2><A NAME="suppOps"></A> <A NAME="s3">3.</A> <A HREF="adimat.html#toc3">Supported Matlab constructs</A></H2>
+
+<P>Matlab is a language for technical-mathematical computing. The language has a
+huge number of syntactic constructs. Some are known from other languages like
+C, Fortran and so on, some are Matlab-specific. Due to the huge number of
+syntactic constructs implemented in Matlab and their sometimes slightly
+different meaning in a specific context, not all language features
+are completely implemented in ADiMat. That is, the syntactic constructs are
+parsed, but their meaning is only partially or not at all known to ADiMat.
+A warning message is printed, if ADiMat encounters an unknown construct, but
+the differentiation process continues. If a warning about unknown
+language features is printed, the differentiated code has to be checked. Below
+is a list of the most commonly used Matlab features that are supported,
+partially supported or not supported at all.
+The lists below is subject to change as development of ADiMat continues. These
+lists are set up at March 12 2002.</P>
+
+<H2><A NAME="ss3.1">3.1</A> <A HREF="adimat.html#toc3.1">Supported Matlab features</A>
+</H2>
+
+<P>These syntactic constructs are supported completely. Their differentiation is
+tested. If you encounter any problems, tell the author immediately.</P>
+<P>
+<BLOCKQUOTE><CODE>
+<UL>
+<LI> all mathematical operators like (&plus;, -, &ast;, /, ...)</LI>
+<LI> real and complex values</LI>
+<LI> vectors, matrices, structures and cell arrays</LI>
+<LI> all flow control structures</LI>
+<LI> multiple functions per project</LI>
+<LI> local functions</LI>
+<LI> global variables</LI>
+<LI> indexing into matrices and cellarrays</LI>
+<LI> access of data members of a structure</LI>
+<LI> call of nargin/nargout-functions</LI>
+</UL>
+</CODE></BLOCKQUOTE>
+</P>
+
+
+<H2><A NAME="ss3.2">3.2</A> <A HREF="adimat.html#toc3.2">Partially supported Matlab features</A>
+</H2>
+
+<P>Some features of Matlab are parsed by ADiMat, but they may not be treated
+correctly. That is, the differentiated code may be incorrect. Whenever such
+a feature is found, ADiMat issues a warning and continues its task. The
+features, that are not completely implemented, are:
+<BLOCKQUOTE><CODE>
+<UL>
+<LI> java function calls (will be treated as structures)</LI>
+<LI> load- and save-command</LI>
+<LI> call of shell-commands (!-operator)</LI>
+<LI> calling a function omitting some (return-)parameters</LI>
+<LI> varargin- and varargout-constructs</LI>
+<LI> use of function handles (the @&lt;functionname&gt;-operator)</LI>
+</UL>
+</CODE></BLOCKQUOTE>
+</P>
+
+<H2><A NAME="ss3.3">3.3</A> <A HREF="adimat.html#toc3.3">Matlab features not supported at all</A>
+</H2>
+
+<P>Some very special and complicated features are not implemented at all. These
+constructs are:
+<BLOCKQUOTE><CODE>
+<UL>
+<LI> classes</LI>
+<LI> private functions (Functions that reside in a private directory of the
+current path.)</LI>
+</UL>
+</CODE></BLOCKQUOTE>
+</P>
+<P>If you encounter a language construct that is not treated correctly by
+ADiMat or not implemented at all, please tell the author about it.
+Your help will help us to enhance and maintain ADiMat, so do not hesitate to
+contact us.</P>
+
+<HR>
+<A HREF="adimat-4.html">Next</A>
+<A HREF="adimat-2.html">Previous</A>
+<A HREF="adimat.html#toc3">Contents</A>
+</BODY>
+</HTML>

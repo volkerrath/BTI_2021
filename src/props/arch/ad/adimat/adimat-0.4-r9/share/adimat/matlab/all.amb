@@ -1,0 +1,42 @@
+% Add files of the matlab standart toolbox to the builtin-system.
+%
+% Copyright 2004 Andre Vehreschild, Institute for Scientific Computing   
+%                RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+% $Log$
+% Revision 1.2  2004/04/20 12:26:03  af116ve
+% *** empty log message ***
+%
+% Revision 1.1  2004/01/28 17:47:05  af116ve
+% Initial version
+%
+%
+
+%MIN_VERSION= 0.4
+
+INCLUDE "general.amb"
+INCLUDE "audio.amb"
+INCLUDE "datafun.amb"
+INCLUDE "datatypes.amb"
+INCLUDE "demos.amb"
+INCLUDE "elfun.amb"
+INCLUDE "elmat.amb"
+INCLUDE "funfun.amb"
+INCLUDE "graph2d.amb"
+INCLUDE "graph3d.amb"
+INCLUDE "graphics.amb"
+INCLUDE "iofun.amb"
+INCLUDE "lang.amb"
+INCLUDE "matfun.amb"
+INCLUDE "ops.amb"
+INCLUDE "polyfun.amb"
+INCLUDE "sparfun.amb"
+INCLUDE "specfun.amb"
+INCLUDE "specgraph.amb"
+INCLUDE "strfun.amb"
+INCLUDE "timefun.amb"
+INCLUDE "uitools.amb"
+INCLUDE "verctrl.amb"
+

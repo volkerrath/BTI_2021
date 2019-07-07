@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.20">
+ <TITLE>The ADiMat Handbook: Environment variables</TITLE>
+ <LINK HREF="adimat-8.html" REL=next>
+ <LINK HREF="adimat-6.html" REL=previous>
+ <LINK HREF="adimat.html#toc7" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="adimat-8.html">Next</A>
+<A HREF="adimat-6.html">Previous</A>
+<A HREF="adimat.html#toc7">Contents</A>
+<HR>
+<H2><A NAME="environment"></A> <A NAME="s7">7.</A> <A HREF="adimat.html#toc7">Environment variables</A></H2>
+
+
+<P>ADiMat uses some enviromnent variables to customize its behaviour. The
+directory where the additional data is installed may be modified using the
+ADIMAT_HOME environment variable, for example. If the variables introduced
+here are not set on the machine, then default values will be used.</P>
+
+<P>Currently these environment variables are used to customize the behaviour of
+ADiMat:</P>
+<P>
+<DL>
+<DT><B>${ADIMAT_HOME}</B><DD><P>Specify the path where the
+ADiMat-directory-structure is stored. The default value is: '/usr/local'.
+ADiMat assumes that it&apos;s configuration- and additional-files are stored in
+'${ADIMAT_HOME}/share/adimat'. The binary may reside there
+two, but it is wise to put it into '${ADIMAT_HOME}/bin'.</P>
+
+<DT><B>${ADIMAT_BUILTINSPATH}</B><DD><P>
+<A NAME="BUILTINSPATH"></A>  ADiMat
+scans this path for the '.amb'-files, which are used to define the identifiers
+build into Matlab. The first file searched is the file 'ADiMat.amb', which
+includes several more files. This path may be modified by the '.amb'-files
+(see section 
+<A HREF="adimat-10.html#builtins">builtins</A> for further information). The
+default path is:
+'${ADIMAT_HOME}/share/adimat:~/.adimat:.'</P>
+
+<DT><B>$ARCH</B><DD><P>Names the machine architecture. This is a string of the
+pattern &lt;machine cpu type&gt;-&lt;vendor&gt;-&lt;os long name&gt;, where
+the &lt;machine cpu type&gt; is something like 'i686' or 'm68k',
+&lt;vendor&gt; is something like 'pc' or 'sun' and &lt;os long name&gt; is
+something like 'linux-gnu' or 'solaris'. The contents of the $ARCH
+variable is computed by the config.guess script provided by 
+<A HREF="adimat-13.html#autoconf">autoconf</A>. The default for a Pentium III&trade; pc-system
+running RedHat Linux 7.2 is: 'i686-pc-linux-gnu'. The default is set at
+compile time and depends on the hardware and installed software of the system
+ADiMat is compiled on.</P>
+
+<DT><B>$OSTYPE</B><DD><P>Is the &lt;os long name&gt; as defined in the environment
+variable $ARCH. The default is 'linux-gnu' for a Pentium III&trade;
+pc-system running RedHat Linux 7.2. The default is set at compile time and
+depends on the hardware and installed software of the system ADiMat is
+compiled on.</P>
+
+<DT><B>$OSNAME</B><DD><P>Is the short os name. Examples are 'linux', 'solaris',
+'winnt'. The default is set at compile time and depends on the hardware and
+installed software of the system ADiMat is compiled on.</P>
+
+<DT><B>$VENDOR</B><DD><P>Is the name of the vendor of this machine. Examples are
+'pc' for personal computers using Intel or AMD processors or 'sun' when
+running on a system build by Sun. The default is set at compile time and
+depends on the hardware and installed software of the system ADiMat is
+compiled on.</P>
+
+</DL>
+</P>
+<P>Any other environment-variable that is named in a path or likewise, will be
+replaced by the value the operating system returns when asked for it.</P>
+
+<HR>
+<A HREF="adimat-8.html">Next</A>
+<A HREF="adimat-6.html">Previous</A>
+<A HREF="adimat.html#toc7">Contents</A>
+</BODY>
+</HTML>

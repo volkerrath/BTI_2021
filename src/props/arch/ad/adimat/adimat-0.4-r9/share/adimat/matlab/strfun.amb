@@ -1,0 +1,79 @@
+% Character strings.
+% Matlab 6.5_sp1 R13
+%
+% Copyright 2001-2004 Andre Vehreschild, Institute for Scientific Computing   
+%                     RWTH Aachen University
+% This code is under development! Use at your own risk! Duplication,
+% modification and distribution FORBIDDEN!
+
+%
+% $Log$
+% Revision 1.2  2004/04/20 12:24:24  af116ve
+% Removed typos.
+%
+% Revision 1.1  2004/01/28 17:47:06  af116ve
+% Initial version
+%
+%
+
+%ADiMat MIN_VERSION=0.1
+
+% General.
+BMFUNC $$=char($1) IGNORE
+% no double.m 
+BMFUNC $$=cellstr($1) IGNORE
+BMFUNC $$=blanks($1) IGNORE
+BMFUNC $$=deblank($1) IGNORE
+% no eval.m
+
+% String tests.
+BMFUNC $$:bool=ischar($1) IGNORE
+BMFUNC $$:bool=iscellstr($1) IGNORE
+BMFUNC $$:bool=isletter($1) IGNORE
+BMFUNC $$:bool=isspace($1) IGNORE
+
+% String operations.
+BMFUNC [$$1, $$#]=regexp($1, $2) NODIFF
+BMFUNC [$$1, $$#]=regexpi($1, $2) IGNORE
+BMFUNC $$=regexprep($1, $2, $#) IGNORE
+BMFUNC $$=strcat($1, $#) IGNORE
+BMFUNC $$=strvcat($1, $#) IGNORE
+BMFUNC $$=strcmp($1, $2) IGNORE
+BMFUNC $$=strncmp($1, $2, $3) IGNORE
+BMFUNC $$=strcmpi($1, $2) IGNORE
+BMFUNC $$=strncmpi($1, $2, $3) IGNORE
+BMFUNC $$=findstr($1, $2) IGNORE
+BMFUNC $$=strfind($1, $2) IGNORE
+BMFUNC $$=strjust($1, $2) IGNORE
+BMFUNC $$=strmatch($1, $2, $#) IGNORE
+BMFUNC $$=strrep($1, $2, $3) IGNORE
+BMFUNC [$$1, $$#]=strtok($1, $2) IGNORE
+BMFUNC $$=upper($1) IGNORE
+BMFUNC $$=lower($1) IGNORE
+
+% String to number conversion.
+BMFUNC $$=num2str($1, $#) IGNORE
+BMFUNC $$=int2str($1) IGNORE
+BMFUNC $$=mat2str($1, $#) IGNORE
+BMFUNC $$=str2double($1) NODIFF
+BMFUNC [$$1, $$#]=str2num($1) NODIFF
+BMFUNC [$$1, $$#]=sprintf($1, $#) IGNORE
+BMFUNC [$$1, $$#]=sscanf($1, $2, $#) NODIFF
+
+% Base number conversion.
+BMFUNC $$=hex2num($1) NODIFF
+BMFUNC $$=hex2dec($1) NODIFF
+BMFUNC $$=dec2hex($1, $#) IGNORE
+BMFUNC $$=bin2dec($1) NODIFF
+BMFUNC $$=dec2bin($1, $#) IGNORE
+BMFUNC $$=base2dec($1, $#) NODIFF
+BMFUNC $$=dec2base($1, $#) IGNORE
+
+% Utility functions.
+% helptext strings.m
+
+% Grandfathered functions.
+BMFUNC $$=str2mat($#) IGNORE
+BMFUNC $$:bool=isstr($1) IGNORE
+BMFUNC $$=setstr($1) IGNORE
+
