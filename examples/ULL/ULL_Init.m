@@ -31,13 +31,11 @@ POM                 = -4.;
 % NUMERICAL PARAMETERS
 out            = 1;
 
-F=strcat([name,'_NUMPar.mat']);
-load(F);
 
 prepstr= ['_' init_type];
 %prepstr= [''];
 
-GSTH_file='LGC_Ull.csv';
+GSTH_file='LGC.csv';
 L=3;
 initial_iter=50;
 
@@ -50,21 +48,25 @@ addpath([srcpath,filesep,strcat(['tools'])]);
 % dfmt=1;ffmt='.zip';
 % archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
 
-F=strcat([name,'_NUMPar.mat']);
+F=strcat([name,'_NumPar.mat']);
 load(F);
 mstruct(numpar)
 
 % load MODEL
 disp(strcat([' load model for ' name ]));
-F=strcat([datpath name '_SITEPar.mat']);
+F=strcat([datpath name '_SitePar.mat']);
 load(F);
 mstruct(sitepar);
 
-F=[name '_init_in'];
+
+
+F=[name '_Init_in.mat'];
 if exist(F)
     load(F);
     mstruct(init_in);
+
 end
+
 
 
 if plotit
@@ -198,7 +200,7 @@ end
 
 zinit=z;
 Tinit=T0;
-Tinit
+
 F=strcat([name,'_Init']);
 disp([' ']);
 disp([ 'results to ',F]);

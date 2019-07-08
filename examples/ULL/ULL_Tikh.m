@@ -6,8 +6,8 @@ clc
 % SET PATHS
 pltpath='./';
 datpath='./';
-srcpath='../';
-utlpath='../';
+srcpath='../../';
+utlpath='../../';
 
 addpath([srcpath,filesep,'src']);
 addpath([srcpath,filesep,strcat(['tools'])]);
@@ -55,7 +55,7 @@ relaxnl         =  1.;
 freeze          =  1;                     % include freezing/thawing
 
 numpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
-F=strcat([name,'_NUMPar.mat']);
+F=strcat([name,'_NumPar.mat']);
 save(F, 'numpar')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -105,16 +105,13 @@ reg_shift=1;
 
 outsteps=0;
 
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GENERATE MESHES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES SET HERE OUTSIDE ULL_MESH OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% F=strcat([name,'_mesh_in.mat']);
+% F=strcat([name,'_Mesh_in.mat']);
 % mesh_in=mstruct();
 % save(F,'mesh_in');
 disp(strcat([' generate meshes for ' name]));
@@ -129,52 +126,54 @@ eval(C);
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=0;
 prep_in=mstruct(plotit);
-F=[name,'_prep_in'];
+F=[name,'_Prep_in'];
 save(F,'prep_in');
 disp(strcat([' generate model for ' name]));
 C=strcat([site,'_Prep(name);']);
 eval(C);
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% % GENERATE INITIAL VALUES
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% % VARIABLES SET HERE OUTSIDE ULL_INIT OVERWRITE DEFAULTS INSIDE!
-% %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% plotit=0;
-% init_in=mstruct(plotit);
-% F=[name,'_init_in'];
-% save(F,'init_in');
-% disp(strcat([' generate initial values for ' name]));
-% C=strcat([site,'_Init(name);']);eval(C);
-% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GENERATE INITIAL VALUES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% VARIABLES SET HERE OUTSIDE ULL_INIT OVERWRITE DEFAULTS INSIDE!
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+plotit=0;
+init_type='p';
+GSTH_file='ULL_LGC.csv';
+init_in=mstruct(plotit,init_type,GSTH_file);
+F=[name,'_Init_in'];
+save(F,'init_in');
+disp(strcat([' generate initial values for ' name]));
+C=strcat([site,'_Init(name);']);eval(C);
+
 % 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % START inversion
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 
-% fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
-% F=strcat([name,'_FwdPar.mat']);
-% save (F,'fwdpar')
-% 
-% 
-% F=strcat([name,'_TGrid.mat']);load(F);
-% [gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps);
-% 
-% invpar=mstruct(...
-%     gsth,pt,nsteps,m_apr_set,m_ini_set,...
-%     diffmeth,dp,...
-%     tol_solve,maxiter_solve,...
-%     tol_inv,maxiter_inv,...
-%     reg_opt,start_regpar,modul_regpar,mregpar_adaptint,msteps_regpar,...
-%     regpar0,reg0par,reg1par,reg2par,reg_shift,...
-%     relax,start_relax,modul_relax,min_relax,outsteps);
-% 
-% F=strcat([name,'_InvPar.mat']);
-% save (F,'invpar');
-% 
-% 
-% Tikh_gsth(name);
+
+fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
+F=strcat([name,'_FwdPar.mat']);
+save (F,'fwdpar')
+
+
+F=strcat([name,'_TimeGrid.mat']);load(F);
+[gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps);
+
+invpar=mstruct(...
+    gsth,pt,nsteps,m_apr_set,m_ini_set,...
+    diffmeth,dp,...
+    tol_solve,maxiter_solve,...
+    tol_inv,maxiter_inv,...
+    reg_opt,start_regpar,modul_regpar,mregpar_adaptint,msteps_regpar,...
+    regpar0,reg0par,reg1par,reg2par,reg_shift,...
+    relax,start_relax,modul_relax,min_relax,outsteps);
+
+F=strcat([name,'_InvPar.mat']);
+save (F,'invpar');
+
+
+Tikh_gsth(name);
 % % 
 % % 
 % % for ireg=1:length(regopts)

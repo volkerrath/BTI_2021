@@ -72,7 +72,7 @@ wspline=0.6;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES OUTSIDE OKU_PREP OVERWRITE DEFAULTS ABOVE!
-F=strcat([name,'_prep_in.mat']);
+F=strcat([name,'_Prep_in.mat']);
 if exist(F)
     load(F); mstruct(prep_in);
 end
@@ -99,9 +99,9 @@ disp(strcat([ ' ...>>> Step ',num2str(step),': set grids']));
 % SPATIAL AND TEMPORAL MESH
 disp([' ...set grids'])
 
-meshfileZ=[name,'_ZGrid'];
+meshfileZ=[name,'_DepthGrid'];
 load (meshfileZ);
-meshfileT=[name,'_TGrid'];
+meshfileT=[name,'_TimeGrid'];
 load (meshfileT);
 
 
@@ -117,7 +117,7 @@ OT    =   importdata([datpath,'/Ullrigg_March2013.dat']);
 zT = OT.data(:,2);zT=(abs(zT));
 T = OT.data(:,1);
 
-filename=strcat([datpath site '_obs.mat']);
+filename=strcat([datpath site '_Obs.mat']);
 save(filename, 'T','zT')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -294,7 +294,7 @@ kB=0.00*nones';
 c=0.;r=0.;
 rc=RC;  %
 
-h = 0.4*nones';
+h = 0.4e-6*nones';
 h(zm>800.)= 1.6e-6;
 h(zm>1250.)= 2.7e-6;
 h(zm>1340.)= 3.8e-6;
@@ -314,7 +314,7 @@ Tcov=spdiags(Terr.^2,0,nd,nd);
 sitepar=mstruct(k,kA,kB,h,p,c,r,rc,z,ip,t,it,qb,gts,Tobs,id,zobs,Tcov,Terr,props,name);
 
 
-F=strcat([name '_SITEPar.mat']);
+F=strcat([name '_SitePar.mat']);
 save(F,'sitepar');
 disp([' >>>>> site parameter saved to:' F]);
 disp([' ']);
