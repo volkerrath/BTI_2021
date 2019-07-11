@@ -57,7 +57,7 @@ wspline=0.5;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES OUTSIDE OKU_PREP OVERWRITE DEFAULTS ABOVE!
-F=strcat([name,'_prep_in.mat']);
+F=strcat([name,'_Prep_in.mat']);
 if exist(F)
     load(F); mstruct(prep_in);
 end
@@ -84,9 +84,9 @@ disp(strcat([ ' ...>>> Step ',num2str(step),': set grids']));
 % SPATIAL AND TEMPORAL MESH
 disp([' ...set grids'])
 
-meshfileZ=[name,'_ZGrid'];
+meshfileZ=[name,'_DepthGrid'];
 load (meshfileZ);
-meshfileT=[name,'_TGrid'];
+meshfileT=[name,'_TimeGrid'];
 load (meshfileT);
 
 
@@ -339,7 +339,7 @@ Tcov=spdiags(Terr.^2,0,nd,nd);
 sitepar=mstruct(k,kA,kB,h,p,c,r,rc,z,ip,t,it,qb,gts,Tobs,id,zobs,Tcov,Terr,props,name);
 
 
-F=strcat([name '_SITEPar.mat']);
+F=strcat([name '_SitePar.mat']);
 save(F,'sitepar');
 disp([' >>>>> site parameter saved to:' F]);
 disp([' ']);

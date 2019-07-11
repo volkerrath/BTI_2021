@@ -25,7 +25,7 @@ dir= -1;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES OUTSIDE OKU_MESH OVERWRITE DEFAULTS ABOVE!h
-F=strcat([name,'_mesh_in.mat']);
+F=strcat([name,'_Mesh_in.mat']);
 if exist(F)
     load(F); mstruct(mesh_in);
 end
@@ -63,7 +63,7 @@ switch lower(ztype)
         disp([' ']);disp([' ...spatial mesh ',ztype,' not implemented!']);
 end
 
-F=strcat([name '_ZGrid']);
+F=strcat([name '_DepthGrid']);
 disp([' ...spatial mesh written to: ', F]);
 save(F,'z','dz','nz','ip','zm')
 
@@ -90,7 +90,7 @@ switch lower(ttype)
         disp([' ']);disp([' ...spatial mesh ',ztype,' not implemented!']);
 end
 
-F=strcat([name '_TGrid']);
+F=strcat([name '_TimeGrid']);
 save(F,'t','dt','nt','it','tm')
 disp([' ...temporal mesh written to: ', F]);
 

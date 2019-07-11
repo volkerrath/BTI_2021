@@ -55,6 +55,10 @@ relaxnl         =  1.;
 freeze          =  1;                     % include freezing/thawing
 
 num_par=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
+F=strcat([name,'_NumPar.mat']);
+save(F, 'numpar')
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % INVERSION PARAMETER 
 % DEFINE LOGARITHMIC GSTH INVERSION GRID
@@ -111,7 +115,7 @@ outsteps=0;
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES SET HERE OUTSIDE OKU_MESH OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% F=strcat([name,'_mesh_in.mat']);
+% F=strcat([name,'Mesh_in.mat']);
 % mesh_in=mstruct();
 % save(F,'mesh_in');
 disp(strcat([' generate meshes for ' name]));
@@ -126,7 +130,7 @@ eval(C);
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=0;
 prep_in=mstruct(plotit);
-F=[name,'_prep_in'];
+F=[name,'_Prep_in'];
 save(F,'prep_in');
 disp(strcat([' generate model for ' name]));
 C=strcat([site,'_Prep(name);']);
@@ -140,7 +144,7 @@ eval(C);
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=0;
 init_in=mstruct(plotit);
-F=[name,'_init_in'];
+F=[name,'_Init_in'];
 save(F,'init_in');
 disp(strcat([' generate initial values for ' name]));
 C=strcat([site,'_Init(name);']);eval(C);

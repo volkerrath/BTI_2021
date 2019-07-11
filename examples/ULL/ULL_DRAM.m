@@ -35,15 +35,15 @@ yeartosec=31557600;sectoyear=1/yeartosec;
 
 
 % BOREHOLES8
-site        = 'OKU';
-props       = lower(site);    %'oku';
+site        = 'ULL';
+props       = lower(site);    %
 
 addpath([srcpath,strcat(['src/props/',lower(props)])])
 
 
 meth        = 'DRAM';
 prepstr       = '';
-CovFun='G'; L=7;
+CovFun='G'; L=3;
 
 
 %GRAPHICS
@@ -51,7 +51,7 @@ set_graphpars
 %plotfmt='epsc2';
 plotfmt='png';
 
-name=strcat([site prepstr,'_GSTQH_',meth,'_',CovFun,num2str(L),'_',datestr(now,1)]);
+name=strcat([site prepstr,'_GSTQ_',meth,'_',CovFun,num2str(L),'_',datestr(now,1)]);
 
 save('common',...
     'srcpath','utlpath','datpath','parjobs','name');
@@ -94,7 +94,7 @@ tend            =  30*yeartosec;             % to
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES SET HERE OUTSIDE OKU_MESH OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% F=strcat([name,'_mesh_in.mat']);
+% F=strcat([name,'_Mesh_in.mat']);
 % nt = 401; nz = 301;% zend = 5000;
 % mesh_in=mstruct(nz,zend,nt,tstart,tend);
 % save(F,'Mesh_in');

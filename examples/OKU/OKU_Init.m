@@ -53,17 +53,17 @@ addpath([srcpath,filesep,strcat(['tools'])]);
 % dfmt=1;ffmt='.zip';
 % archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
 
-F=strcat([name,'_NUMPar.mat']);
+F=strcat([name,'_NumPar.mat']);
 load(F);
 mstruct(numpar)
 
 % load MODEL
 disp(strcat([' load model for ' name ]));
-F=strcat([datpath name '_SITEPar.mat']);
+F=strcat([datpath name '_SitePar.mat']);
 load(F);
 mstruct(sitepar);
 
-F=[name '_init_in'];
+F=[name '_Init_in.mat'];
 if exist(F)
     load(F);
     mstruct(init_in);
@@ -201,7 +201,7 @@ end
 zinit=z;
 Tinit=T0;
 
-F=strcat([name,'_INIT']);
+F=strcat([name,'_Init']);
 disp([' ']);
 disp([ 'results to ',F]);
 save(F,'zinit','Tinit','POM');
