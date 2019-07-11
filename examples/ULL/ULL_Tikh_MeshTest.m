@@ -101,88 +101,92 @@ reg_shift=1;
 
 outsteps=0;
 
-
-for Qtest=-[34 36 38 40 42]*1e-3
-    name=strcat([site,...
-        '_Tikh',reg_opt,...
-        '_Q',num2str(abs(Qtest*1000)),...
-        ]);
-    numpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
-    F=strcat([name,'_NumPar.mat']);
-    save(F, 'numpar')
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % GENERATE MESHES
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    % VARIABLES SET HERE OUTSIDE ULL_MESH OVERWRITE DEFAULTS INSIDE!
-    %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    % F=strcat([name,'_Mesh_in.mat']);
-    % mesh_in=mstruct();
-    % save(F,'mesh_in');
-    disp(strcat([' generate meshes for ' name]));
-    C=strcat([site,'_Mesh(name);']);
-    eval(C);
-    
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % GENERATE PHYSICAL MODEL
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    % VARIABLES SET HERE OUTSIDE ULL_PREP OVERWRITE DEFAULTS INSIDE!
-    %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    plotit=0;
-    Qb = Qtest;
-    prep_in=mstruct(plotit,Qb);
-    F=[name,'_Prep_in'];
-    save(F,'prep_in');
-    disp(strcat([' generate model for ' name]));
-    C=strcat([site,'_Prep(name);']);
-    eval(C);
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % GENERATE INITIAL VALUES
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    % VARIABLES SET HERE OUTSIDE ULL_INIT OVERWRITE DEFAULTS INSIDE!
-    %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    plotit=0;
-    init_type='p';
-    GSTH_file='ULL_LGC.csv';
-    init_in=mstruct(plotit,init_type,GSTH_file);
-    F=[name,'_Init_in'];
-    save(F,'init_in');
-    disp(strcat([' generate initial values for ' name]));
-    C=strcat([site,'_Init(name);']);eval(C);
-    
-    %
-    % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % % START inversion
-    % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
-    fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
-    F=strcat([name,'_FwdPar.mat']);
-    save (F,'fwdpar')
-    
-    
-    F=strcat([name,'_TimeGrid.mat']);load(F);
-    [gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps);
-    
-    invpar=mstruct(...
-        gsth,pt,nsteps,m_apr_set,m_ini_set,...
-        diffmeth,dp,...
-        tol_solve,maxiter_solve,...
-        tol_inv,maxiter_inv,...
-        reg_opt,start_regpar,modul_regpar,mregpar_adaptint,msteps_regpar,...
-        regpar0,reg0par,reg1par,reg2par,reg_shift,...
-        relax,start_relax,modul_relax,min_relax,outsteps);
-    
-    F=strcat([name,'_InvPar.mat']);
-    save (F,'invpar');
-    
-    
-    Tikh_gsth(name);
-    
+for nttest=-[201 401 601]
+    for nztest=-[251 451 651]
+        name=strcat([site,...
+            '_Tikh',reg_opt,...
+            '_Q',num2str(abs(Qtest*1000)),...
+            ]);
+        numpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
+        F=strcat([name,'_NumPar.mat']);
+        save(F, 'numpar')
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % GENERATE MESHES
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        % VARIABLES SET HERE OUTSIDE ULL_MESH OVERWRITE DEFAULTS INSIDE!
+        %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        F=strcat([name,'_Mesh_in.mat']);
+        nz=nztest;
+        nt=nttest;
+        mesh_in=mstruct(nz,nt);
+        save(F,'mesh_in');
+        disp(strcat([' generate meshes for ' name]));
+        C=strcat([site,'_Mesh(name);']);
+        eval(C);
+        
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % GENERATE PHYSICAL MODEL
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        % VARIABLES SET HERE OUTSIDE ULL_PREP OVERWRITE DEFAULTS INSIDE!
+        %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        plotit=0;
+        Qb = Qtest;
+        prep_in=mstruct(plotit,Qb);
+        F=[name,'_Prep_in'];
+        save(F,'prep_in');
+        disp(strcat([' generate model for ' name]));
+        C=strcat([site,'_Prep(name);']);
+        eval(C);
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % GENERATE INITIAL VALUES
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        % VARIABLES SET HERE OUTSIDE ULL_INIT OVERWRITE DEFAULTS INSIDE!
+        %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        plotit=0;
+        init_type='p';
+        GSTH_file='ULL_LGC.csv';
+        init_in=mstruct(plotit,init_type,GSTH_file);
+        F=[name,'_Init_in'];
+        save(F,'init_in');
+        disp(strcat([' generate initial values for ' name]));
+        C=strcat([site,'_Init(name);']);eval(C);
+        
+        %
+        % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % % START inversion
+        % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+        fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
+        F=strcat([name,'_FwdPar.mat']);
+        save (F,'fwdpar')
+        
+        
+        F=strcat([name,'_TimeGrid.mat']);load(F);
+        [gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps);
+        
+        invpar=mstruct(...
+            gsth,pt,nsteps,m_apr_set,m_ini_set,...
+            diffmeth,dp,...
+            tol_solve,maxiter_solve,...
+            tol_inv,maxiter_inv,...
+            reg_opt,start_regpar,modul_regpar,mregpar_adaptint,msteps_regpar,...
+            regpar0,reg0par,reg1par,reg2par,reg_shift,...
+            relax,start_relax,modul_relax,min_relax,outsteps);
+        
+        F=strcat([name,'_InvPar.mat']);
+        save (F,'invpar');
+        
+        
+        Tikh_gsth(name);
+        
+    end
 end
+
 % %
 % %
 % % for ireg=1:length(regopts)
