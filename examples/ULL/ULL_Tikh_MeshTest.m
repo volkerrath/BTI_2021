@@ -100,12 +100,15 @@ min_relax       =   0.1;
 reg_shift=1;
 
 outsteps=0;
+Qtest = -40e-3;
 
-for nttest=-[201 401 601]
-    for nztest=-[251 451 651]
+for nttest=[201 401 601]
+    for nztest=[251 451 651]
         name=strcat([site,...
             '_Tikh',reg_opt,...
             '_Q',num2str(abs(Qtest*1000)),...
+            '_Nz',num2str(nztest),...
+            '_Nt',num2str(nttest),...
             ]);
         numpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
         F=strcat([name,'_NumPar.mat']);
