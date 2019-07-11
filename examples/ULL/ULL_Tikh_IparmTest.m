@@ -115,7 +115,7 @@ for nstest=[10 20 30 40 50 60]
     % GENERATE MESHES
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    % VARIABLES SET HERE OUTSIDE ULL_MESH OVERWRITE DEFAULTS INSIDE!
+    % VARIABLES SET IN FILE "F" OUTSIDE ULL_MESH OVERWRITE DEFAULTS INSIDE!
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 %     F=strcat([name,'_Mesh_in.mat']);
 %     nz=nztest;
@@ -131,7 +131,7 @@ for nstest=[10 20 30 40 50 60]
     % GENERATE PHYSICAL MODEL
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    % VARIABLES SET HERE OUTSIDE ULL_PREP OVERWRITE DEFAULTS INSIDE!
+    % VARIABLES SET IN FILE "F" OUTSIDE ULL_PREP OVERWRITE DEFAULTS INSIDE!
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     plotit=0;
     Qb = Qtest;
@@ -146,7 +146,7 @@ for nstest=[10 20 30 40 50 60]
     % GENERATE INITIAL VALUES
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    % VARIABLES SET HERE OUTSIDE ULL_INIT OVERWRITE DEFAULTS INSIDE!
+    % VARIABLES SET IN FILE "F" OUTSIDE ULL_INIT OVERWRITE DEFAULTS INSIDE!
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     plotit=0;
     init_type='p';
