@@ -100,12 +100,13 @@ min_relax       =   0.1;
 reg_shift=1;
 
 outsteps=0;
+Qtest = -40e-3;
 
-
-for Qtest=-[30]*1e-3
+for nstest=[10 20 30 40 50 60]
     name=strcat([site,...
         '_Tikh',reg_opt,...
         '_Q',num2str(abs(Qtest*1000)),...
+        '_Nsteps',num2str(nstest),...
         ]);
     numpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
     F=strcat([name,'_NumPar.mat']);
@@ -116,9 +117,11 @@ for Qtest=-[30]*1e-3
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     % VARIABLES SET HERE OUTSIDE ULL_MESH OVERWRITE DEFAULTS INSIDE!
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    % F=strcat([name,'_Mesh_in.mat']);
-    % mesh_in=mstruct();
-    % save(F,'mesh_in');
+%     F=strcat([name,'_Mesh_in.mat']);
+%     nz=nztest;
+%     nt=nttest;
+%     mesh_in=mstruct(nz,nt);
+%     save(F,'mesh_in');
     disp(strcat([' generate meshes for ' name]));
     C=strcat([site,'_Mesh(name);']);
     eval(C);
@@ -163,6 +166,7 @@ for Qtest=-[30]*1e-3
     F=strcat([name,'_FwdPar.mat']);
     save (F,'fwdpar')
     
+    nsteps=nstest;
     
     F=strcat([name,'_TimeGrid.mat']);load(F);
     [gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps);
@@ -183,6 +187,8 @@ for Qtest=-[30]*1e-3
     Tikh_gsth(name);
     
 end
+
+
 % %
 % %
 % % for ireg=1:length(regopts)
