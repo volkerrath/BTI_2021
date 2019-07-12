@@ -88,7 +88,7 @@ mregpar_adaptint =   1;
 %
 msteps_regpar    =   48;                % number of test values
 regpar0=[1 1 1];
-reg0par=[0.001];                         % logspace(-1,1,10);31
+reg0par=[0.01];                         % logspace(-1,1,10);31
 reg1par=logspace(-3.,3,msteps_regpar);
 reg2par=[0];
 
@@ -102,7 +102,7 @@ reg_shift=1;
 outsteps=0;
 Qtest = -40e-3;
 
-for nstest=[10 20 30 40 50 60]
+for nstest=[18]
     name=strcat([site,...
         '_Tikh',reg_opt,...
         '_Q',num2str(abs(Qtest*1000)),...
@@ -133,7 +133,7 @@ for nstest=[10 20 30 40 50 60]
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     % VARIABLES SET IN FILE "F" OUTSIDE ULL_PREP OVERWRITE DEFAULTS INSIDE!
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    plotit=0;
+    plotit=1;
     Qb = Qtest;
     prep_in=mstruct(plotit,Qb);
     F=[name,'_Prep_in'];
@@ -189,57 +189,3 @@ for nstest=[10 20 30 40 50 60]
 end
 
 
-% %
-% %
-% % for ireg=1:length(regopts)
-% %     reg_opt=regopts{ireg};
-% %     for reg0par=[ 0.003 ];
-% %         for reg1par=logspace(-3.,2,msteps_regpar);
-% %             for reg2par=[0];
-% %                 for nsteps=[24];
-% %                     [pt,it]=set_mgsth(t,base,tstart,tend,nsteps);
-% %                     for m_apr_set=[4];
-% %                         m_ini_set=[m_apr_set];
-% %
-% %                         NAME=strcat([SITE,...
-% %                             '_Tikh',reg_opt,...
-% %                             '_Steps',num2str(nsteps),...
-% %                             '_Prior',num2str(m_apr_set),...
-% %                             '_Props_',PROP]);
-% %
-% %                         % INITIAL
-% %
-% %                         Tinitial= strcat([SITE,'_initial']);
-% %                         if exist('Tinitial')
-% %                             load(Tinitial);
-% %                             disp([' ']);disp([' initial condition loaded from file ',Tinitial]);
-% %                             T0=Tinit;
-% %                         else
-% %                             T0=[];
-% %                         end
-% %                         numpar=mstruct(T0,theta,maxitnl,tolnl,relaxnl,freeze);
-% %
-% %                         disp([' ']);disp([' ...set up site-specific parameter settings  ']);
-% %                         filename=strcat([NAME,'_invpar.mat']);
-% %                         save (filename);
-% %
-% %                         S=sites{whichsites(isites)}; N=NAME;P=props{isites};
-% %                         disp([' ']);disp(strcat([' generate model for ' N ]));
-% %                         C=strcat([ S ,'_Prep',prepstr,'(S,N,P);']); eval(C);
-% %                         disp([' ']);
-% %
-% %
-% %
-% %                         % GSTH_HybrS(SITE,NAME);
-% %                         GSTH_TikhSX(SITE,NAME,PROP);
-% %                         % rmpath([srcpath,strcat(['src/props/',PROP])]);
-% %                         %close all
-% %                     end
-% %                 end
-% %             end
-% %         end
-% %     end
-% %
-% % end
-% %
-% %

@@ -13,7 +13,7 @@ addpath([srcpath,'/src/'])
 
 dfmt=1;ffmt='.zip';
 archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
-
+SITE='ULL';
 
 % LOCAL OPTIONS
 yeartosec=31557600;sectoyear=1/yeartosec;
@@ -42,7 +42,7 @@ smoothdl=1;
 
 smooth_grads = 'm';
 smoothgl=1;
-gmode={'box','mir'}
+gmode={'box','mir'};
 
 % 
 % if include_proxies
@@ -53,10 +53,10 @@ gmode={'box','mir'}
 %     lLut=strcat(['Luterbacher 2004']);
 % end
 
-GSTSHFT=0;
+GSTSHFT=7.3;
 Tlimits=[-15 20];
 
-zlimits=[0 1000];
+zlimits=[0 1800];
 if plot_tlog,
     tscal=1.;
     %tlimits=[10 150000];
@@ -69,7 +69,7 @@ end
 
 disp(['   '])
 run='Q52_N';
-TMP=dir('OKU_GCV_Q*results.mat');
+TMP=dir('ULL_TikhGCV_Q34_results.mat');
 Files={TMP.name};
 %Files={...
 % };
@@ -105,10 +105,10 @@ for ifiles=1:nfiles
     allcov{imodel}=Cmm;
 
     smooth_grads='m';smoothgl=21;gmode={'box','mir'};M=1;
-    zd=z(id);dz=diff(z(id));
+    zd=z(id);dz=diff(z(id));ii=id(1:length(id)-1)';
     zm=0.5*(zd(1:length(zd)-1)+zd(2:length(zd)));
-    TC=Tcalc(id,nt);dT=diff(TC);dTC=dT(:)./dz(:);QC = Tcon(1:length(dz)).*dTC(:);
-    TO=Tobs;dT=diff(TO);dTO=dT(:)./dz(:);Q0 = Tcon(1:length(dz)).*dTO(:);
+    TC=Tcalc(id,nt);dT=diff(TC);dTC=dT(:)./dz(:);QC = Tcon(ii).*dTC(:);
+    TO=Tobs;dT=diff(TO);dTO=dT(:)./dz(:);Q0 = Tcon(ii).*dTO(:);
     switch lower(smooth_grads)
         case {'s','spline'}
             spoints=linspace(min(zG),max(zG),nsplineG);
@@ -225,7 +225,7 @@ if plot_resd
 %     xlim([-0.225 0.075]);
     %xlim([-0.02 0.02]);
     
-    legend(legstr,'location','west');
+    legend(legstr,'location','northwest');
     filename=strcat(SITE,'_RESID_',run);
     saveas(gcf,filename,plotfmt1)
         saveas(gcf,filename,plotfmt2)
@@ -246,7 +246,7 @@ if plot_grad,
     %title(strcat([SITE,' Q0']),'FontSize',fontsz,'FontWeight',fontwg);
     obsstr = {'observed'}
     str = [obsstr legstr]
-    legend(str,'location','northeast')
+    legend(str,'location','southwest')
     grid on
     filename=strcat([SITE '_Q0',]);
     %export_fig filename -transparent -png   %-pdf -eps
