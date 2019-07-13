@@ -6,8 +6,8 @@ clc
 % SET PATHS
 pltpath='./';
 datpath='./';
-srcpath='../';
-utlpath='../';
+srcpath='../../';
+utlpath='../../';
 
 addpath([srcpath,filesep,'src']);
 addpath([srcpath,filesep,strcat(['tools'])]);
@@ -40,10 +40,10 @@ rng('shuffle');
 %randn('state',sum(100*clock));
 
 %
-site       = 'OKU';
-props       = 'oku';
-prepstr       = '_ex1';
-name=[site prepstr]
+site       = 'ULL';
+props       = 'ull';
+prepstr       = '';
+name=[site prepstr];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PARAMETER FOR FORWARD MODEL
@@ -54,10 +54,9 @@ tolnl           =   0.00001;
 relaxnl         =  1.;
 freeze          =  1;                     % include freezing/thawing
 
-num_par=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
+numpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
 F=strcat([name,'_NumPar.mat']);
 save(F, 'numpar')
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % INVERSION PARAMETER 
@@ -106,16 +105,13 @@ reg_shift=1;
 
 outsteps=0;
 
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GENERATE MESHES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE OKU_MESH OVERWRITE DEFAULTS INSIDE!
+% VARIABLES SET HERE OUTSIDE ULL_MESH OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% F=strcat([name,'Mesh_in.mat']);
+% F=strcat([name,'_Mesh_in.mat']);
 % mesh_in=mstruct();
 % save(F,'mesh_in');
 disp(strcat([' generate meshes for ' name]));
@@ -126,7 +122,7 @@ eval(C);
 % GENERATE PHYSICAL MODEL
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE OKU_PREP OVERWRITE DEFAULTS INSIDE!
+% VARIABLES SET HERE OUTSIDE ULL_PREP OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=0;
 prep_in=mstruct(plotit);
@@ -140,19 +136,21 @@ eval(C);
 % GENERATE INITIAL VALUES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE OKU_INIT OVERWRITE DEFAULTS INSIDE!
+% VARIABLES SET HERE OUTSIDE ULL_INIT OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=0;
-init_in=mstruct(plotit);
+init_type='p';
+GSTH_file='ULL_LGC.csv';
+init_in=mstruct(plotit,init_type,GSTH_file);
 F=[name,'_Init_in'];
 save(F,'init_in');
 disp(strcat([' generate initial values for ' name]));
 C=strcat([site,'_Init(name);']);eval(C);
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% START inversion
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % START inversion
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
 F=strcat([name,'_FwdPar.mat']);
@@ -176,57 +174,57 @@ save (F,'invpar');
 
 
 Tikh_gsth(name);
-% 
-% 
-% for ireg=1:length(regopts)
-%     reg_opt=regopts{ireg};
-%     for reg0par=[ 0.003 ];
-%         for reg1par=logspace(-3.,2,msteps_regpar);
-%             for reg2par=[0];
-%                 for nsteps=[24];
-%                     [pt,it]=set_mgsth(t,base,tstart,tend,nsteps);
-%                     for m_apr_set=[4];
-%                         m_ini_set=[m_apr_set];
-%                         
-%                         NAME=strcat([SITE,...
-%                             '_Tikh',reg_opt,...
-%                             '_Steps',num2str(nsteps),...
-%                             '_Prior',num2str(m_apr_set),...
-%                             '_Props_',PROP]);
-%                         
-%                         % INITIAL
-%                         
-%                         Tinitial= strcat([SITE,'_initial']);
-%                         if exist('Tinitial')
-%                             load(Tinitial);
-%                             disp([' ']);disp([' initial condition loaded from file ',Tinitial]);
-%                             T0=Tinit;
-%                         else
-%                             T0=[];
-%                         end
-%                         numpar=mstruct(T0,theta,maxitnl,tolnl,relaxnl,freeze);
-%                         
-%                         disp([' ']);disp([' ...set up site-specific parameter settings  ']);
-%                         filename=strcat([NAME,'_invpar.mat']);
-%                         save (filename);
-%                         
-%                         S=sites{whichsites(isites)}; N=NAME;P=props{isites};
-%                         disp([' ']);disp(strcat([' generate model for ' N ]));
-%                         C=strcat([ S ,'_Prep',prepstr,'(S,N,P);']); eval(C);
-%                         disp([' ']);
-%                         
-%                         
-%                         
-%                         % GSTH_HybrS(SITE,NAME);
-%                         GSTH_TikhSX(SITE,NAME,PROP);
-%                         % rmpath([srcpath,strcat(['src/props/',PROP])]);
-%                         %close all
-%                     end
-%                 end
-%             end
-%         end
-%     end
-%     
-% end
-% 
-% 
+% % 
+% % 
+% % for ireg=1:length(regopts)
+% %     reg_opt=regopts{ireg};
+% %     for reg0par=[ 0.003 ];
+% %         for reg1par=logspace(-3.,2,msteps_regpar);
+% %             for reg2par=[0];
+% %                 for nsteps=[24];
+% %                     [pt,it]=set_mgsth(t,base,tstart,tend,nsteps);
+% %                     for m_apr_set=[4];
+% %                         m_ini_set=[m_apr_set];
+% %                         
+% %                         NAME=strcat([SITE,...
+% %                             '_Tikh',reg_opt,...
+% %                             '_Steps',num2str(nsteps),...
+% %                             '_Prior',num2str(m_apr_set),...
+% %                             '_Props_',PROP]);
+% %                         
+% %                         % INITIAL
+% %                         
+% %                         Tinitial= strcat([SITE,'_initial']);
+% %                         if exist('Tinitial')
+% %                             load(Tinitial);
+% %                             disp([' ']);disp([' initial condition loaded from file ',Tinitial]);
+% %                             T0=Tinit;
+% %                         else
+% %                             T0=[];
+% %                         end
+% %                         numpar=mstruct(T0,theta,maxitnl,tolnl,relaxnl,freeze);
+% %                         
+% %                         disp([' ']);disp([' ...set up site-specific parameter settings  ']);
+% %                         filename=strcat([NAME,'_invpar.mat']);
+% %                         save (filename);
+% %                         
+% %                         S=sites{whichsites(isites)}; N=NAME;P=props{isites};
+% %                         disp([' ']);disp(strcat([' generate model for ' N ]));
+% %                         C=strcat([ S ,'_Prep',prepstr,'(S,N,P);']); eval(C);
+% %                         disp([' ']);
+% %                         
+% %                         
+% %                         
+% %                         % GSTH_HybrS(SITE,NAME);
+% %                         GSTH_TikhSX(SITE,NAME,PROP);
+% %                         % rmpath([srcpath,strcat(['src/props/',PROP])]);
+% %                         %close all
+% %                     end
+% %                 end
+% %             end
+% %         end
+% %     end
+% %     
+% % end
+% % 
+% % 
