@@ -1,36 +1,21 @@
-function [S,T]=set_stpgst(t,stepamp,steptime,L,debug)
-% [S,T]=SET_GST(TIME,STEPAMP,STEPTIME,L,DEBUG) initializes gsth from
+function [S]=set_pntgst(t,tpoint,apoint,method,debug)
+% [S,T]=SET_GST(TIME,TPOINT,APOINT,METHOD,DEBUG) initializes gsth from
 % step function for paleoclimate with amplitude stepamp at time steptime, 
 % given an input vector of temporal nodes at times t. L is the 
 % length of a smoothing operator applied to the temperature time series.
-% if debug > 0, a control plot is produced
-% Last change: vr July 20, 2019
-if nargin < 5, debug=0; end
-if nargin <4, L=0; end
+% if debug > 0, a control plot is produced.
+% Last change: vr, July 20, 2019
+if nargin < 4, debug=0; end
+logint = 1;
 
-ns=length(steptime);
-nt=length(t);
-maske=find(t<steptime(1));
-T(maske)=stepamp(1);
-for i=2:ns
-    maske=find(t<steptime(i) & t>=steptime(i-1));
-    T(maske)=stepamp(i);
+if logint
+    tpoint = log(abs(tpoint)) ;
+    t=log(abs(t));
 end
-maske=find(t>steptime(ns));
-T(maske)=stepamp(ns);
-S=T(:);
 
-if L ~= 0
-    T=T';
-    nT=length(T);
-    % triangular window
-    w = tri(2*L+1); w = w/sum(w);
-
-    for k = L+1:nT-L
-        aux = T(k-L:k+L);
-        S(k) = sum(w.*aux);
-    end
-end
+S=interp1(tpoint,apoint,t,method);
+% S(t<tpoint(1))=S(1);
+% S(t>tpoint(length(tpoint)))=S(length(tpoint));
 
 if debug >0
     figure;
@@ -43,7 +28,7 @@ if debug >0
     if L ~= 0, grid on;legend('smoothed','original','Location','NorthWest');end
     title(['test: set_paleo_boxcar'],'FontSize',14)
     if debug >=1
-        fielname='GST.png';
+        filename='GST.png';
         saveas(gcf,filename,'png')
     end
 end
