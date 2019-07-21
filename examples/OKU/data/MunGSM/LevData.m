@@ -15,7 +15,8 @@ fontsz=16;
 colscl='default';
 
 
-%%% SET 1 - 2013
+
+disp('SET 2 - 2015  ')
 nsamp=18;
 sites={'SUL', 'VAT', 'ONE', 'OLK', 'FOR', 'VID', 'LAX'};
 nsites=length(sites);whichsites=[1:nsites];
@@ -45,7 +46,7 @@ for ifiles=1:nfiles
         W=TMP(:,offset);
         nvarname=genvarname(site);
         if ifiles==1, eval([ nvarname '= [t];']);end
-        eval([ nvarname '= [' nvarname ' T H W];'])
+        eval([ nvarname '= [' nvarname ' T H W  ];'])
     end
 end
 disp('  ')
@@ -61,6 +62,8 @@ for isites=1:nsites
     Wx=DAT(:,4:3:n2);Wavg=mean(Wx,2);Wmed=median(Wx,2);
     F= strcat([nvarname,'_Ensemble']);
     save (F, 'Tx','Tavg','Tmed','Hx','Havg','Hmed','Wx','Wavg','Wmed');
+    
+    
     if plots
         
         figure
@@ -101,8 +104,10 @@ for isites=1:nsites
         
     end
 end
+disp('  ')
+disp('  ')
+disp('SET 1 - 2013  ')
 
-%%% SET 1 - 2013
 nsamp=9;
 sites  ={'CO1', 'CO2', 'GRV', 'SG3','OKU', 'CX1', 'UDR', 'CZE', 'TOR'};
 nsites=length(sites);whichsites=[1:nsites];
