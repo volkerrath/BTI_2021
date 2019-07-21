@@ -55,10 +55,59 @@ fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
 F=strcat([name,'_fwdPar.mat']);
 save(F, 'fwdpar')
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GENERATE MESHES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% VARIABLES SET HERE OUTSIDE ULL_MESH OVERWRITE DEFAULTS INSIDE!
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+F=strcat([name,'_Mesh_in.mat']);
+set_z = 1; 
+set_t = 1;
+mesh_in=mstruct(set_z, set_t);
+save(F,'mesh_in');
+disp(strcat([' generate meshes for ' name]));
+C=strcat([site,'_Mesh(name);']);
+eval(C);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GENERATE PHYSICAL MODEL
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+plotit=0;
+prep_in=mstruct(plotit);
+F=[name,'_Prep_in'];
+save(F,'prep_in');
+disp(strcat([' generate model for ' name]));
+C=strcat([site,'_Prep(name);']);
+eval(C);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GENERATE INITIAL VALUES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% VARIABLES SET HERE OUTSIDE INIT OVERWRITE DEFAULTS INSIDE!
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+plotit=0;
+init_type='p';
+init_form= 'points';
+method = 'linear';
+GSTH_file='OKU_LGC.dat';
+init_in=mstruct(plotit,init_type,init_form,method,GSTH_file);
+F=[name,'_Init_in'];
+save(F,'init_in');
+disp(strcat([' generate initial values for ' name]));
+C=strcat([site,'_Init(name);']);eval(C);
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % INVERSION PARAMETER 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DEFINE LOGARITHMIC GSTH INVERSION GRID
-nsteps          =   24;                     % number of steps
+nsteps          =   21;                     % number of steps
 base            =   0.;                   init_form           = 'points';  % base
 tstart          =  105000*yeartosec;        % from
 tend            =  10*yeartosec;            % to
@@ -102,72 +151,26 @@ reg_shift=1;
 
 outsteps=0;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% GENERATE MESHES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE ULL_MESH OVERWRITE DEFAULTS INSIDE!
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% F=strcat([name,'_Mesh_in.mat']);
-% mesh_in=mstruct();
-% save(F,'mesh_in');
-disp(strcat([' generate meshes for ' name]));
-C=strcat([site,'_Mesh(name);']);
-eval(C);
+F=strcat([name,'_TimeGrid.mat']);load(F);
+[gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps);
+
+invpar=mstruct(...
+    gsth,pt,nsteps,m_apr_set,m_ini_set,...
+    diffmeth,dp,...
+    tol_solve,maxiter_solve,...
+    tol_inv,maxiter_inv,...
+    reg_opt,start_regpar,modul_regpar,mregpar_adaptint,msteps_regpar,...
+    regpar0,reg0par,reg1par,reg2par,reg_shift,...
+    relax,start_relax,modul_relax,min_relax,outsteps);
+
+F=strcat([name,'_InvPar.mat']);
+save (F,'invpar');
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% GENERATE PHYSICAL MODEL
+% RUN inversion
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE ULL_PREP OVERWRITE DEFAULTS INSIDE!
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-plotit=0;
-prep_in=mstruct(plotit);
-F=[name,'_Prep_in'];
-save(F,'prep_in');
-disp(strcat([' generate model for ' name]));
-C=strcat([site,'_Prep(name);']);
-eval(C);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% GENERATE INITIAL VALUES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE ULL_INIT OVERWRITE DEFAULTS INSIDE!
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-plotit=1;
-init_type='p';
-init_form= 'points';
-method = 'linear';
-GSTH_file='OKU_LGC.dat';
-init_in=mstruct(plotit,init_type,init_form,method,GSTH_file);
-F=[name,'_Init_in'];
-save(F,'init_in');
-disp(strcat([' generate initial values for ' name]));
-C=strcat([site,'_Init(name);']);eval(C);
 
-    %
-    % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % % START inversion
-    % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
-    
-    
-    F=strcat([name,'_TimeGrid.mat']);load(F);
-    [gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps);
-    
-    invpar=mstruct(...
-        gsth,pt,nsteps,m_apr_set,m_ini_set,...
-        diffmeth,dp,...
-        tol_solve,maxiter_solve,...
-        tol_inv,maxiter_inv,...
-        reg_opt,start_regpar,modul_regpar,mregpar_adaptint,msteps_regpar,...
-        regpar0,reg0par,reg1par,reg2par,reg_shift,...
-        relax,start_relax,modul_relax,min_relax,outsteps);
-    
-    F=strcat([name,'_InvPar.mat']);
-    save (F,'invpar');
-    
-    
-    Tikh_gsth(name);
-    
+Tikh_gsth(name);
+

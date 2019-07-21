@@ -67,13 +67,13 @@ name=[site prepstr]
 % GENERATE MESHES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE ULL_MESH OVERWRITE DEFAULTS INSIDE!
+% VARIABLES SET HERE OUTSIDE MESH OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 F=strcat([name,'_Mesh_in.mat']);
 set_z = 1; 
 set_t = 1;
 mesh_in=mstruct(set_z, set_t);
-% save(F,'mesh_in');
+save(F,'mesh_in');
 disp(strcat([' generate meshes for ' name]));
 C=strcat([site,'_Mesh(name);']);
 eval(C);
@@ -82,7 +82,7 @@ eval(C);
 % GENERATE PHYSICAL MODEL
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE ULL_PREP OVERWRITE DEFAULTS INSIDE!
+% VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=0;
 prep_in=mstruct(plotit);

@@ -140,7 +140,7 @@ eval(C);
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=0;
 init_type='p';
-GSTH_file='ULL_LGC.csv';
+GSTH_file='ULL_LGC.dat';
 init_in=mstruct(plotit,init_type,GSTH_file);
 F=[name,'_Init_in'];
 save(F,'init_in');

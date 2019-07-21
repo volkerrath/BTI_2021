@@ -74,7 +74,7 @@ disp([' ']); disp([' ...local property model: ' props]);
 % READ LOCAL MODELLING PARAMETERS
 F=strcat([name,'_FwdPar.mat']);
 if exist(F,'file')
-    disp([' ']);disp(['Tikh_gsth: local inversion pars loaded from file ',F]);
+    disp([' ']);disp([mfilename,': local inversion pars loaded from file ',F]);
     load(F);mstruct(fwdpar);
 else
     error([F ' does not exist in path! STOP.']);
@@ -82,7 +82,7 @@ end
 % READ LOCAL INVERSION PARAMETERS
 F=strcat([name,'_InvPar.mat']);
 if exist(F,'file')
-    disp([' ']);disp(['Tikh_gsth: local inversion pars loaded from file ',F]);
+    disp([' ']);disp([mfilename,': local inversion pars loaded from file ',F]);
     load(F);mstruct(invpar); it = pt;
 else
     error([F ' does not exist in path! STOP.']);
@@ -149,8 +149,11 @@ for iter=1:maxiter_inv
     r=Tobs(:)-Tcalc(id,nt);
     resid=r./Terr(:);
     rms=sqrt(sum(resid.*resid)/length(resid));
-    disp([ ' ...... rms for iteration ',num2str(iter-1), ...
-        ' = ',num2str(rms),'   (',name,')' ]);
+    mae=sum(abs(resid))/length(resid);
+    disp([ ' ...... iteration ',num2str(iter-1), ...
+        '  rms= ',num2str(rms),...
+        '  mae= ',num2str(mae),...
+        '   (',name,')' ]);
     
     % CALCULATE OBJECTIVE FUNCTION THETA
     m_iter(iter,:)=m;r_iter(iter,:)=r(:)';

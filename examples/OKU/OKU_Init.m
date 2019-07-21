@@ -146,7 +146,7 @@ switch lower(init_type)
             tx = DGSTH(:,1)*y2s; 
             Tavg =  DGSTH(:,2);
 
-            [Tgst]=set_pntgst(t,tx,Tavg,method,debug)
+            [Tgst]=set_pntgst(t,tx,Tavg,method,debug);
             
             
 %              plot(tx*s2y/1000,Tavg,'ob')
