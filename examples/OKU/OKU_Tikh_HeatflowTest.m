@@ -52,7 +52,9 @@ tolnl           =   0.00001;
 relaxnl         =  1.;
 freeze          =  1;                     % include freezing/thawing
 
-num_par=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
+F=strcat([name,'_NumPar.mat']);
+save(F, 'numpar')
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % INVERSION PARAMETER

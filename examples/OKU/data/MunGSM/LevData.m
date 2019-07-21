@@ -61,7 +61,7 @@ for isites=1:nsites
     Hx=DAT(:,3:3:n2);Havg=mean(Hx,2);Hmed=median(Hx,2);
     Wx=DAT(:,4:3:n2);Wavg=mean(Wx,2);Wmed=median(Wx,2);
     F= strcat([nvarname,'_Ensemble']);
-    save (F, 'Tx','Tavg','Tmed','Hx','Havg','Hmed','Wx','Wavg','Wmed');
+    save (F,'tx','Tx','Tavg','Tmed','Hx','Havg','Hmed','Wx','Wavg','Wmed');
     
     
     if plots
@@ -154,7 +154,7 @@ for isites=1:nsites
     Hx=DAT(:,3:3:n2);Havg=mean(Hx,2);Hmed=median(Hx,2);
     Wx=DAT(:,4:3:n2);Wavg=mean(Wx,2);Wmed=median(Wx,2);
     F= strcat([nvarname,'_Ensemble']);
-    save (F, 'Tx','Tavg','Tmed','Hx','Havg','Hmed','Wx','Wavg','Wmed');
+    save (F, 'tx','Tx','Tavg','Tmed','Hx','Havg','Hmed','Wx','Wavg','Wmed');
     
     
     if plots

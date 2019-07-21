@@ -12,10 +12,6 @@ utlpath='../../';
 addpath([srcpath,filesep,'src']);
 addpath([srcpath,filesep,strcat(['tools'])]);
 
-% ONLY FOR PARRALLEL  EXECUTION
-run_parallel    =  1;
-parcors         =  6;
-
 
 save('common','srcpath','utlpath','datpath','pltpath','run_parallel','parcors'),
 
@@ -40,8 +36,8 @@ rng('shuffle');
 %randn('state',sum(100*clock));
 
 %
-site       = 'ULL';
-props       = 'ull';
+site       = 'OKU';
+props       = 'oku';
 prepstr       = '';
 name=[site prepstr];
 
@@ -85,7 +81,7 @@ maxiter_inv     =   100;                    % maximal number of iterations
 % reg_opt           =  'MLE';           % Maximum Likelihood  (disabled)
 % reg_opt           =  'LC';            % L-Curve (disabled)
 % reg_opt         =   'FIX';            % fixed regularization parameter
-reg_opt         =   'UPR';              % fixed regularization parameter
+reg_opt         =   'GCV';              % fixed regularization parameter
 start_regpar    =    5;                  % when to start search
 modul_regpar    =    1;                 % how often
 mregpar_adaptint =   1;
@@ -140,7 +136,7 @@ eval(C);
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=0;
 init_type='p';
-GSTH_file='ULL_LGC.csv';
+GSTH_file='OKU_Ensemble.mat';
 init_in=mstruct(plotit,init_type,GSTH_file);
 F=[name,'_Init_in'];
 save(F,'init_in');
