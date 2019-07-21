@@ -1,4 +1,4 @@
-function []=Tikh_gsth(name)
+function []=L1_gsth(name)
 % GSTH_Tikh performs paleoclimatic inversion in parameter
 % space for a single SITE
 
