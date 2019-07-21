@@ -35,7 +35,7 @@ out            = 1;
 prepstr= ['_' init_type];
 %prepstr= [''];
 
-GSTH_file='LGC.csv';
+GSTH_file='ULL_LGC.dat';
 L=3;
 initial_iter=50;
 
