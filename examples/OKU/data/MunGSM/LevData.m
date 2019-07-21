@@ -56,7 +56,7 @@ for isites=1:nsites
     eval(['DAT=' nvarname ';']);[n1,n2]=size(DAT);
     save(nfilename{isites},'DAT');
     disp(strcat([' Ensemble written to ' nfilename{isites} ]));
-    tx=abs(DAT(:,1)/(1000*yr2s));
+    tx=DAT(:,1);
     Tx=DAT(:,2:3:n2);Tavg=mean(Tx,2);Tmed=median(Tx,2);
     Hx=DAT(:,3:3:n2);Havg=mean(Hx,2);Hmed=median(Hx,2);
     Wx=DAT(:,4:3:n2);Wavg=mean(Wx,2);Wmed=median(Wx,2);
@@ -67,7 +67,7 @@ for isites=1:nsites
     if plots
         
         figure
-        plot(tx,Tx,'LineWidth',linwdt);hold on
+        plot(tx/(1000*yr2s),Tx,'LineWidth',linwdt);hold on
         grid on
         set(gca,'xscale','log','xdir','rev',...
             'FontSize',fontsz,'FontWeight',fontwg);
@@ -80,7 +80,7 @@ for isites=1:nsites
         saveas(gcf,F,plotfmt)
         
         figure
-        plot(tx,Hx,'LineWidth',linwdt);hold on
+        plot(tx/(1000*yr2s),Hx,'LineWidth',linwdt);hold on
         grid on
         set(gca,'xscale','log','xdir','rev',...
             'FontSize',fontsz,'FontWeight',fontwg);
@@ -91,7 +91,7 @@ for isites=1:nsites
         F= strcat([nvarname,'_H_Ensemble']);
         saveas(gcf,F,plotfmt)
         figure
-        plot(tx,Wx,'LineWidth',linwdt);hold on
+        plot(tx/(1000*yr2s),Wx,'LineWidth',linwdt);hold on
         grid on
         set(gca,'xscale','log','xdir','rev',...
             'FontSize',fontsz,'FontWeight',fontwg);
@@ -149,7 +149,7 @@ for isites=1:nsites
     eval(['DAT=' nvarname ';']);[n1,n2]=size(DAT);
     save(nfilename{isites},'DAT');
     disp(strcat([' Ensemble written to ' nfilename{isites} ]));
-    tx=abs(DAT(:,1)/(1000*yr2s));
+    tx=DAT(:,1);
     Tx=DAT(:,2:3:n2);Tavg=mean(Tx,2);Tmed=median(Tx,2);
     Hx=DAT(:,3:3:n2);Havg=mean(Hx,2);Hmed=median(Hx,2);
     Wx=DAT(:,4:3:n2);Wavg=mean(Wx,2);Wmed=median(Wx,2);
@@ -159,7 +159,7 @@ for isites=1:nsites
     
     if plots
         figure
-        plot(tx,Tx,'LineWidth',linwdt);hold on
+        plot(tx/(1000*yr2s),Tx,'LineWidth',linwdt);hold on
         grid on
         set(gca,'xscale','log','xdir','rev',...
             'FontSize',fontsz,'FontWeight',fontwg);
@@ -172,7 +172,7 @@ for isites=1:nsites
         saveas(gcf,F,plotfmt)
         
         figure
-        plot(tx,Hx,'LineWidth',linwdt);hold on
+        plot(tx/(1000*yr2s),Hx,'LineWidth',linwdt);hold on
         grid on
         set(gca,'xscale','log','xdir','rev',...
             'FontSize',fontsz,'FontWeight',fontwg);
@@ -183,7 +183,7 @@ for isites=1:nsites
         F= strcat([nvarname,'_H_Ensemble']);
         saveas(gcf,F,plotfmt)
         figure
-        plot(tx,Wx,'LineWidth',linwdt);hold on
+        plot(tx/(1000*yr2s),Wx,'LineWidth',linwdt);hold on
         grid on
         set(gca,'xscale','log','xdir','rev',...
             'FontSize',fontsz,'FontWeight',fontwg);
