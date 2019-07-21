@@ -69,7 +69,7 @@ end
 
 disp(['   '])
 run='Q52_N';
-TMP=dir('ULL_TikhGCV_Q34_results.mat');
+TMP=dir('*_results.mat');
 Files={TMP.name};
 %Files={...
 % };

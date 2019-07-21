@@ -143,7 +143,7 @@ for Qb=-[40 41 42 43 44]*1e-3
     % VARIABLES SET HERE OUTSIDE OKU_INIT OVERWRITE DEFAULTS INSIDE!
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     plotit=0;
-    init_in=mstruct(plotit,Qb);
+    init_in=mstruct(plotit);
     F=[name,'_init_in'];
     save(F,'init_in');
     disp(strcat([' generate initial values for ' name]));

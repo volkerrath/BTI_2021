@@ -3,6 +3,10 @@ clear all
 close all
 clc
 
+% SET RANDOM GENERATOR
+rng('shuffle');
+%randn('state',sum(100*clock));
+
 % SET PATHS
 pltpath='./';
 datpath='./';
@@ -11,6 +15,11 @@ utlpath='../../';
 
 addpath([srcpath,filesep,'src']);
 addpath([srcpath,filesep,strcat(['tools'])]);
+
+% ONLY FOR PARRALLEL  EXECUTION
+run_parallel=1;
+parcors=   4;
+
 
 
 save('common','srcpath','utlpath','datpath','pltpath','run_parallel','parcors'),
@@ -27,14 +36,6 @@ set_graphpars
 %plotfmt='epsc2';
 plotfmt='png';
 
-% ONLY FOR PARRALLEL  EXECUTION
-run_parallel=1;
-parcors=   4;
-
-% SET RANDOM GENERATOR
-rng('shuffle');
-%randn('state',sum(100*clock));
-
 %
 site       = 'OKU';
 props       = 'oku';
@@ -42,7 +43,7 @@ prepstr       = '';
 name=[site prepstr];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PARAMETER FOR FORWARD MODEL
+% NUMERICAL PARAMETER FOR FORWARD MODEL
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 theta           =   1.;                   % time steping weight 1/FI .5/CN
 maxitnl         =   4;                    % number of nl iterations
@@ -50,15 +51,15 @@ tolnl           =   0.00001;
 relaxnl         =  1.;
 freeze          =  1;                     % include freezing/thawing
 
-numpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
-F=strcat([name,'_NumPar.mat']);
-save(F, 'numpar')
+fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
+F=strcat([name,'_fwdPar.mat']);
+save(F, 'fwdpar')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % INVERSION PARAMETER 
 % DEFINE LOGARITHMIC GSTH INVERSION GRID
 nsteps          =   24;                     % number of steps
-base            =   0.;                     % base
+base            =   0.;                   init_form           = 'points';  % base
 tstart          =  105000*yeartosec;        % from
 tend            =  10*yeartosec;            % to
 m_apr_set       = 5;                        % prior value
@@ -134,93 +135,39 @@ eval(C);
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES SET HERE OUTSIDE ULL_INIT OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-plotit=0;
+plotit=1;
 init_type='p';
-GSTH_file='OKU_Ensemble.mat';
-init_in=mstruct(plotit,init_type,GSTH_file);
+init_form= 'points';
+method = 'linear';
+GSTH_file='OKU_LGC.dat';
+init_in=mstruct(plotit,init_type,init_form,method,GSTH_file);
 F=[name,'_Init_in'];
 save(F,'init_in');
 disp(strcat([' generate initial values for ' name]));
 C=strcat([site,'_Init(name);']);eval(C);
 
-% 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% % START inversion
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
-F=strcat([name,'_FwdPar.mat']);
-save (F,'fwdpar')
-
-
-F=strcat([name,'_TimeGrid.mat']);load(F);
-[gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps);
-
-invpar=mstruct(...
-    gsth,pt,nsteps,m_apr_set,m_ini_set,...
-    diffmeth,dp,...
-    tol_solve,maxiter_solve,...
-    tol_inv,maxiter_inv,...
-    reg_opt,start_regpar,modul_regpar,mregpar_adaptint,msteps_regpar,...
-    regpar0,reg0par,reg1par,reg2par,reg_shift,...
-    relax,start_relax,modul_relax,min_relax,outsteps);
-
-F=strcat([name,'_InvPar.mat']);
-save (F,'invpar');
-
-
-Tikh_gsth(name);
-% % 
-% % 
-% % for ireg=1:length(regopts)
-% %     reg_opt=regopts{ireg};
-% %     for reg0par=[ 0.003 ];
-% %         for reg1par=logspace(-3.,2,msteps_regpar);
-% %             for reg2par=[0];
-% %                 for nsteps=[24];
-% %                     [pt,it]=set_mgsth(t,base,tstart,tend,nsteps);
-% %                     for m_apr_set=[4];
-% %                         m_ini_set=[m_apr_set];
-% %                         
-% %                         NAME=strcat([SITE,...
-% %                             '_Tikh',reg_opt,...
-% %                             '_Steps',num2str(nsteps),...
-% %                             '_Prior',num2str(m_apr_set),...
-% %                             '_Props_',PROP]);
-% %                         
-% %                         % INITIAL
-% %                         
-% %                         Tinitial= strcat([SITE,'_initial']);
-% %                         if exist('Tinitial')
-% %                             load(Tinitial);
-% %                             disp([' ']);disp([' initial condition loaded from file ',Tinitial]);
-% %                             T0=Tinit;
-% %                         else
-% %                             T0=[];
-% %                         end
-% %                         numpar=mstruct(T0,theta,maxitnl,tolnl,relaxnl,freeze);
-% %                         
-% %                         disp([' ']);disp([' ...set up site-specific parameter settings  ']);
-% %                         filename=strcat([NAME,'_invpar.mat']);
-% %                         save (filename);
-% %                         
-% %                         S=sites{whichsites(isites)}; N=NAME;P=props{isites};
-% %                         disp([' ']);disp(strcat([' generate model for ' N ]));
-% %                         C=strcat([ S ,'_Prep',prepstr,'(S,N,P);']); eval(C);
-% %                         disp([' ']);
-% %                         
-% %                         
-% %                         
-% %                         % GSTH_HybrS(SITE,NAME);
-% %                         GSTH_TikhSX(SITE,NAME,PROP);
-% %                         % rmpath([srcpath,strcat(['src/props/',PROP])]);
-% %                         %close all
-% %                     end
-% %                 end
-% %             end
-% %         end
-% %     end
-% %     
-% % end
-% % 
-% % 
+    %
+    % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % % START inversion
+    % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    
+    
+    F=strcat([name,'_TimeGrid.mat']);load(F);
+    [gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps);
+    
+    invpar=mstruct(...
+        gsth,pt,nsteps,m_apr_set,m_ini_set,...
+        diffmeth,dp,...
+        tol_solve,maxiter_solve,...
+        tol_inv,maxiter_inv,...
+        reg_opt,start_regpar,modul_regpar,mregpar_adaptint,msteps_regpar,...
+        regpar0,reg0par,reg1par,reg2par,reg_shift,...
+        relax,start_relax,modul_relax,min_relax,outsteps);
+    
+    F=strcat([name,'_InvPar.mat']);
+    save (F,'invpar');
+    
+    
+    Tikh_gsth(name);
+    

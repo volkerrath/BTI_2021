@@ -59,6 +59,7 @@ wspline=0.5;
 % VARIABLES OUTSIDE OKU_PREP OVERWRITE DEFAULTS ABOVE!
 F=strcat([name,'_Prep_in.mat']);
 if exist(F)
+    disp([mfilename ' defaults overwritten!'])
     load(F); mstruct(prep_in);
 end
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
