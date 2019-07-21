@@ -27,7 +27,7 @@ GSTH_file           = 'OKU_Ensemble.mat';
 L                   = 0;
 initial_iter        = 30;
 GST0                = 7.;
-Qb                  = -0.042;
+Qb                  = -0.038;
 POM                 = 0.;
 
 % NUMERICAL PARAMETERS
@@ -63,6 +63,8 @@ disp(strcat([' load model for ' name ]));
 F=strcat([datpath name '_SitePar.mat']);
 load(F);
 mstruct(sitepar);
+
+Qb=qb;
 
 F=[name '_Init_in.mat'];
 if exist(F)
@@ -221,7 +223,7 @@ switch lower(init_type)
             
             
             figure;
-            plot(Tinit,z,'-r','LineWidth',3);hold on
+            plot(T0,z,'-r','LineWidth',3);hold on
             grid on
             ylim(zlimits);
             ylabel('z (m)','FontSize',fontsz);

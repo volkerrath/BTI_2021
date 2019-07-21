@@ -77,6 +77,9 @@ dc = 0.5 * (dz(2:nc)+dz(1:nc-1));
 I = speye(nz,nz);
 
 T=NaN*ones(nz,nt);
+% nz
+% nt
+% whos T0
 
 T(:,1)=T0(:);
 

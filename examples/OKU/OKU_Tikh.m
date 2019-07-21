@@ -39,7 +39,7 @@ plotfmt='png';
 %
 site       = 'OKU';
 props       = 'oku';
-prepstr       = '';
+prepstr       = ['_Q36_tau1e-2'];
 name=[site prepstr];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,7 +52,7 @@ relaxnl         =  1.;
 freeze          =  1;                     % include freezing/thawing
 
 fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
-F=strcat([name,'_fwdPar.mat']);
+F=strcat([name,'_FwdPar.mat']);
 save(F, 'fwdpar')
 
 
@@ -79,7 +79,8 @@ eval(C);
 % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=0;
-prep_in=mstruct(plotit);
+Qb = -36.e-3;
+prep_in=mstruct(plotit,Qb);
 F=[name,'_Prep_in'];
 save(F,'prep_in');
 disp(strcat([' generate model for ' name]));
@@ -92,7 +93,7 @@ eval(C);
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES SET HERE OUTSIDE INIT OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-plotit=0;
+plotit=1;
 init_type='p';
 init_form= 'points';
 method = 'linear';
@@ -108,11 +109,11 @@ C=strcat([site,'_Init(name);']);eval(C);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DEFINE LOGARITHMIC GSTH INVERSION GRID
 nsteps          =   21;                     % number of steps
-base            =   0.;                   init_form           = 'points';  % base
-tstart          =  105000*yeartosec;        % from
-tend            =  10*yeartosec;            % to
-m_apr_set       = 5;                        % prior value
-m_ini_set       = 5;                        % initial value
+base            =   0.;                     % base
+tstart          =  110000*yeartosec;        % from
+tend            =  30*yeartosec;            % to
+m_apr_set       = 1;                        % prior value
+m_ini_set       = 1;                        % initial value
 
 % SENSITVITY CALCULATION PARAMETERS
 diffmeth        =   'FD';                   % how to calculate Sensitivity

@@ -4,29 +4,24 @@ close all
 clc
 
 
+% SET RANDOM GENERATOR
+rng('shuffle');
+%randn('state',sum(100*clock));
+
 % SET PATHS
 pltpath='./';
 datpath='./';
-srcpath='../';
-utlpath='../';
+srcpath='../../';
+utlpath='../../';
 
-addpath([srcpath,'src']);
-addpath([srcpath,'src/mcmc/']);
-addpath([srcpath,'tools'])
-addpath([datpath])
+addpath([srcpath,filesep,'src']);
+addpath([srcpath,filesep,strcat(['tools'])]);
 
-yeartosec=31557600;sectoyear=1/yeartosec;
+% ONLY FOR PARRALLEL  EXECUTION
+run_parallel=1;
+parcors=   4;
 
-
-parjobs=4;
-
-mypool=gcp;
-if isempty(mypool)
-    mypool=parpool(parjobs);
-else
-    delete(mypool);    
-    mypool=parpool(parjobs);
-end 
+save('common','srcpath','utlpath','datpath','pltpath','run_parallel','parcors'),
 
 
 dfmt=1;ffmt='.zip';
@@ -36,41 +31,87 @@ yeartosec=31557600;sectoyear=1/yeartosec;
 
 % BOREHOLES8
 site        = 'OKU';
-props       = lower(site);    %'oku';
+props       = lower(site);  
 
 addpath([srcpath,strcat(['src/props/',lower(props)])])
 
 
 meth        = 'DRAM';
-prepstr       = '';
-CovFun='G'; L=7;
+CovFun='G'; 
+L=3;
+prepstr       = strcat(['_GSTQ_',meth,'_',CovFun,num2str(L),'_',datestr(now,1)]);
 
+
+addpath([srcpath,strcat(['src/props/',lower(props)])])
 
 %GRAPHICS
 set_graphpars
 %plotfmt='epsc2';
 plotfmt='png';
 
-name=strcat([site prepstr,'_GSTQH_',meth,'_',CovFun,num2str(L),'_',datestr(now,1)]);
+name=strcat([site prepstr]);
 
-save('common',...
-    'srcpath','utlpath','datpath','parjobs','name');
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  NUMERICAL PARAMETERS FOR FWD SOLUTION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-theta           =   1.;         % time steping weight 1/FI .5/CN
-% NONLINEAR ITERATION
-maxitnl         =   4;                          % number of nl iterations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NUMERICAL PARAMETER FOR FORWARD MODEL
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+theta           =   1.;                   % time steping weight 1/FI .5/CN
+maxitnl         =   4;                    % number of nl iterations
 tolnl           =   0.00001;
-relaxnl           =  1.;
-freeze          =  1;                           % include freezin/thawing
+relaxnl         =  1.;
+freeze          =  1;                     % include freezing/thawing
+
+fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
+F=strcat([name,'_FwdPar.mat']);
+save(F, 'fwdpar')
 
 
-numpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
-F=strcat([name,'_NumPar.mat']);
-save (F,'numpar')
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GENERATE MESHES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% VARIABLES SET HERE OUTSIDE ULL_MESH OVERWRITE DEFAULTS INSIDE!
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+F=strcat([name,'_Mesh_in.mat']);
+set_z = 1; 
+set_t = 1;
+mesh_in=mstruct(set_z, set_t);
+save(F,'mesh_in');
+disp(strcat([' generate meshes for ' name]));
+C=strcat([site,'_Mesh(name);']);
+eval(C);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GENERATE PHYSICAL MODEL
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+plotit=0;
+prep_in=mstruct(plotit);
+F=[name,'_Prep_in'];
+save(F,'prep_in');
+disp(strcat([' generate model for ' name]));
+C=strcat([site,'_Prep(name);']);
+eval(C);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GENERATE INITIAL VALUES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% VARIABLES SET HERE OUTSIDE INIT OVERWRITE DEFAULTS INSIDE!
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+plotit=0;
+init_type='p';
+init_form= 'points';
+method = 'linear';
+GSTH_file='OKU_LGC.dat';
+init_in=mstruct(plotit,init_type,init_form,method,GSTH_file);
+F=[name,'_Init_in'];
+save(F,'init_in');
+disp(strcat([' generate initial values for ' name]));
+C=strcat([site,'_Init(name);']);eval(C);
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PARAMETER FOR INVERSION
@@ -83,55 +124,10 @@ disp([' ...set up parametrization for paleoclimate inversion  ']);
 
 nsteps          =  21;                 % number of steps
 base            =   0.;                 % base
-tstart          =  105000*yeartosec;         % from
+tstart          =  110000*yeartosec;         % from
 tend            =  30*yeartosec;             % to
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% GENERATE MESHES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE OKU_MESH OVERWRITE DEFAULTS INSIDE!
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% F=strcat([name,'_mesh_in.mat']);
-% nt = 401; nz = 301;% zend = 5000;
-% mesh_in=mstruct(nz,zend,nt,tstart,tend);
-% save(F,'Mesh_in');
-disp(strcat([' generate meshes for ' name]));
-C=strcat([site,'_Mesh(name);']);
-eval(C);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% GENERATE PHYSICAL MODEL AND DATA
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE OKU_PREP OVERWRITE DEFAULTS INSIDE!
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-plotit=0;
-prep_in=mstruct(plotit,props);
-F=[name,'_Prep_in'];
-save(F,'prep_in');
-disp(strcat([' generate model for ' name]));
-C=strcat([site,'_Prep(name);']);
-eval(C);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% GENERATE INITIAL VALUES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE OKU_INIT OVERWRITE DEFAULTS INSIDE!
-%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-disp(strcat([' generate initial values for ' name]));
-% plotit=0;
-% init_type='e';
-% GSTH0=7.;
-% POM=-4.;
-% init_in=mstruct(plotit,init_type,pom,sval,props);
-% F=[name,'_Init_in'];
-% save(F,'init_in');
-C=strcat([site,'_Init(name);']);eval(C);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % MCMC CTRL PARAMETERS
@@ -139,12 +135,17 @@ C=strcat([site,'_Init(name);']);eval(C);
 
 F=strcat([name '_SitePar.mat']);load(F);
 DATA.sitepar    = sitepar;mstruct(sitepar)
-F=strcat([name,'_NumPar.mat']);load(F);
-DATA.numpar     = numpar;
+F=strcat([name,'_FwdPar.mat']);load(F);
+DATA.numpar     = fwdpar;
 F=strcat([name,'_Init.mat']);load(F)
 DATA.initial    = Tinit;
+F=strcat([name,'_TimeGrid.mat']);load(F)
+tgrid=mstruct(t,dt);
+DATA.tgrid    = tgrid;
+F=strcat([name,'_DepthGrid.mat']);load(F)
+zgrid=mstruct(z,dz);
+DATA.zgrid    = zgrid;
 
-load([name,'_TimeGrid.mat']);
 [gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps);
 gsthpar=mstruct(gsth,pt,nsteps);
 F=strcat([name,'_GSTHPar.mat']);save (F,'gsthpar');
@@ -164,7 +165,7 @@ switch method
     case 'am'
         nsimu    = 500000; drscale  = 0; adaptint = 25000; 
     case 'dram'
-        nsimu    = 200000; drscale  = 2; adaptint = 10000; 
+        nsimu    = 250000; drscale  = 2; adaptint = 10000; 
 end
 
 
@@ -196,12 +197,13 @@ OPTIONS.residout    =  1;
 rng('shuffle');
 %randn('state',sum(100*clock));
 %
-GSTprior = 4.; GSTerr=2.5;
+GSTprior = 1.; GSTerr=5.;
 Gprior=[GSTprior*ones(nsteps,1)]; ns=length(Gprior);
 GErr=GSTerr*ones(size(Gprior(:)'));
-Qprior = 42.;QErr = 3;
+Qprior = 31.;QErr = 4;
 Hprior  = 1.5;HErr = 0.3;
-Pprior   = [Gprior'  Qprior  Hprior ];
+
+Pprior  = [Gprior'  Qprior  Hprior ];
 Perr=[ GErr QErr HErr];
 
 Pcutoff = 3.;
@@ -209,7 +211,7 @@ Pmin    = Pprior-Pcutoff*Perr;Pmax=Pprior+Pcutoff*Perr;
 Pavg    = Pprior+0.5*Perr.*randn(size(Pprior));
 
 % active parameters
-Pact    = 1*ones(size(Pavg)); Pact(ns+1)=1; Pact(ns+2)=1;
+Pact    = 1*ones(size(Pavg)); Pact(ns+1)=1; Pact(ns+2)=0;
 DATA.mactive = Pact;
 np = length(Pact);
 

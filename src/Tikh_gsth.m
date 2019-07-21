@@ -110,7 +110,7 @@ else
 end
 
 
-F=[name '_Initial.mat'];
+F=[name '_Init.mat'];
 if exist(F,'file')
     load(F)  ;
     disp([' ']);disp(['Tikh_gsth: initial conditions loaded from file ',F]);
@@ -137,8 +137,8 @@ L0 = reg1d(npar,'l0');L1 = reg1d(npar,'l1');L2 = reg1d(npar,'l2');
 disp(['   ']);disp([' ... start iteration   ']);
 theold = 1.e6;
 for iter=1:maxiter_inv
-    % SOLVE FORWARD PROBLEM
-    
+    % SOLVE FORWARD PROBLEM    
+
     dt=diff(t);nt=length(t);
     dz=diff(z);nz=length(z);
 
@@ -154,7 +154,7 @@ for iter=1:maxiter_inv
         '  rms= ',num2str(rms),...
         '  mae= ',num2str(mae),...
         '   (',name,')' ]);
-    
+
     % CALCULATE OBJECTIVE FUNCTION THETA
     m_iter(iter,:)=m;r_iter(iter,:)=r(:)';
     if iter > 1
@@ -163,7 +163,7 @@ for iter=1:maxiter_inv
             sqrt(regpar_iter(iter-1,3))*L2;
     else
         Wm=sqrt(regpar0(1))*L0+ ...
-            sqrt(regpar0(2))*L1+ ...    % SOLVE FORWARD PROBLEM
+            sqrt(regpar0(2))*L1+ ...    
             sqrt(regpar0(3))*L2;
     end
     
@@ -206,7 +206,7 @@ for iter=1:maxiter_inv
     
     J=[];
     GST=m+gts;
-    
+
     if isempty(T0)
         POM=GST(1);
         T0=heat1dns(k, kA, kB,h,p,qb,POM,dz,ip,maxitnl,tolnl,freeze,0);
@@ -224,9 +224,8 @@ for iter=1:maxiter_inv
     %
 
     if iter <= start_regpar
-        regpar=setregpar(regpar0,reg0par,reg1par,reg2par);
-        regpar_loc = regpar;
-        regpar_iter(iter,:) =  [0. 0. 0.];
+        regpar_loc = [1 1 1];
+        regpar_iter(iter,:) =  regpar_loc;
         disp([' ...solving for new par']);
         A=[Jw;...
             sqrt(regpar_loc(3))*L2; ...

@@ -21,7 +21,7 @@ dzstart=10; gfac=1.005;ngen=999;
 ztype='log';
 
 tstart= 110000*y2s;
-tend= 10*y2s;
+tend= 30*y2s;
 nt=401;
 ttype= 'log';
 dir= -1;

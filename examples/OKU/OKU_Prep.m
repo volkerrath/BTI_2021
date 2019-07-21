@@ -37,7 +37,7 @@ freeze          =  1;                     % include freezing/thawing
 zDatTop         =   100.;
 zDatBot         =   1800;
 
-Qb              =  -42e-3;
+Qb              =  -40e-3;
 Qbshift         = -0.0000;
 Qb              =   Qb+Qbshift;
 
