@@ -18,7 +18,7 @@ addpath([srcpath,filesep,strcat(['tools'])]);
 
 % ONLY FOR PARRALLEL  EXECUTION
 run_parallel=1;
-parcors=   4;
+parcors=   2;
 
 
 
@@ -27,10 +27,11 @@ save('common','srcpath','utlpath','datpath','pltpath','run_parallel','parcors'),
 
 
 dfmt=1;ffmt='.zip';
-archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
+%archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
 yeartosec=31557600;sectoyear=1/yeartosec;
 
 %GRAPHICS
+plot_results = 1;
 
 set_graphpars
 %plotfmt='epsc2';
@@ -179,4 +180,7 @@ for Qb = -[65.]*1e-3;
     
     
     Tikh_gsth(name);
+    if plot_results
+        TMP_Tikhplot
+    end
 end

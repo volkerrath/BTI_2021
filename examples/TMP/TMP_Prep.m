@@ -2,7 +2,7 @@ function [ierr]=TMP_Prep(name)
 % Site TEMPLIN
 % Prepare Data and Model for inversion
 
-global P rm
+global P rm cpm
 
 ierr = 0;
 
@@ -110,7 +110,7 @@ K = O1.data(:,3);
 POR = O1.data(:,5); 
 RHOC = O1.data(:,4)*1000;
 RHOB = O1.data(:,6)*1000;
-
+RHP = O1.data(:,13)/1000000;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -147,8 +147,10 @@ Ks = prop2cell(K,zK,z,KTop,KBot,'h')
 PORs = prop2cell(POR,zK,z,0.25,0.15,'a')
 RHOBs = prop2cell(RHOB,zK,z,2200.,2500.,'a')
 RHOCs = prop2cell(RHOC,zK,z,1700.,1700.,'a')
-
-
+RHPs = prop2cell(RHP,zK,z,600000.,1800000.,'a')
+rm = RHOBs; 
+cpm = RHOCs; 
+whos rm cpm
 %
 if plotit
     % PLOT TEMPERATURES
@@ -282,7 +284,7 @@ r=RHOBs;
 c=RHOCs;
 rc=r.*c;
 
-h = 1.0e-6*nones';
+h = RHPs;
 p = PORs;
 
 h(zm>zDatBot)=0.;

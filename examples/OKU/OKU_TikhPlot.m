@@ -68,7 +68,8 @@ else
 end
 
 disp(['   '])
-run='Q52_N';
+run='GCV - Q_b Experiment';
+%run = strrep()
 TMP=dir('*_results.mat');
 Files={TMP.name};
 %Files={...
@@ -79,8 +80,6 @@ Files={TMP.name};
 Nfiles=length(Files);
 whichfiles=[1:Nfiles];
 nfiles=length(whichfiles);
-
-% QN={'8'  '16' '24' '32' '40' '48' };
 
 INFO=fopen('INFO.dat','w');
 imodel=0;
@@ -168,7 +167,7 @@ if plot_gsth
     
     figure;
     
-    if plot_tlog,
+    if plot_tlog
         for ii=1:N
                ty=allt{ii}/year2sec+13.5;
             h(ii)=plot(-ty*tscal,allgsth{ii}+GSTSHFT,cols{ii},'LineWidth',2);hold on
@@ -193,16 +192,14 @@ if plot_gsth
 %             plot(tLut,TLut,'+b','LineWidth',1);
 %             %plot(tHist,THist,'*m','LineWidth',1);
 %         end
+
         xlim(tlimits);
         set(gca,'xdir','rev',...
             'FontSize',fontsz,'FontWeight',fontwg);
         %            'xtick',[0:2:16],...
         locl='southeast';
     end
-%    ylim(Tlimits)
-%     hl=legend(legstr,'location',locl);
-    %legendflex(h,legstr)
-    % resize_legend(hl,0.5)     
+    title(strcat([SITE,': ',run]),'FontSize',fontsz,'FontWeight',fontwg);
     legend(legstr,'location','best');
     grid on;
     xlabel('Time BP (a)');ylabel('T (C)');
@@ -224,7 +221,7 @@ if plot_resd
     ylim(zlimits);
 %     xlim([-0.225 0.075]);
     %xlim([-0.02 0.02]);
-    
+    title(strcat([SITE,': ',run]),'FontSize',fontsz,'FontWeight',fontwg);
     legend(legstr,'location','northwest');
     filename=strcat(SITE,'_RESID_',run);
     saveas(gcf,filename,plotfmt1)
@@ -243,7 +240,7 @@ if plot_grad,
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('\lambda \nabla T (K/km)','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
-    %title(strcat([SITE,' Q0']),'FontSize',fontsz,'FontWeight',fontwg);
+    title(strcat([SITE,': ',run]),'FontSize',fontsz,'FontWeight',fontwg);
     obsstr = {'observed'};
     str = [obsstr legstr];
     legend(str,'location','southwest')

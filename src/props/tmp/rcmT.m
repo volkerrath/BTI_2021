@@ -4,9 +4,10 @@ function [rcmT]=rcmT(rcm,cpm,T)
 
 global rm
 
-T=T(:);rm=rm(:); 
+T=T(:);rm=rm(:);  cpm=cpm(:); 
 
 rcmT=rm.*cpmT(cpm,T);
+
 
 
 
