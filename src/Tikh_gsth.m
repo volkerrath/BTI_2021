@@ -201,7 +201,6 @@ for iter=1:maxiter_inv
     if theold-thenew <= tol_inv(2), break; end
     if thenew < tol_inv(1), break; end
     
-    
     theold=thenew;
     disp([' ... calculate sensitivities   ']);
     

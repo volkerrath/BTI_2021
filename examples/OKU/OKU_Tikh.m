@@ -31,7 +31,7 @@ archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
 yeartosec=31557600;sectoyear=1/yeartosec;
 
 %GRAPHICS
-
+plot_results = 1;
 set_graphpars
 %plotfmt='epsc2';
 plotfmt='png';
@@ -129,16 +129,17 @@ for Qb = -[36. 38. 40. 42. 44.]*1e-3;
     tol_solve       =   0.00001;                % tolerance for solver
     maxiter_solve   =   32;                     % number of solver iterations
     tol_inv         =   [0.0001,0.00001];       % tolerance for inversion rms
+                                                % 1= min change rms / 2= min rms
     maxiter_inv     =   100;                    % maximal number of iterations
-    
+
     % REGULARIZATION PARAMETER FOR TIKHONOV
     % reg_opt           =  'UPRE';          % Unbiased Predictive Risk Estimator
     % reg_opt           =  'GCV';           % Generalized Cross-Validation
     % reg_opt           =  'MLE';           % Maximum Likelihood  (disabled)
     % reg_opt           =  'LC';            % L-Curve (disabled)
     % reg_opt         =   'FIX';            % fixed regularization parameter
-    reg_opt         =   'GCV';              % fixed regularization parameter
-    start_regpar    =    5;                  % when to start search
+    reg_opt         =   'GCV';              
+    start_regpar    =    5;                 % when to start search
     modul_regpar    =    1;                 % how often
     mregpar_adaptint =   1;
     %
@@ -153,7 +154,7 @@ for Qb = -[36. 38. 40. 42. 44.]*1e-3;
     start_relax     =   2;
     modul_relax     =   1;
     min_relax       =   0.1;
-    reg_shift=1;
+    reg_shift=0;
     
     outsteps=0;
     
@@ -179,4 +180,8 @@ for Qb = -[36. 38. 40. 42. 44.]*1e-3;
     
     
     Tikh_gsth(name);
+    
+    if plot_results
+        OKU_TikhPlot
+    end
 end
