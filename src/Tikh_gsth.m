@@ -136,6 +136,7 @@ L0 = reg1d(npar,'l0');L1 = reg1d(npar,'l1');L2 = reg1d(npar,'l2');
 % ITERATION
 disp(['   ']);disp([' ... start iteration   ']);
 theold = 1.e6;
+regbase=[1 1 1];
 for iter=1:maxiter_inv
     % SOLVE FORWARD PROBLEM    
 
@@ -224,7 +225,8 @@ for iter=1:maxiter_inv
     %
 
     if iter <= start_regpar
-        regpar_loc = [1 1 1];
+        regpar_loc = regpar0;
+        whos regpar_iter regpar
         regpar_iter(iter,:) =  regpar_loc;
         disp([' ...solving for new par']);
         A=[Jw;...
@@ -243,7 +245,7 @@ for iter=1:maxiter_inv
             disp(['   ']);
             disp([' ...test for optimal regpar using ' reg_opt]);
             % SETUP ARRAY OF REGPAR VALUES
-            regpar=setregpar(regpar0,reg0par,reg1par,reg2par);
+            regpar=setregpar(regbase,reg0par,reg1par,reg2par);
             
                    
             [lregpar,~]=size(regpar); tol_loc=tol_solve;

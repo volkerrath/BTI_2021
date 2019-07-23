@@ -39,6 +39,11 @@ plotfmt='png';
 %
 site       = 'OKU';
 props       = 'oku';
+
+
+
+
+Qb = -39.e-3;
 prepstr       = ['_Q36_tau1e-2'];
 name=[site prepstr];
 
@@ -79,7 +84,6 @@ eval(C);
 % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=0;
-Qb = -36.e-3;
 prep_in=mstruct(plotit,Qb);
 F=[name,'_Prep_in'];
 save(F,'prep_in');
@@ -93,7 +97,7 @@ eval(C);
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES SET HERE OUTSIDE INIT OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-plotit=1;
+plotit=0;
 init_type='p';
 init_form= 'points';
 method = 'linear';
@@ -138,8 +142,8 @@ modul_regpar    =    1;                 % how often
 mregpar_adaptint =   1;
 %
 msteps_regpar    =   48;                % number of test values
-regpar0=[1 1 1];
-reg0par=[0.001];                         % logspace(-1,1,10);31
+regpar0=[1 0 0];
+reg0par=[0.01];                         % logspace(-1,1,10);31
 reg1par=logspace(-3.,3,msteps_regpar);                    
 reg2par=[0];
 
