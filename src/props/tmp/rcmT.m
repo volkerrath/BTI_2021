@@ -1,9 +1,13 @@
 function [rcmT]=rcmT(rcm,cpm,T)
 % calculates heat capacity of rocks as function of temperature
+% rm ist rho von z
 
-T=T(:);rcm=rcm(:); 
+global rm
 
-rcmT=rcm.*cpmT(cpm,T)./cpm;
+T=T(:);rm=rm(:);  cpm=cpm(:); 
+
+rcmT=rm.*cpmT(cpm,T);
+
 
 
 

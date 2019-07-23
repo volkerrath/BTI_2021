@@ -9,7 +9,7 @@ function [vn] = c2n(vc,d)
 % V. R.,  Aug.15, 2001 
 
 nc=length(vc);nn=nc+1;
-
+vc = vc(:); d= d(:);
 vn(2:nn-1) = (d(2:nc).*vc(2:nc)+d(1:nc-1).*vc(1:nc-1))./ ...
                      (d(2:nc)+d(1:nc-1));
 

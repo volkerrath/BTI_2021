@@ -136,7 +136,7 @@ L0 = reg1d(npar,'l0');L1 = reg1d(npar,'l1');L2 = reg1d(npar,'l2');
 % ITERATION
 disp(['   ']);disp([' ... start iteration   ']);
 theold = 1.e6;
-regbase=[1 1 1];
+regbase=[1. 1. 1.];
 for iter=1:maxiter_inv
     % SOLVE FORWARD PROBLEM    
 
@@ -368,4 +368,3 @@ clear
 
 
 disp(['   '])
-

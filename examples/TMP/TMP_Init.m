@@ -1,4 +1,4 @@
-function [ierr]=OKU_Init(name)
+function [ierr]=TMP_Init(name)
 % Site OTUKUMPU
 % Prepare paeloclimate initial
 
@@ -18,12 +18,12 @@ zlimits             =[0 2400];
 
 % CONSTANTS
 
-site                = 'OKU';
-props               = 'oku';
+site                = 'TMP';
+props               = 'tmp';
 init_type           = 'p';
-init_form           = 'points';
+init_form           = 'steps';
 method              = 'linear';
-GSTH_file           = 'OKU_Ensemble.mat';
+GSTH_file           = 'TMP_LGC.csv';
 L                   = 0;
 initial_iter        = 30;
 GST0                = 7.;
@@ -113,9 +113,9 @@ switch lower(init_type)
     case {'p' 'prior' 'periodic'}
         if strcmp(init_form,'steps')
             % SETUP FORCING
-            PGSTH =load(GSTH_file);
-            tGSTH=PGSTH(:,1)*y2s;
-            TGSTH=PGSTH(:,2);TGSTH=[GST0; TGSTH];
+            PGSTH =load(GSTH_file); PGSTH = flipud(PGSTH);
+            tGSTH=PGSTH(:,1)*y2s; 
+            TGSTH=PGSTH(:,5);TGSTH=[TGSTH; TGSTH(end)];
             [Tgst] = set_stpgst(t,TGSTH,tGSTH,L,0);
             %
             

@@ -37,6 +37,9 @@ function [T,dT,Q,kbulk,ipor]=...
 %
 %
 % V. R., July 20, 2005
+
+global P rm cpm
+
 rref=2650;
 relax=1.;
 Lh=333600;Tf=0;w=1.;
@@ -110,7 +113,7 @@ for itime = 1:nt-1
         rhof=rhofT(Tc,Pc);
         rcf=rhof.*cpfT(Tc,Pc);
         kf=kfT(Tc);
-        rcm=rcmT(rhocm,rhocm/rref,Tc);
+        rcm=rcmT(rm,cpm,Tc);
         km=kmT(k,Tc,kA,kB);
 
         %  permafrost
