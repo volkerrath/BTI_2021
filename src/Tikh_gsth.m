@@ -226,7 +226,6 @@ for iter=1:maxiter_inv
 
     if iter <= start_regpar
         regpar_loc = regpar0;
-        whos regpar_iter regpar
         regpar_iter(iter,:) =  regpar_loc;
         disp([' ...solving for new par']);
         A=[Jw;...

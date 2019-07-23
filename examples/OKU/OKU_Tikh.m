@@ -43,8 +43,9 @@ props       = 'oku';
 
 
 
-Qb = -39.e-3;
-prepstr       = ['_Q36_tau1e-2'];
+for Qb = -[36. 38. 40. 42. 44.]*1e-3;
+    
+prepstr       = strcat( ['_Q',num2str(abs(Qb*1000.)),'_gcv'] );
 name=[site prepstr];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -178,4 +179,4 @@ save (F,'invpar');
 
 
 Tikh_gsth(name);
-
+end
