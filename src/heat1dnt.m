@@ -37,6 +37,9 @@ function [T,dT,Q,kbulk,ipor]=...
 %
 %
 % V. R., July 20, 2005
+
+global P rm
+
 rref=2650;
 relax=1.;
 Lh=333600;Tf=0;w=1.;

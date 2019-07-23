@@ -53,7 +53,7 @@ gmode={'box','mir'};
 %     lLut=strcat(['Luterbacher 2004']);
 % end
 
-GSTSHFT=7.3;
+GSTSHFT=0. %7.3;
 Tlimits=[-15 20];
 
 zlimits=[0 1800];
@@ -244,8 +244,8 @@ if plot_grad,
     xlabel('\lambda \nabla T (K/km)','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
     %title(strcat([SITE,' Q0']),'FontSize',fontsz,'FontWeight',fontwg);
-    obsstr = {'observed'}
-    str = [obsstr legstr]
+    obsstr = {'observed'};
+    str = [obsstr legstr];
     legend(str,'location','southwest')
     grid on
     filename=strcat([SITE '_Q0',]);

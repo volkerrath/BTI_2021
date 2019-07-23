@@ -12,7 +12,7 @@ y2s=3600*24*365.25;s2y=1./y2s;
 set_z = 1;
 set_t = 1;
 
-site            = 'OKU';
+site            = 'TMP';
 zstart          = 0;
 zend            = 5000;
 zlmax           = 2400;
@@ -27,7 +27,7 @@ ttype= 'log';
 dir= -1;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES OUTSIDE OKU_MESH OVERWRITE DEFAULTS ABOVE!h
+% VARIABLES OUTSIDE TMP_MESH OVERWRITE DEFAULTS ABOVE!h
 F=strcat([name,'_Mesh_in.mat']);
 if exist(F)
     disp([mfilename ' defaults overwritten!'])

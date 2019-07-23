@@ -1,6 +1,8 @@
-function [ierr]=OKU_Prep(name)
-% Site OTUKUMPU
+function [ierr]=TMP_Prep(name)
+% Site TEMPLIN
 % Prepare Data and Model for inversion
+
+global P rm
 
 ierr = 0;
 
@@ -19,8 +21,8 @@ addpath([datpath]);
 % GENERAL SETTINGS
 
 
-site             = 'OKU';
-props           = 'oku';
+site             = 'TMP';
+props           = 'tmp';
 out             = 0;
 estq            = 1;
 estq_int        = [100 200 300 400 500];
@@ -34,19 +36,19 @@ relaxnl         =  1.;
 freeze          =  1;                     % include freezing/thawing
 
 % PARAMETER FOR PREPROCESSING
-zDatTop         =   100.;
-zDatBot         =   1800;
+zDatTop         =   50.;
+zDatBot         =   1640;
 
-Qb              =  -40e-3;
+Qb              =  -70e-3;
 Qbshift         = -0.0000;
 Qb              =   Qb+Qbshift;
 
 GST0            =   0;
 POM             = -4; 
 POR             =   0.01;
-KTop            =   2.3;
-KBot            =   2.9;
-KMean           =   2.7;
+KTop            =   5;   % mean aus TC-m top 100
+KBot            =   3.6; % mean aus TC-m entire well
+KMean           =   3.6;
 ErrDeflt        =   0.1;
 
 smooth_props='m';
@@ -56,7 +58,7 @@ nspline=101;
 wspline=0.5;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES OUTSIDE OKU_PREP OVERWRITE DEFAULTS ABOVE!
+% VARIABLES OUTSIDE TMP_PREP OVERWRITE DEFAULTS ABOVE!
 F=strcat([name,'_Prep_in.mat']);
 if exist(F)
     disp([mfilename ' defaults overwritten!'])
@@ -98,22 +100,16 @@ load (meshfileT);
 step=step+1;
 disp(strcat([ ' ...>>> Step ',num2str(step),': read obs']));
 
-OT    =   importdata([datpath,'/OKU_Temp_orig.dat']);
-OK    =   importdata([datpath,'/OKU_Lamb_orig.dat']);
+O1    =   importdata([datpath,'/Gt_Tp_1.95_Annahme_Parameter.csv']);
 
-if isstruct(OT)
-    % Version 2012b
-    zT = OT.obs(:,1);
-    T = OT.obs(:,2);
-    zK = OK.obs(:,1);
-    K = OK.obs(:,2);
-else
-    % Version 2010b
-    zT = OT(:,1);
-    T = OT(:,2);
-    zK = OK(:,1);
-    K = OK(:,2);
-end
+% Version 2012b
+zT = O1.data(:,1); 
+T = O1.data(:,2); zT = zT(isfinite(T)); T = T(isfinite(T));
+zK = O1.data(:,1);
+K = O1.data(:,3);
+POR = O1.data(:,5); 
+RHOC = O1.data(:,4)*1000;
+RHOB = O1.data(:,6)*1000;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -146,30 +142,11 @@ id=find(isfinite(Ts));
 Tobs=Ts(id);zobs=z(id); nd=length(id);Tobs=Tobs';
 
 
-% BULK THERMAL CONDUCTIVITY
-iKok=K>=0.25 & K<=15; K = K(iKok); zK = zK(iKok);
-Ks=NaN(size(zm));
-for cell = 1:nc
-    incell = find(zK >= z(cell) & zK<z(cell+1));
-    if ~isempty(incell)
-        Kc=K(incell);w=ones(size(Kc));
-        Ks(cell) = vavg(Kc,w,avgmeth);
-    else
-        %         disp(strcat(['...>>> cell: ',num2str(cell),' centered at ',...
-        %                      num2str(zm(cell)),' m empty']))
-    end
-end
-
-uppval=find(isfinite(Ks),1,'first');
-if ~exist('KTop','var'), KTop=Ks(uppval);end
-Ks(1:uppval-1)=KTop;
-
-lowval=find(isfinite(Ks),1,'last');
-if ~exist('KBot','var'),KBot=Ks(lowval);end
-Ks(lowval+1:nc)=KBot;
-
-okval=find(isfinite(Ks));zi=zm(okval);Ki=Ks(okval);
-Ks=interp1(zi,Ki,zm);
+% BULK THERMAL CONDUCTIVITY, RHOB, RHOC, POR
+Ks = prop2cell(K,zK,z,KTop,KBot,'h')
+PORs = prop2cell(POR,zK,z,0.25,0.15,'a')
+RHOBs = prop2cell(RHOB,zK,z,2200.,2500.,'a')
+RHOCs = prop2cell(RHOC,zK,z,1700.,1700.,'a')
 
 
 %
@@ -297,36 +274,16 @@ gts=GST0;
 qb=Qb;
 
 k=Ks;
-kA=0.0013*nones';
-kB=0.0029*nones'; % OKU fit Kukkonen
-%kA=0.00*nones';
-%kB=0.00*nones';
+kA=0.00*nones';
+kB=0.00*nones';
 
 
-r=2800*nones';
-c=740*nones';
-%rc=r.*c;
-rc=rcl(k);  % OKU fit Kukkonen
+r=RHOBs;
+c=RHOCs;
+rc=r.*c;
 
 h = 1.0e-6*nones';
-p = 0.01*nones';
-
-z_layer=[  0,  33,  1314,  1515,  1658,  1677,  1863, 1900, 2001, 2213,  2304, 2415, 3000, 5000];
-h_sedim = 1.00e-6;
-h_metam = 1.70e-6;
-h_ophio = 1.55e-6;
-h_pegma = 6.*1.e-6;
-h_layer=[h_sedim   h_metam  h_ophio,  h_metam    h_pegma   h_metam   h_pegma   h_metam   h_pegma   h_metam  h_pegma  h_metam h_pegma];
-p_cryst = 0.02;
-p_sedim = 0.2;
-p_layer=[  p_sedim p_cryst p_cryst  p_cryst  p_cryst  p_cryst  p_cryst p_cryst  p_cryst  p_cryst p_cryst  p_cryst p_cryst];
-
-
-for ih=1:length(z_layer)-1
-    layer=find(z>=z_layer(ih) & z<z_layer(ih+1));
-    h(layer) = h_layer(ih);
-    p(layer) = p_layer(ih);
-end
+p = PORs;
 
 h(zm>zDatBot)=0.;
 

@@ -24,6 +24,9 @@ function [T,dT,kbulk,ipor] ...
 % T(1:nc+1)  		= temperatures at given time steps dt
 %
 % V. R., May 18, 2005
+
+global P rm
+
 solver='direct';
 mean='g';Tf=0;w=1;
 debug=0;

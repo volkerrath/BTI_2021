@@ -1,4 +1,4 @@
-function [ierr]=OKU_Init(name)
+function [ierr]=TMP_Init(name)
 % Site OTUKUMPU
 % Prepare paeloclimate initial
 
@@ -18,12 +18,12 @@ zlimits             =[0 2400];
 
 % CONSTANTS
 
-site                = 'OKU';
-props               = 'oku';
+site                = 'TMP';
+props               = 'tmp';
 init_type           = 'p';
 init_form           = 'points';
 method              = 'linear';
-GSTH_file           = 'OKU_Ensemble.mat';
+GSTH_file           = 'TMP_Ensemble.mat';
 L                   = 0;
 initial_iter        = 30;
 GST0                = 7.;
