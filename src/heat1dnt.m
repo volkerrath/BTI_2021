@@ -1,5 +1,5 @@
 function [T,dT,Q,kbulk,ipor]=...
-    heat1dnt(kl,kAl,kBl,hl,rcml,porl,qb,...
+    heat1dnt(kl,kAl,kBl,hl,rl,cpl,rcl,porl,qb,...
         dz,ip,dt,it,GST,T0,theta,maxiter,tol,freeze,out)
 %ADiMat BMFUNC $$=spdiags($1, $#) DIFFTO call(@spdiags, $@1, $#)
 %
@@ -38,8 +38,6 @@ function [T,dT,Q,kbulk,ipor]=...
 %
 % V. R., July 20, 2005
 
-global P rm cpm
-
 rref=2650;
 relax=1.;
 Lh=333600;Tf=0;w=1.;
@@ -55,12 +53,14 @@ it=it(:); dt=dt(:);nt=length(dt)+1;
 thetstep=theta*ones(1,nt-1);
 
 
-k=kl(ip(1:  nc));  k=k(:);             % thermal conductivity
-kA =    kAl(ip(1:  nc));  kA=kA(:);    % thermal conductivity coefficient A
-kB =    kBl(ip(1:  nc));  kB=kB(:);    % thermal conductivity coefficient B
-h  =     hl(ip(1:  nc));  h=h(:);      % heat production
-por   =  porl(ip(1:  nc));  por=por(:);        % porosity
-rhocm  = rcml(ip(1:  nc));  rhocm=rhocm(:);
+k=kl(ip(1:  nc));  k=k(:);                      % thermal conductivity
+kA      =   kAl(ip(1:  nc));   kA=kA(:);        % thermal conductivity coefficient A
+kB      =   kBl(ip(1:  nc));   kB=kB(:);        % thermal conductivity coefficient B
+r       =   rl(ip(1:  nc));     r=r(:);         % rock density
+cp      =   cpl(ip(1:  nc));    cp=cp(:);       % rock cp
+h       =   hl(ip(1:  nc));     h=h(:);         % heat production
+por     =   porl(ip(1:  nc));   por=por(:);     % porosity
+
 
 one=ones(size(ip));zero=zeros(size(ip));
 
@@ -69,7 +69,9 @@ one=ones(size(ip));zero=zeros(size(ip));
 
 % initialize time, depth and pressure
 t=[0; cumsum(dt)];
-z=[0 ;cumsum(dz)];zc=0.5*(z(1:nz-1)+z(2:nz));Pc=998.*9.81*zc;
+z=[0 ;cumsum(dz)];zc=0.5*(z(1:nz-1)+z(2:nz));
+Pcm=9.81*cumsum(dz.*r);
+Pch=9.81*cumsum(dz.*998.);
 
 GST=GST(:);T0=T0(:);
 Tlast=T0(:);Tlast(1)=GST(1);
@@ -100,26 +102,26 @@ for itime = 1:nt-1
         %        define  coefficienGST for interior poinGST
 
         if iter==1
-            Tc=(n2c(Tlast,dz));
         else
             Titer=relax*Titer+(1-relax)*Tlast;
             Tc=n2c(Titer,dz);
 
         end
-
-        Pc=9.81*rhofT(Tc,Pc).*zc;
+        
+% FLUID PROPS WITH HYDROSTATIC PRESSURE 
+        rhof=rhofT(Tc,Pch);
+        rcf=rhof.*cpfT(Tc,Pch);
+        kf=kfT(Tc,Pch);
+% ICE PROPS        
         rci=rhoiT(Tc).*cpiT(Tc);
         ki=kiT(Tc);
-        rhof=rhofT(Tc,Pc);
-        rcf=rhof.*cpfT(Tc,Pc);
-        kf=kfT(Tc);
-        rcm=rcmT(rm,cpm,Tc);
-        km=kmT(k,Tc,kA,kB);
+% MATRIX PROPS WITH LITHOSTATIC PRESSURE 
+        rcm=rcmT(rm,cpm,Tc,Pcl);
+        km=kmT(k,Tc,kA,kB,Pcl);
 
         %  permafrost
         if freeze==1,
             [gf dgf]=ftheta(Tc,Tf,w);
-            %            gf=gf';dgf=dgf';
         else
             gf=one;dgf=zero;
         end

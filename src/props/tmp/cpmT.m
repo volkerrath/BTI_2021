@@ -1,4 +1,4 @@
-function [cpmT]=cpmT(cpm,T,T0,T1)
+function [cpmT]=cpmT(cpm,T,T0,T1,P)
 % calculates heat capacity of rocks as function of temperature
 % based on Vosteen and Schellschmidt 2003 - figure 4
 % T           =  temperature in C  acording to flag unit
@@ -13,7 +13,5 @@ cpm=cpm(:);
  b = 1.0367*ones(size(T));
  Ts = T-T0;         % T ist in situ, T0 Labor (25 Grad)
  
- cpmT = a.*Ts.*Ts;
-cpmT = cpmT + b.*Ts ;
-cpmT = cpmT + cpm;
+ cpmT = a.*Ts.*Ts + b.*Ts + cpm;
  

@@ -1,5 +1,5 @@
 function [T,dT,kbulk,ipor] ...
-    = heat1dns(kl,kAl,kBl,hl,porl,qb,Ts,dz,ip,maxiter,tol,freeze,out)
+    = heat1dns(kl,kAl,kBl,hl,rl,porl,qb,Ts,dz,ip,maxiter,tol,freeze,out)
 % HEAT1DNS solves nonlinear stationary heat equation
 % for general 1D grids (permafrost included).
 %
@@ -37,7 +37,8 @@ if nargin<13, out= 'no';end
 if nargout>3,ipor=zeros(size(dz));end
 
 ip=ip(:); dz=dz(:);z=[0 ;cumsum(dz)];
-% zc=0.5*(z(1:nz-1)+z(2:nz));Pc=998.*9.81*zc;
+zc=0.5*(z(1:nz-1)+z(2:nz));
+
 
 nc=length(ip); nz=nc+1; 
 
@@ -46,8 +47,11 @@ k=kl(ip(1:  nc));  k=k(:);             % thermal conductivity
 kA =    kAl(ip(1:  nc));  kA=kA(:);    % thermal conductivity coefficient A
 kB =    kBl(ip(1:  nc));  kB=kB(:);    % thermal conductivity coefficient B
 h  =     hl(ip(1:  nc));  h=h(:);      % heat production
+r  =     rl(ip(1:  nc));  r=r(:);      % heat production 
 por   =  porl(ip(1:  nc));  por=por(:);    % porosity
 one=ones(size(ip));
+Pcl=9.81*cumsum(dz.*r);
+Pch=9.81*cumsum(dz.*998.);
 
 dc= 0.5 * (dz(2:nc,1)+dz(1:nc-1,1));
 
@@ -58,13 +62,15 @@ for iter=1:maxiter
 
     if iter==1
         km = k;ki=kiT(zeros(size(km)));
-        kf=kfT(20*ones(size(km)));
+        Pch = 9.81*cumsum(dz.*rhofT(Tc,Pch));
+
+        kf=kfT(20.*ones(size(km)),Pch);
         gf=one;
     else
         Tc=n2c(T,dz);
-
-        km=kmT(k,Tc,kA,kB);
-        ki=kiT(Tc);kf=kfT(Tc);
+        
+        km=kmT(k,Tc,kA,kB,Pcl);
+        ki=kiT(Tc);kf=kfT(Tc,Pch);n
         % permafrost
         if freeze==1,
             [gf]=ftheta(Tc,Tf,w);

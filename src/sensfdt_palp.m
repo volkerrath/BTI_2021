@@ -9,7 +9,7 @@ function[J,Tc,Ti]=sensfdt_palp(k,kA,kB,h,rc,p,qb,...
 % values given in gst(it), and heat flow density qb.
 %
 % v. r., jan 1, 2013
-global iter rm cpm
+
 tic;
 
 nz=length(dz)+1;nt=length(dt)+1;ngst=length(gst);

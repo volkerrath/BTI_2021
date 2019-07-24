@@ -1,9 +1,9 @@
-function [kf,kfw]=kfT(T,S)
+function [kf,kfw]=kfT(T,P,S)
 % [kf,kfw]=kfT(T,S,method) calculate the thermal conductivity kf in W/(m*K) of
 % formation water, given temperature in C, and salinity in mass fraction
 % (g/g)of NaCl. Thermal conductivity of freshwater, kfw is calculated using
 % the Phillips (1981) formulation. 
-% Range of validity:  20 to 330°C and up to 4 molal NaCl
+% Range of validity:  20 to 330ï¿½C and up to 4 molal NaCl
 %
 % Code  verification:
 %		INPUT:	TEMP = 298.15K	P =0.1013 MPa  S = 0.25 g/g	 
@@ -18,7 +18,7 @@ function [kf,kfw]=kfT(T,S)
 % Fortran source written written by JJAadams for Alberta Geological Survey
 % May. 2001; Matlab code V. Rath, RWTH Aachen University, April 2004
 %
-if nargin < 2, S=0. ; end
+if nargin < 3, S=0. ; end
 % normalized temperature Tr 
 Tr=(T+273.15)/273.15; 
 Tr2=Tr.*Tr; 

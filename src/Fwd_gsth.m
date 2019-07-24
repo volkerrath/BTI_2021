@@ -1,4 +1,4 @@
-function []=Tikh_gsth(name)
+function []=Fwd_gsth(name)
 % GSTH_Tikh performs paleoclimatic inversion in parameter
 % space for a single SITE
 
@@ -17,7 +17,7 @@ function []=Tikh_gsth(name)
 inv_debug=1;
 year2sec=31557600;
 
-load('common')
+load('common');
 
 % PATHS
 addpath([srcpath,'/src']);
@@ -26,6 +26,8 @@ addpath([srcpath,'/tools']);
 dfmt=1;
 %ffmt='.zip';
 %archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
+name
+dfmt 
 
 
 disp([' ']);
@@ -100,10 +102,10 @@ dt=diff(t);nt=length(t);
 dz=diff(z);nz=length(z);
 
 if isempty(T0)
-    T0=heat1dns(k, kA, kB,h,p,qb,GST(1),dz,ip,maxitnl,tolnl,freeze,out);
+    T0=heat1dns(k, kA, kB,h,r,p,qb,GST(1),dz,ip,maxitnl,tolnl,freeze,out);
 end
 
-[Tcalc,dT,Q,K]=heat1dnt(k,kA,kB,h,rc,p,qb,...
+[Tcalc,dT,Q,K]=heat1dnt(k,kA,kB,h,r,c,rc,p,qb,...
     dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,freeze,1);
 % CALCULATE RESIDUAL
 r=Tobs(:)-Tcalc(id,nt);
@@ -131,7 +133,7 @@ save(filename,'Tcalc','z','Tobs','zobs','resid','r','id','nt')
 
 S=fopen('INFO.dat','a+');
 sline=strcat([...
-    ' ',num2str(rms),'% 10.6g'),...
+    ' ',num2str(rms,'% 10.6g'),...
     ' ',num2str(mae,'%10.6g'),...
     '  Tikh',reg_opt,' ' name]);
 

@@ -143,9 +143,18 @@ for iter=1:maxiter_inv
     dt=diff(t);nt=length(t);
     dz=diff(z);nz=length(z);
 
-    [Tcalc,dTcalc,Qcalc,Tcon]=forward_solve(m,...
-        k,kA,kB,h,p,rc,ip,dz,qb,gts,...
-        it,dt,T0,theta,maxitnl,tolnl,freeze,0);
+    if isempty(T0)
+        T0=heat1dns(k, kA, kB,h,p,qb,POM,dz,ip,maxitnl,tolnl,freeze,out);
+    end
+
+    [Tcalc,dT,Q,K]=heat1dnt(k,kA,kB,h,r,c,rc,p,qb,...
+    dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,freeze,1);
+
+
+    
+%     [Tcalc,dTcalc,Qcalc,Tcon]=forward_solve(m,...
+%         k,kA,kB,h,p,rc,ip,dz,qb,gts,...
+%         it,dt,T0,theta,maxitnl,tolnl,freeze,0);
     % CALCULATE RESIDUAL
     r=Tobs(:)-Tcalc(id,nt);
     resid=r./Terr(:);
