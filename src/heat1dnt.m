@@ -185,6 +185,15 @@ for itime = 1:nt-1
         r(1) = GST(it(itime)); 
         L(1,1)=1.;
         %       solve by LU
+        [row,col]=find(L==min(nonzeros(L)));
+        A=L(row,col);
+        [row,col]=find(L==max(nonzeros(L)));
+        B=L(row,col);
+        disp([num2str(A),'    ',num2str(B)])
+%         [row,col]=find(r==min(nonzeros(r))) 
+%         r(row,col)
+%         [row,col]=find(r==max(nonzeros(r)))
+%         r(row,col)
         Tnew = (L\r);
         
         checktol=norm(Tnew-Titer,inf);

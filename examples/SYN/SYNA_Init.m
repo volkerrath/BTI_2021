@@ -23,7 +23,7 @@ props               = 'tmp';
 init_type           = 'p';
 init_form           = 'steps';
 method              = 'linear';
-GSTH_file           = 'TMP_LGC.csv';
+GSTH_file           = 'TGSTHBallingA.csv';
 L                   = 0;
 initial_iter        = 30;
 GST0                = 7.;
@@ -115,7 +115,7 @@ switch lower(init_type)
             % SETUP FORCING
             PGSTH =importdata(GSTH_file); PGSTH = flipud(PGSTH);
             tGSTH=-PGSTH(:,1)*y2s; 
-            TGSTH=PGSTH(:,5);TGSTH=[TGSTH; TGSTH(end)];
+            TGSTH=PGSTH(:,2);TGSTH=[TGSTH; TGSTH(end)];
             [Tgst] = set_stpgst(t,TGSTH,tGSTH,L,0);
             %
             

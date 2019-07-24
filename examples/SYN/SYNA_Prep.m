@@ -2,8 +2,6 @@ function [ierr]=SYN_Prep(name)
 % Site TEMPLIN
 % Prepare Data and Model for inversion
 
-global P rm cpm
-
 ierr = 0;
 
 load('common.mat')
@@ -39,7 +37,7 @@ freeze          =  1;                     % include freezing/thawing
 zDatTop         =   0;
 zDatBot         =   2000;
 
-Qb              =  -70e-3;
+Qb              =  -30*2.3253e+00;
 Qbshift         = -0.0000;
 Qb              =   Qb+Qbshift;
 
@@ -103,8 +101,8 @@ disp(strcat([ ' ...>>> Step ',num2str(step),': read obs']));
 O1    =   importdata([datpath,'/DeltaTBallingB.csv']);
 
 % Version 2012b
-zT = O1.data(:,1); 
-T = O1.data(:,4); zT = zT(isfinite(T)); T = T(isfinite(T));
+zT = O1(:,1); 
+T = O1(:,4); zT = zT(isfinite(T)); T = T(isfinite(T));
 
 N = length(T(:,1));
 L=3;
@@ -114,13 +112,8 @@ C    = chol(Cov);
 err_nor =  0.3*randn(N,1);
 err_cor =  err_nor'*C;
 
-T = T(:,4)+err_cor;
+T = T+err_cor';
 
-K = ones(size(dz))*2.3253e+00;
-POR = ones(size(dz))*0.0001; 
-RHOC = ones(size(dz))*2500;
-RHOB = ones(size(dz))*1000;
-RHP = ones(size(dz))*0.000;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -151,6 +144,13 @@ Tobs=Ts(id);zobs=z(id); nd=length(id);Tobs=Tobs';
 
 % BULK THERMAL CONDUCTIVITY, RHOB, RHOC, POR
 
+
+K = ones(size(dz))*2.3253e+00;
+POR = ones(size(dz))*0.0001; 
+RHOC = ones(size(dz))*2500;
+RHOB = ones(size(dz))*1000;
+RHP = ones(size(dz))*0.0001e-6;
+
 if plotit
     % PLOT TEMPERATURES
     figure
@@ -173,8 +173,11 @@ if plotit
     %
     % PLOT CONDUCTIVITIY
     figure
+    zK = zm;
+    K = K(:);
+    whos zK K
     plot(K,zK,'.b','LineWidth',1); hold on
-    plot(Ks,zm,'-r','LineWidth',2); hold on
+    plot(K,zm,'-r','LineWidth',2); hold on
     
     ylim([0 2750]);
     xlim([0 10]);
@@ -204,7 +207,7 @@ if estq
     Tx=Tobs;
     TG=diff(Tx)./diff(zTx);
     zG= 0.5*(zTx(1:length(zTx)-1)+zTx(2:length(zTx)));
-    Kx=Ks(id);Kx=Kx(1:length(Kx)-1)';
+    Kx=K(id);Kx=Kx(1:length(Kx)-1)';
     Qobs = Kx.*TG;
     
     
@@ -274,19 +277,17 @@ dz=diff(z);
 gts=GST0;
 qb=Qb;
 
-k=Ks;
+k=K;
 kA=0.00*nones';
 kB=0.00*nones';
 
 
-r=RHOBs;
-c=RHOCs;
+r=RHOB;
+c=RHOC;
 rc=r.*c;
 
-h = RHPs;
-p = PORs;
-
-h(zm>zDatBot)=0.;
+h = RHP;
+p = POR;
 
 % STRUCTURE DATA
 nd=length(id);
@@ -295,7 +296,7 @@ Terr=errT*ones(size(id))';
 Tcov=spdiags(Terr.^2,0,nd,nd);
 
 
-sitepar=mstruct(k,kA,kB,h,p,c,r,rc,z,ip,t,it,qb,gts,Tobs,id,zobs,Tcov,Terr,props,name);
+sitepar=mstruct(k,kA,kB,h,p,r,c,rc,z,ip,t,it,qb,gts,Tobs,id,zobs,Tcov,Terr,props,name);
 
 
 F=strcat([name '_SitePar.mat']);
