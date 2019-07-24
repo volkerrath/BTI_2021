@@ -147,7 +147,7 @@ for iter=1:maxiter_inv
         T0=heat1dns(k, kA, kB,h,p,qb,POM,dz,ip,maxitnl,tolnl,freeze,out);
     end
 
-    [Tcalc,dT,Q,K]=heat1dnt(k,kA,kB,h,r,c,rc,p,qb,...
+    [Tcalc,dTcalc,Qcalc,Tcon]=heat1dnt(k,kA,kB,h,r,c,rc,p,qb,...
     dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,freeze,1);
 
 
@@ -156,8 +156,8 @@ for iter=1:maxiter_inv
 %         k,kA,kB,h,p,rc,ip,dz,qb,gts,...
 %         it,dt,T0,theta,maxitnl,tolnl,freeze,0);
     % CALCULATE RESIDUAL
-    r=Tobs(:)-Tcalc(id,nt);
-    resid=r./Terr(:);
+    res=Tobs(:)-Tcalc(id,nt);
+    resid=res./Terr(:);
     rms=sqrt(sum(resid.*resid)/length(resid));
     mae=sum(abs(resid))/length(resid);
     disp([ ' ...... iteration ',num2str(iter-1), ...
@@ -166,7 +166,7 @@ for iter=1:maxiter_inv
         '   (',name,')' ]);
 
     % CALCULATE OBJECTIVE FUNCTION THETA
-    m_iter(iter,:)=m;r_iter(iter,:)=r(:)';
+    m_iter(iter,:)=m;r_iter(iter,:)=res(:)';
     if iter > 1
         Wm=sqrt(regpar_iter(iter-1,1))*L0+ ...
             sqrt(regpar_iter(iter-1,2))*L1+ ...
@@ -179,8 +179,8 @@ for iter=1:maxiter_inv
     
     theta_m_iter(iter) = norm(Wm*(m(:)-m_apr(:)))^2;
     Wd = spdiags(1./Terr,0,nobs,nobs);
-    theta_d_iter(iter) = norm(Wd*r)^2;
-    rms_iter(iter) = sqrt(norm(Wd*r)^2/length(r));
+    theta_d_iter(iter) = norm(Wd*res)^2;
+    rms_iter(iter) = sqrt(norm(Wd*res)^2/length(res));
     theta_iter(iter)=(theta_d_iter(iter)+theta_m_iter(iter));
     
     if iter > 1
@@ -218,14 +218,14 @@ for iter=1:maxiter_inv
 
     if isempty(T0)
         POM=GST(1);
-        T0=heat1dns(k, kA, kB,h,p,qb,POM,dz,ip,maxitnl,tolnl,freeze,0);
+        T0=heat1dns(k, kA, kB,h,r,p,qb,POM,dz,ip,maxitnl,tolnl,freeze,0);
     end
     
     if run_parallel
-        [Jb]=sensfdt_palp(k,kA,kB,h,rc,p,qb,...
+        [Jb]=sensfdt_palp(k,kA,kB,h,r,c,rc,p,qb,...
             dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,dp,freeze,0);
     else
-        [Jb]=sensfdt_pals(k,kA,kB,h,rc,p,qb,...
+        [Jb]=sensfdt_pals(k,kA,kB,h,r,c,rc,p,qb,...
             dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,dp,freeze,0);
     end
     J=[J;Jb(id,:)];[~,ms]=size(J);

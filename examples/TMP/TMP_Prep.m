@@ -156,8 +156,8 @@ if plotit
     figure
     plot(T,zT,'.b','LineWidth',1); hold on
     plot(Tobs,zobs,'-r','LineWidth',1); hold on
-    xlim([0 50]);
-    ylim([0 2750]);
+%     xlim([0 50]);
+%     ylim([0 2750]);
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('T (C)','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
@@ -175,9 +175,9 @@ if plotit
     figure
     plot(K,zK,'.b','LineWidth',1); hold on
     plot(Ks,zm,'-r','LineWidth',2); hold on
-    
-    ylim([0 2750]);
-    xlim([0 10]);
+%     
+%     ylim([0 2750]);
+%     xlim([0 10]);
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('\lambda (W m^{-1}K^{-1})','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)

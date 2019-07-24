@@ -53,7 +53,6 @@ gmode={'box','mir'};
 %     lLut=strcat(['Luterbacher 2004']);
 % end
 
-GSTSHFT=0. %7.3;
 Tlimits=[-15 20];
 
 zlimits=[0 1800];
@@ -170,7 +169,7 @@ if plot_gsth
     if plot_tlog
         for ii=1:N
                ty=allt{ii}/year2sec+13.5;
-            h(ii)=plot(-ty*tscal,allgsth{ii}+GSTSHFT,cols{ii},'LineWidth',2);hold on
+            h(ii)=plot(-ty*tscal,allgsth{ii},cols{ii},'LineWidth',2);hold on
         end
 %         if include_proxies
 %             legstr=[legstr lLut];
@@ -185,7 +184,7 @@ if plot_gsth
         locl='southeast';
     else
         for ii=1:N
-            h(ii)=plot(-ty*tscal,allgsth{ii}+GSTSHFT,cols{ii},'LineWidth',2);hold on
+            h(ii)=plot(-ty*tscal,allgsth{ii},cols{ii},'LineWidth',2);hold on
         end
 %         if include_proxies
 %             legstr=[legstr lLut];

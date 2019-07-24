@@ -127,6 +127,6 @@ for Qb = -[65.]*1e-3;
     
     Tikh_gsth(name);
     if plot_results
-        TMP_Tikhplot
+        TMP_TikhPlot
     end
 end
