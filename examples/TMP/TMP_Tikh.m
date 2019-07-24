@@ -85,7 +85,7 @@ for Qb = -[65.]*1e-3;
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    plotit=0;
+    plotit=1;
     prep_in=mstruct(plotit,Qb);
     F=[name,'_Prep_in'];
     save(F,'prep_in');
@@ -99,9 +99,9 @@ for Qb = -[65.]*1e-3;
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     % VARIABLES SET HERE OUTSIDE INIT OVERWRITE DEFAULTS INSIDE!
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    plotit=0;
+    plotit=1;
     init_type='p';
-    init_form= 'points';
+    init_form= 'steps';
     method = 'linear';
     GSTH_file='TMP_LGC.dat';
     init_in=mstruct(plotit,init_type,init_form,method,GSTH_file);
@@ -111,8 +111,13 @@ for Qb = -[65.]*1e-3;
     C=strcat([site,'_Init(name);']);eval(C);
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % INVERSION PARAMETER
+    % GENERATE INVERSION PARAMETER
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    F=[name,'_InvPar_in'];
+%    save(F,'init_in');
+%    disp(strcat([' generate initial values for ' name]));
+%    C=strcat([site,'_Init(name);']);eval(C);
+    
     % DEFINE LOGARITHMIC GSTH INVERSION GRID
     nsteps          =   21;                     % number of steps
     base            =   0.;                     % base

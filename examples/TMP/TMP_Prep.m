@@ -2,7 +2,6 @@ function [ierr]=TMP_Prep(name)
 % Site TEMPLIN
 % Prepare Data and Model for inversion
 
-global P rm cpm
 
 ierr = 0;
 
@@ -150,7 +149,7 @@ RHOCs = prop2cell(RHOC,zK,z,1700.,1700.,'a')
 RHPs = prop2cell(RHP,zK,z,600000.,1800000.,'a')
 rm = RHOBs; 
 cpm = RHOCs; 
-whos rm cpm
+
 %
 if plotit
     % PLOT TEMPERATURES
@@ -282,7 +281,7 @@ kB=0.00*nones';
 
 r=RHOBs;
 c=RHOCs;
-rc=r.*c;
+rc=[];
 
 h = RHPs;
 p = PORs;
