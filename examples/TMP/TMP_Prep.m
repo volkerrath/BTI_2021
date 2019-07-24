@@ -142,11 +142,11 @@ Tobs=Ts(id);zobs=z(id); nd=length(id);Tobs=Tobs';
 
 
 % BULK THERMAL CONDUCTIVITY, RHOB, RHOC, POR
-Ks = prop2cell(K,zK,z,KTop,KBot,'h')
-PORs = prop2cell(POR,zK,z,0.25,0.15,'a')
-RHOBs = prop2cell(RHOB,zK,z,2200.,2500.,'a')
-RHOCs = prop2cell(RHOC,zK,z,1700.,1700.,'a')
-RHPs = prop2cell(RHP,zK,z,600000.,1800000.,'a')
+Ks = prop2cell(K,zK,z,KTop,KBot,'h');
+PORs = prop2cell(POR,zK,z,0.25,0.15,'a');
+RHOBs = prop2cell(RHOB,zK,z,2200.,2500.,'a');
+RHOCs = prop2cell(RHOC,zK,z,1700.,1700.,'a');
+RHPs = prop2cell(RHP,zK,z,600000.,1800000.,'a');
 rm = RHOBs; 
 cpm = RHOCs; 
 
@@ -282,7 +282,7 @@ kB=0.00*nones';
 r=RHOBs;
 c=RHOCs;
 rc=[];
-
+whos r
 h = RHPs;
 p = PORs;
 

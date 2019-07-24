@@ -113,8 +113,8 @@ switch lower(init_type)
     case {'p' 'prior' 'periodic'}
         if strcmp(init_form,'steps')
             % SETUP FORCING
-            PGSTH =load(GSTH_file); PGSTH = flipud(PGSTH);
-            tGSTH=PGSTH(:,1)*y2s; 
+            PGSTH =importdata(GSTH_file); PGSTH = flipud(PGSTH);
+            tGSTH=-PGSTH(:,1)*y2s; 
             TGSTH=PGSTH(:,5);TGSTH=[TGSTH; TGSTH(end)];
             [Tgst] = set_stpgst(t,TGSTH,tGSTH,L,0);
             %

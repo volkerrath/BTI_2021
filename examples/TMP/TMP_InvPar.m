@@ -3,6 +3,7 @@ function [ierr]=TMP_InvPar(name)
 % Site TEMPLIN
 % Prepare Data and Model for inversion
 
+yeartosec=31557600;sectoyear=1/yeartosec;
 
 ierr = 0;
 

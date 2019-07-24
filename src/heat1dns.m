@@ -25,8 +25,6 @@ function [T,dT,kbulk,ipor] ...
 %
 % V. R., May 18, 2005
 
-global P rm
-
 solver='direct';
 mean='g';Tf=0;w=1;
 debug=0;
@@ -36,22 +34,20 @@ if nargin<12, freeze='no';  end
 if nargin<13, out= 'no';end
 if nargout>3,ipor=zeros(size(dz));end
 
+nc=length(ip); nz=nc+1; 
 ip=ip(:); dz=dz(:);z=[0 ;cumsum(dz)];
 zc=0.5*(z(1:nz-1)+z(2:nz));
-
-
-nc=length(ip); nz=nc+1; 
 
 
 k=kl(ip(1:  nc));  k=k(:);             % thermal conductivity
 kA =    kAl(ip(1:  nc));  kA=kA(:);    % thermal conductivity coefficient A
 kB =    kBl(ip(1:  nc));  kB=kB(:);    % thermal conductivity coefficient B
 h  =     hl(ip(1:  nc));  h=h(:);      % heat production
-r  =     rl(ip(1:  nc));  r=r(:);      % heat production 
+rm  =     rl(ip(1:  nc));  rm=rm(:);      % heat production 
 por   =  porl(ip(1:  nc));  por=por(:);    % porosity
 one=ones(size(ip));
-Pcl=9.81*cumsum(dz.*r);
-Pch=9.81*cumsum(dz.*998.);
+Pcl=[101325; 9.81*cumsum(dz.*rm)];Pcl=n2c(Pcl,dz);
+Pch=[101325; 9.81*cumsum(dz.*998.)];Pch=n2c(Pch,dz);
 
 dc= 0.5 * (dz(2:nc,1)+dz(1:nc-1,1));
 
@@ -62,7 +58,7 @@ for iter=1:maxiter
 
     if iter==1
         km = k;ki=kiT(zeros(size(km)));
-        Pch = 9.81*cumsum(dz.*rhofT(Tc,Pch));
+        Pch = 9.81*cumsum(dz.*rhofT(25,Pch)); %startet mit dichte von 25 grad, wird in naechster it korrigiert
 
         kf=kfT(20.*ones(size(km)),Pch);
         gf=one;
@@ -70,7 +66,7 @@ for iter=1:maxiter
         Tc=n2c(T,dz);
         
         km=kmT(k,Tc,kA,kB,Pcl);
-        ki=kiT(Tc);kf=kfT(Tc,Pch);n
+        ki=kiT(Tc);kf=kfT(Tc,Pch);
         % permafrost
         if freeze==1,
             [gf]=ftheta(Tc,Tf,w);

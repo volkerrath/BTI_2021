@@ -3,7 +3,7 @@ function [kmT]=kmT(k,T,kA,kB,P)
 % v. r. oct. 23, 2001
 
 if nargin < 2, T=20.;end
-T=T(:); P=P(:);k=k(:), kA=kA(:);kB=KB;
+T=T(:); P=P(:);k=k(:); kA=kA(:);kB=kB(:);
 
 kmT=k.*ones(size(T));
 

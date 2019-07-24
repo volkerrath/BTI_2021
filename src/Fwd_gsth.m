@@ -26,8 +26,6 @@ addpath([srcpath,'/tools']);
 dfmt=1;
 %ffmt='.zip';
 %archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
-name
-dfmt 
 
 
 disp([' ']);
@@ -42,9 +40,9 @@ end
 disp([' ']);
 
 
-if run_parallel
-    if isempty(gcp('nocreate')), parpool(parcors); end
-end
+% if run_parallel
+%     if isempty(gcp('nocreate')), parpool(parcors); end
+% end
 
 % if exist('matlabpool')==0
 % if isempty(gcp('nocreate')), parpool(parcors); end
@@ -119,7 +117,7 @@ disp([ ' ...... mae for this model  = ',num2str(mae) ]);
 %  Postpocessing
 %==========================================================================
 % if exist('matlabpool')==0
-if ~isempty(gcp('nocreate')),delete(gcp); end
+% if ~isempty(gcp('nocreate')),delete(gcp); end
 % else
 %      if matlabpool('size') ~= 0
 %         matlabpool ('close')
@@ -135,7 +133,7 @@ S=fopen('INFO.dat','a+');
 sline=strcat([...
     ' ',num2str(rms,'% 10.6g'),...
     ' ',num2str(mae,'%10.6g'),...
-    '  Tikh',reg_opt,' ' name]);
+    ' ' name]);
 
 fprintf(S,'%s \n',sline);
 fclose(S);

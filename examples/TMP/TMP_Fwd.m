@@ -18,14 +18,14 @@ addpath([srcpath,filesep,strcat(['tools'])]);
 
 % ONLY FOR PARRALLEL  EXECUTION
 run_parallel=1;
-parcors=   4;
+parcors=   2;
 
 
 save('common','srcpath','utlpath','datpath','pltpath','run_parallel','parcors'),
 
 
 dfmt=1;ffmt='.zip';
-archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
+%archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
 
 
 yeartosec=31557600;sectoyear=1/yeartosec;
@@ -58,8 +58,7 @@ save(F, 'fwdpar')
 
 outsteps=0;
 
-prepstr       = []; %['_GCV_Q' num2str(abs(Qb*1000))];
-name=[site prepstr]
+
 
 
 
@@ -98,11 +97,11 @@ eval(C);
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES SET HERE OUTSIDE ULL_INIT OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-plotit=0;
+plotit=1;
 init_type='p';
-init_form= 'points';
+init_form= 'steps';
 method = 'linear';
-GSTH_file='OKU_LGC.dat';
+GSTH_file='TMP_LGC.csv';
 init_in=mstruct(plotit,init_type,init_form,method,GSTH_file);
 F=[name,'_Init_in'];
 save(F,'init_in');

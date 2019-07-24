@@ -56,8 +56,8 @@ thetstep=theta*ones(1,nt-1);
 k=kl(ip(1:  nc));  k=k(:);                      % thermal conductivity
 kA      =   kAl(ip(1:  nc));   kA=kA(:);        % thermal conductivity coefficient A
 kB      =   kBl(ip(1:  nc));   kB=kB(:);        % thermal conductivity coefficient B
-r       =   rl(ip(1:  nc));     r=r(:);         % rock density
-cp      =   cpl(ip(1:  nc));    cp=cp(:);       % rock cp
+rm       =   rl(ip(1:  nc));     rm=rm(:);         % rock density
+cpm      =   cpl(ip(1:  nc));    cpm=cpm(:);       % rock cp
 h       =   hl(ip(1:  nc));     h=h(:);         % heat production
 por     =   porl(ip(1:  nc));   por=por(:);     % porosity
 
@@ -70,8 +70,8 @@ one=ones(size(ip));zero=zeros(size(ip));
 % initialize time, depth and pressure
 t=[0; cumsum(dt)];
 z=[0 ;cumsum(dz)];zc=0.5*(z(1:nz-1)+z(2:nz));
-Pcm=9.81*cumsum(dz.*r);
-Pch=9.81*cumsum(dz.*998.);
+Pcl=[101325; 9.81*cumsum(dz.*rm)];Pcl=n2c(Pcl,dz);
+Pch=[101325; 9.81*cumsum(dz.*998.)];Pch=n2c(Pch,dz);
 
 GST=GST(:);T0=T0(:);
 Tlast=T0(:);Tlast(1)=GST(1);
@@ -101,13 +101,10 @@ for itime = 1:nt-1
         a(1:nz)=0.;b(1:nz)=0.;c(1:nz)=0.;
         %        define  coefficienGST for interior poinGST
 
-        if iter==1
-        else
+      
             Titer=relax*Titer+(1-relax)*Tlast;
             Tc=n2c(Titer,dz);
 
-        end
-        
 % FLUID PROPS WITH HYDROSTATIC PRESSURE 
         rhof=rhofT(Tc,Pch);
         rcf=rhof.*cpfT(Tc,Pch);

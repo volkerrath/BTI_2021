@@ -103,7 +103,7 @@ for Qb = -[65.]*1e-3;
     init_type='p';
     init_form= 'steps';
     method = 'linear';
-    GSTH_file='TMP_LGC.dat';
+    GSTH_file='TMP_LGC.csv';
     init_in=mstruct(plotit,init_type,init_form,method,GSTH_file);
     F=[name,'_Init_in'];
     save(F,'init_in');
@@ -114,7 +114,7 @@ for Qb = -[65.]*1e-3;
     % GENERATE INVERSION PARAMETER
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    F=[name,'_InvPar_in'];
-   
+   invpar_in=struct();
    save(F,'invpar_in');
    disp(strcat([' generate inversion setup for ' name]));
    C=strcat([site,'_InvPar(name);']);eval(C);
