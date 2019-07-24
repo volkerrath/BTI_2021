@@ -37,9 +37,9 @@ set_graphpars
 plotfmt='png';
 
 %
-site       = 'OKU';
-props       = 'oku';
-prepstr       = '';
+site       = 'TMP';
+props       = 'tmp';
+prepstr       = '_test';
 name=[site prepstr];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
