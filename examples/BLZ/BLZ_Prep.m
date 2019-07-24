@@ -1,7 +1,8 @@
-function [ierr]=TMP_Prep(name)
+function [ierr]=BLZ_Prep(name)
 % Site TEMPLIN
 % Prepare Data and Model for inversion
 
+global P rm cpm
 
 ierr = 0;
 
@@ -20,8 +21,8 @@ addpath([datpath]);
 % GENERAL SETTINGS
 
 
-site             = 'TMP';
-props           = 'tmp';
+site             = 'BLZ';
+props           = 'blz';
 out             = 0;
 estq            = 1;
 estq_int        = [100 200 300 400 500];
@@ -36,7 +37,7 @@ freeze          =  1;                     % include freezing/thawing
 
 % PARAMETER FOR PREPROCESSING
 zDatTop         =   50.;
-zDatBot         =   1640;
+zDatBot         =   777.5;
 
 Qb              =  -70e-3;
 Qbshift         = -0.0000;
@@ -46,8 +47,8 @@ GST0            =   0;
 POM             = -4; 
 POR             =   0.01;
 KTop            =   5;   % mean aus TC-m top 100
-KBot            =   3.6; % mean aus TC-m entire well
-KMean           =   3.6;
+KBot            =   4.6; % mean aus TC-m entire well
+KMean           =   4.6;
 ErrDeflt        =   0.1;
 
 smooth_props='m';
@@ -57,7 +58,7 @@ nspline=101;
 wspline=0.5;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES OUTSIDE TMP_PREP OVERWRITE DEFAULTS ABOVE!
+% VARIABLES OUTSIDE BLZ_PREP OVERWRITE DEFAULTS ABOVE!
 F=strcat([name,'_Prep_in.mat']);
 if exist(F)
     disp([mfilename ' defaults overwritten!'])
@@ -99,7 +100,7 @@ load (meshfileT);
 step=step+1;
 disp(strcat([ ' ...>>> Step ',num2str(step),': read obs']));
 
-O1    =   importdata([datpath,'/Gt_Tp_1.95_Annahme_Parameter.csv']);
+O1    =   importdata([datpath,'/Gt_Bzg_1.96_Annahme_Parameter.csv']);
 
 % Version 2012b
 zT = O1.data(:,1); 
@@ -142,22 +143,22 @@ Tobs=Ts(id);zobs=z(id); nd=length(id);Tobs=Tobs';
 
 
 % BULK THERMAL CONDUCTIVITY, RHOB, RHOC, POR
-Ks = prop2cell(K,zK,z,KTop,KBot,'h');
-PORs = prop2cell(POR,zK,z,0.25,0.15,'a');
-RHOBs = prop2cell(RHOB,zK,z,2200.,2500.,'a');
-RHOCs = prop2cell(RHOC,zK,z,1700.,1700.,'a');
-RHPs = prop2cell(RHP,zK,z,600000.,1800000.,'a');
+Ks = prop2cell(K,zK,z,KTop,KBot,'h')
+PORs = prop2cell(POR,zK,z,0.22,0.23,'a')
+RHOBs = prop2cell(RHOB,zK,z,2300.,2567.,'a')
+RHOCs = prop2cell(RHOC,zK,z,1900.,3000.,'a')
+RHPs = prop2cell(RHP,zK,z,160000.,790000.,'a')
 rm = RHOBs; 
 cpm = RHOCs; 
-
+whos rm cpm
 %
 if plotit
     % PLOT TEMPERATURES
     figure
     plot(T,zT,'.b','LineWidth',1); hold on
     plot(Tobs,zobs,'-r','LineWidth',1); hold on
-%     xlim([0 50]);
-%     ylim([0 2750]);
+    xlim([0 50]);
+    ylim([0 2750]);
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('T (C)','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
@@ -175,9 +176,9 @@ if plotit
     figure
     plot(K,zK,'.b','LineWidth',1); hold on
     plot(Ks,zm,'-r','LineWidth',2); hold on
-%     
-%     ylim([0 2750]);
-%     xlim([0 10]);
+    
+    ylim([0 2750]);
+    xlim([0 10]);
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('\lambda (W m^{-1}K^{-1})','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
@@ -281,8 +282,8 @@ kB=0.00*nones';
 
 r=RHOBs;
 c=RHOCs;
-rc=[];
-whos r
+rc=r.*c;
+
 h = RHPs;
 p = PORs;
 
