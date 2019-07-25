@@ -19,7 +19,7 @@ addpath([datpath]);
 % GENERAL SETTINGS
 
 
-site             = 'SYNB';
+site             = 'SYNA';
 props           = 'syn';
 out             = 0;
 estq            = 1;
@@ -101,7 +101,7 @@ load (meshfileT);
 step=step+1;
 disp(strcat([ ' ...>>> Step ',num2str(step),': read obs']));
 
-O1    =   importdata([datpath,'/DeltaTBallingB.csv']);
+O1    =   importdata([datpath,'/DeltaTBallingA.csv']);
 
 % Version 2012b
 zT = O1(:,1); 

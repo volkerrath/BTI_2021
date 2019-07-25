@@ -38,7 +38,7 @@ set_graphpars
 plotfmt='png';
 
 %
-site       = 'SYNB';
+site       = 'SYNA';
 props       = 'syn';
 
 
@@ -86,7 +86,9 @@ eval(C);
 % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=1;
-prep_in=mstruct(plotit,CovType='g',ErrDeflt);
+CovType='g'; 
+ErrDeflt=0.1;
+prep_in=mstruct(plotit,CovType,ErrDeflt);
 F=[name,'_Prep_in'];
 save(F,'prep_in');
 disp(strcat([' generate model for ' name]));
