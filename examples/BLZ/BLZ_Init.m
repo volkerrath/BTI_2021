@@ -18,8 +18,8 @@ zlimits             =[0 2400];
 
 % CONSTANTS
 
-site                = 'TMP';
-props               = 'tmp';
+site                = 'BLZ';
+props               = 'blz';
 init_type           = 'p';
 init_form           = 'steps';
 method              = 'linear';

@@ -38,8 +38,8 @@ set_graphpars
 plotfmt='png';
 
 %
-site       = 'TMP';
-props       = 'tmp';
+site       = 'BLZ';
+props       = 'blz';
 
 
 

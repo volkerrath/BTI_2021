@@ -2,8 +2,6 @@ function [ierr]=BLZ_Prep(name)
 % Site TEMPLIN
 % Prepare Data and Model for inversion
 
-global P rm cpm
-
 ierr = 0;
 
 load('common.mat')
