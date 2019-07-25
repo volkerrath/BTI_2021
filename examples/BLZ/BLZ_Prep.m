@@ -35,7 +35,7 @@ relaxnl         =  1.;
 freeze          =  1;                     % include freezing/thawing
 
 % PARAMETER FOR PREPROCESSING
-zDatTop         =   50.;
+zDatTop         =   100.;
 zDatBot         =   777.5;
 
 Qb              =  -70e-3;
@@ -53,7 +53,7 @@ ErrDeflt        =   0.1;
 smooth_props='m';
 avgmeth ='h';
 smooth_data='s';
-nspline=101;
+nspline=7;
 wspline=0.5;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -142,11 +142,11 @@ Tobs=Ts(id);zobs=z(id); nd=length(id);Tobs=Tobs';
 
 
 % BULK THERMAL CONDUCTIVITY, RHOB, RHOC, POR
-Ks = prop2cell(K,zK,z,KTop,KBot,'h')
-PORs = prop2cell(POR,zK,z,0.22,0.23,'a')
-RHOBs = prop2cell(RHOB,zK,z,2300.,2567.,'a')
-RHOCs = prop2cell(RHOC,zK,z,1900.,3000.,'a')
-RHPs = prop2cell(RHP,zK,z,160000.,790000.,'a')
+Ks = prop2cell(K,zK,z,KTop,KBot,'h');
+PORs = prop2cell(POR,zK,z,0.22,0.23,'a');
+RHOBs = prop2cell(RHOB,zK,z,2300.,2567.,'a');
+RHOCs = prop2cell(RHOC,zK,z,1900.,3000.,'a');
+RHPs = prop2cell(RHP,zK,z,160000.,790000.,'a');
 rm = RHOBs; 
 cpm = RHOCs; 
 %
@@ -224,7 +224,7 @@ if estq
         % PLOT GRADIENTS
         figure
         plot(Qobs*1000,zG,'-r','LineWidth',2); hold on
-        ylim([0 2750]);
+        %ylim([0 2750]);
         set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
         xlabel('HFD T (mW/m^2)','FontSize',fontsz,'FontWeight',fontwg)
         ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
@@ -237,7 +237,7 @@ if estq
         
         figure
         plot(TG*1000,zG,'-r','LineWidth',2); hold on
-        ylim([0 2750]);
+        %ylim([0 2750]);
         set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
         xlabel('\nabla T (mW/m^2)','FontSize',fontsz,'FontWeight',fontwg)
         ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
@@ -281,7 +281,7 @@ kB=0.00*nones';
 r=RHOBs;
 c=RHOCs;
 rc=[];
-whos r
+
 h = RHPs;
 p = PORs;
 

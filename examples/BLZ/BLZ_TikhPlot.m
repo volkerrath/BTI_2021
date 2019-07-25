@@ -1,7 +1,7 @@
 % PLOT OF INVERSIONS
-clear all
-close all
-clc
+% clear all
+% close all
+% clc
 
 load common
 
@@ -12,8 +12,8 @@ addpath([srcpath,'/tools/'])
 addpath([srcpath,'/src/'])
 
 dfmt=1;ffmt='.zip';
-archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
-SITE='TMP';
+% archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
+SITE='BLZ';
 
 % LOCAL OPTIONS
 yeartosec=31557600;sectoyear=1/yeartosec;
@@ -37,7 +37,7 @@ avgmeth ='h';
 smoothpl=1;
 
 smooth_data='m';
-nsplineD=41;wsplineD=0.5;
+nsplineD=16;wsplineD=0.5;
 smoothdl=1;
 
 smooth_grads = 'm';
