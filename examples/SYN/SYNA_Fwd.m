@@ -21,36 +21,29 @@ run_parallel=1;
 parcors=   2;
 
 
-
 save('common','srcpath','utlpath','datpath','pltpath','run_parallel','parcors'),
-
 
 
 dfmt=1;ffmt='.zip';
 %archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
+
+
 yeartosec=31557600;sectoyear=1/yeartosec;
 
 %GRAPHICS
-plot_results = 1;
 
 set_graphpars
 %plotfmt='epsc2';
 plotfmt='png';
 
 %
-site       = 'SYNB';
-props       = 'syn';
-
-
-
-
-% for Qb = -[72.]*1e-3;
-
-prepstr       = strcat( ['synthetic_gcv'] );
+site       = 'TMP';
+props       = 'tmp';
+prepstr       = '_test';
 name=[site prepstr];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% NUMERICAL PARAMETER FOR FORWARD MODEL
+% PARAMETER FOR FORWARD MODEL
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 theta           =   1.;                   % time steping weight 1/FI .5/CN
 maxitnl         =   4;                    % number of nl iterations
@@ -63,15 +56,20 @@ F=strcat([name,'_FwdPar.mat']);
 save(F, 'fwdpar')
 
 
+outsteps=0;
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GENERATE MESHES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE ULL_MESH OVERWRITE DEFAULTS INSIDE!
+% VARIABLES SET HERE OUTSIDE MESH OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 F=strcat([name,'_Mesh_in.mat']);
-set_z = 1;
+set_z = 1; 
 set_t = 1;
 mesh_in=mstruct(set_z, set_t);
 save(F,'mesh_in');
@@ -85,8 +83,8 @@ eval(C);
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-plotit=1;
-prep_in=mstruct(plotit,CovType='g',ErrDeflt);
+plotit=0;
+prep_in=mstruct(plotit);
 F=[name,'_Prep_in'];
 save(F,'prep_in');
 disp(strcat([' generate model for ' name]));
@@ -97,36 +95,25 @@ eval(C);
 % GENERATE INITIAL VALUES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES SET HERE OUTSIDE INIT OVERWRITE DEFAULTS INSIDE!
+% VARIABLES SET HERE OUTSIDE ULL_INIT OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=1;
 init_type='p';
 init_form= 'steps';
 method = 'linear';
-GSTH_file='GSTHBallingA.csv';
+GSTH_file='TMP_LGC.csv';
 init_in=mstruct(plotit,init_type,init_form,method,GSTH_file);
 F=[name,'_Init_in'];
 save(F,'init_in');
 disp(strcat([' generate initial values for ' name]));
 C=strcat([site,'_Init(name);']);eval(C);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% GENERATE INVERSION PARAMETER
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-F=[name,'_InvPar_in'];
-invpar_in=struct();
-save(F,'invpar_in');
-disp(strcat([' generate inversion setup for ' name]));
-C=strcat([site,'_InvPar(name);']);eval(C);
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % START Modelling
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% RUN inversion
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-Tikh_gsth(name);
-if plot_results
-    SYNB_TikhPlot
-end
-% end
+Fwd_gsth(name);
+    
