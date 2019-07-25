@@ -101,7 +101,7 @@ plotit=1;
 init_type='p';
 init_form= 'steps';
 method = 'linear';
-GSTH_file='TMP_LGC.csv';
+GSTH_file='BLZ_LGC.csv';
 init_in=mstruct(plotit,init_type,init_form,method,GSTH_file);
 F=[name,'_Init_in'];
 save(F,'init_in');

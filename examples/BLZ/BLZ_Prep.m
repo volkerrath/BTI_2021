@@ -2,6 +2,7 @@ function [ierr]=BLZ_Prep(name)
 % Site TEMPLIN
 % Prepare Data and Model for inversion
 
+
 ierr = 0;
 
 load('common.mat')
@@ -148,15 +149,14 @@ RHOCs = prop2cell(RHOC,zK,z,1900.,3000.,'a')
 RHPs = prop2cell(RHP,zK,z,160000.,790000.,'a')
 rm = RHOBs; 
 cpm = RHOCs; 
-whos rm cpm
 %
 if plotit
     % PLOT TEMPERATURES
     figure
     plot(T,zT,'.b','LineWidth',1); hold on
     plot(Tobs,zobs,'-r','LineWidth',1); hold on
-    xlim([0 50]);
-    ylim([0 2750]);
+%     xlim([0 50]);
+%     ylim([0 2750]);
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('T (C)','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
@@ -174,9 +174,9 @@ if plotit
     figure
     plot(K,zK,'.b','LineWidth',1); hold on
     plot(Ks,zm,'-r','LineWidth',2); hold on
-    
-    ylim([0 2750]);
-    xlim([0 10]);
+%     
+%     ylim([0 2750]);
+%     xlim([0 10]);
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('\lambda (W m^{-1}K^{-1})','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
@@ -280,8 +280,8 @@ kB=0.00*nones';
 
 r=RHOBs;
 c=RHOCs;
-rc=r.*c;
-
+rc=[];
+whos r
 h = RHPs;
 p = PORs;
 

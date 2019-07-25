@@ -1,4 +1,4 @@
-function [ierr]=TMP_Init(name)
+function [ierr]=BLZ_Init(name)
 % Site OTUKUMPU
 % Prepare paeloclimate initial
 
@@ -23,7 +23,7 @@ props               = 'blz';
 init_type           = 'p';
 init_form           = 'steps';
 method              = 'linear';
-GSTH_file           = 'TMP_LGC.csv';
+GSTH_file           = 'BLZ_LGC.csv';
 L                   = 0;
 initial_iter        = 30;
 GST0                = 7.;

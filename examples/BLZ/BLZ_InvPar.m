@@ -1,4 +1,4 @@
-function [ierr]=TMP_InvPar(name)
+function [ierr]=BLZ_InvPar(name)
 
 % Site TEMPLIN
 % Prepare Data and Model for inversion
@@ -22,8 +22,8 @@ addpath([datpath]);
 % GENERAL SETTINGS
 
 %
-site       = 'TMP';
-props       = 'tmp';
+site       = 'BLZ';
+props       = 'blz';
 
 % DEFINE LOGARITHMIC GSTH INVERSION GRID
 nsteps          =   21;                     % number of steps
@@ -71,7 +71,7 @@ reg_shift=1;
 outsteps=0;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES OUTSIDE TMP_PREP OVERWRITE DEFAULTS ABOVE!
+% VARIABLES OUTSIDE BLZ_PREP OVERWRITE DEFAULTS ABOVE!
 F=strcat([name,'_InvPar_in.mat']);
 if exist(F)
     disp([mfilename ' defaults overwritten!'])
