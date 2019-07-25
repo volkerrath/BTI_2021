@@ -87,9 +87,11 @@ eval(C);
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=1;
 CovType='g'; 
-ErrDeflt=0.1;
+ErrDeflt=0.05;
 L=3;
-prep_in=mstruct(plotit,CovType,ErrDeflt,L);
+zDatTop=10;zDatBot=2000;
+prep_in=mstruct(plotit,CovType,ErrDeflt,L,zDatTop,zDatBot);
+ 
 F=[name,'_Prep_in'];
 save(F,'prep_in');
 disp(strcat([' generate model for ' name]));
