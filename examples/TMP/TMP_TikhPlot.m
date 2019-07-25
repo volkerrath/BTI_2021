@@ -37,7 +37,7 @@ avgmeth ='h';
 smoothpl=1;
 
 smooth_data='m';
-nsplineD=41;wsplineD=0.5;
+nsplineD=21;wsplineD=0.5;
 smoothdl=1;
 
 smooth_grads = 'm';

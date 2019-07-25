@@ -45,15 +45,15 @@ Qb              =   Qb+Qbshift;
 GST0            =   0;
 POM             = -4; 
 POR             =   0.01;
-KTop            =   5;   % mean aus TC-m top 100
-KBot            =   3.6; % mean aus TC-m entire well
-KMean           =   3.6;
+KTop            =   3.4;   % mean aus TC-m top 100
+KBot            =   2.4; % mean aus TC-m entire well
+KMean           =   2.4;
 ErrDeflt        =   0.1;
 
 smooth_props='m';
 avgmeth ='h';
 smooth_data='s';
-nspline=101;
+nspline=21;
 wspline=0.5;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -143,10 +143,10 @@ Tobs=Ts(id);zobs=z(id); nd=length(id);Tobs=Tobs';
 
 % BULK THERMAL CONDUCTIVITY, RHOB, RHOC, POR
 Ks = prop2cell(K,zK,z,KTop,KBot,'h');
-PORs = prop2cell(POR,zK,z,0.25,0.15,'a');
+PORs = prop2cell(POR,zK,z,0.25,0.113,'a');
 RHOBs = prop2cell(RHOB,zK,z,2200.,2500.,'a');
-RHOCs = prop2cell(RHOC,zK,z,1700.,1700.,'a');
-RHPs = prop2cell(RHP,zK,z,600000.,1800000.,'a');
+RHOCs = prop2cell(RHOC,zK,z,1700.,1900.,'a');
+RHPs = prop2cell(RHP,zK,z,660000.,1600000.,'a');
 rm = RHOBs; 
 cpm = RHOCs; 
 
