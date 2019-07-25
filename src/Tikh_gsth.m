@@ -373,7 +373,4 @@ fprintf(S,'%s \n',sline);
 fclose(S);
 
 
-clear
-
-
 disp(['   '])
