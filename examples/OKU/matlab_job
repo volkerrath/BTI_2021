@@ -1,4 +1,0 @@
-#!/usr/bin/tcsh
-# set path=(/opt/MATLAB/R2010b/bin $path)
-
-nohup matlab -nodesktop -nodisplay < $1.m >& $1.log &
