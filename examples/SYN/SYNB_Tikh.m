@@ -46,7 +46,7 @@ props       = 'syn';
 
 % for Qb = -[72.]*1e-3;
 
-prepstr       = strcat( ['synthetic_gcv'] );
+prepstr       = strcat( ['_synthetic_gcv'] );
 name=[site prepstr];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,7 +88,8 @@ eval(C);
 plotit=1;
 CovType='g'; 
 ErrDeflt=0.1;
-prep_in=mstruct(plotit,CovType,ErrDeflt);
+L=3;
+prep_in=mstruct(plotit,CovType,ErrDeflt,L);
 F=[name,'_Prep_in'];
 save(F,'prep_in');
 disp(strcat([' generate model for ' name]));
