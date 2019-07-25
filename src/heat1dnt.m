@@ -53,7 +53,7 @@ it=it(:); dt=dt(:);nt=length(dt)+1;
 thetstep=theta*ones(1,nt-1);
 
 
-k=kl(ip(1:  nc));  k=k(:);                      % thermal conductivity
+k       =   kl(ip(1:  nc));     k=k(:);                      % thermal conductivity
 kA      =   kAl(ip(1:  nc));   kA=kA(:);        % thermal conductivity coefficient A
 kB      =   kBl(ip(1:  nc));   kB=kB(:);        % thermal conductivity coefficient B
 rm       =   rl(ip(1:  nc));     rm=rm(:);         % rock density
@@ -69,7 +69,11 @@ one=ones(size(ip));zero=zeros(size(ip));
 
 % initialize time, depth and pressure
 t=[0; cumsum(dt)];
-z=[0 ;cumsum(dz)];zc=0.5*(z(1:nz-1)+z(2:nz));
+z=[0 ;cumsum(dz)];
+
+%disp([mfilename '    spatial mesh: ',num2str(nz),' temporal mesh:',num2str(nz)]);
+
+zc=0.5*(z(1:nz-1)+z(2:nz));
 Pcl=[101325; 9.81*cumsum(dz.*rm)];Pcl=n2c(Pcl,dz);
 Pch=[101325; 9.81*cumsum(dz.*998.)];Pch=n2c(Pch,dz);
 
@@ -185,11 +189,11 @@ for itime = 1:nt-1
         r(1) = GST(it(itime)); 
         L(1,1)=1.;
         %       solve by LU
-        [row,col]=find(L==min(nonzeros(L)));
-        A=L(row,col);
-        [row,col]=find(L==max(nonzeros(L)));
-        B=L(row,col);
-        disp([num2str(A),'    ',num2str(B)])
+%         [row,col]=find(L==min(nonzeros(L)));
+%         A=L(row,col);
+%         [row,col]=find(L==max(nonzeros(L)));
+%         B=L(row,col);
+%         disp([num2str(A),'    ',num2str(B)])
 %         [row,col]=find(r==min(nonzeros(r))) 
 %         r(row,col)
 %         [row,col]=find(r==max(nonzeros(r)))

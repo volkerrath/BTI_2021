@@ -113,9 +113,11 @@ switch lower(init_type)
     case {'p' 'prior' 'periodic'}
         if strcmp(init_form,'steps')
             % SETUP FORCING
-            PGSTH =importdata(GSTH_file); PGSTH = flipud(PGSTH);
+            PGSTH =importdata(GSTH_file); 
+            PGSTH = flipud(PGSTH);
             tGSTH=-PGSTH(:,1)*y2s; 
-            TGSTH=PGSTH(:,2);TGSTH=[TGSTH; TGSTH(end)];
+            TGSTH=PGSTH(:,2);
+            TGSTH=[TGSTH; TGSTH(end)];
             [Tgst] = set_stpgst(t,TGSTH,tGSTH,L,0);
             %
             
@@ -188,8 +190,8 @@ switch lower(init_type)
             tscal = 1.; % 1e-3;1
             plot(-ty(:)*tscal,[Tgst(:)] ,'-b','LineWidth',3);hold on
             grid on;
-            xlim([20 150000]);
-            ylim([-15 20]);
+            xlim([3 120000]);
+            ylim([-10 10]);
             TXT=strcat([name,'/',props,' Uniform']);
             textloc(TXT,'south','FontSize',0.5*fontsz,'FontWeight',fontwg);
             xlabel('Time BP/2000 (a)');ylabel('\Delta T (K)');

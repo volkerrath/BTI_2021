@@ -38,6 +38,7 @@ nc=length(ip); nz=nc+1;
 ip=ip(:); dz=dz(:);z=[0 ;cumsum(dz)];
 zc=0.5*(z(1:nz-1)+z(2:nz));
 
+% disp([mfilename '    spatial mesh: ',num2str(nz)]);
 
 k=kl(ip(1:  nc));  k=k(:);             % thermal conductivity
 kA =    kAl(ip(1:  nc));  kA=kA(:);    % thermal conductivity coefficient A

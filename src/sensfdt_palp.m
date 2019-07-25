@@ -11,7 +11,6 @@ function[J,Tc,Ti]=sensfdt_palp(k,kA,kB,h,r,c,rc,p,qb,...
 % v. r., jan 1, 2013
 
 tic;
-
 nz=length(dz)+1;nt=length(dt)+1;ngst=length(gst);
 J = 0*ones(nz,ngst+1);
 dTref=1;del=dp*dTref;

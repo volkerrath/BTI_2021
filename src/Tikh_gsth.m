@@ -144,7 +144,7 @@ for iter=1:maxiter_inv
     dz=diff(z);nz=length(z);
 
     if isempty(T0)
-        T0=heat1dns(k, kA, kB,h,p,qb,POM,dz,ip,maxitnl,tolnl,freeze,out);
+        T0=heat1dns(k, kA, kB,r,h,p,qb,POM,dz,ip,maxitnl,tolnl,freeze,out);
     end
 
     [Tcalc,dTcalc,Qcalc,Tcon]=heat1dnt(k,kA,kB,h,r,c,rc,p,qb,...
@@ -261,7 +261,7 @@ for iter=1:maxiter_inv
             r_itr=r_iter(iter,:);reg_loc=reg_opt;
                         
             locpar=mstruct(k,kA,kB,h,p,c,r,rc,ip,dz,qb,gts,...
-                it,dt,T0,theta,maxitnl,tolnl,freeze,Tobs,id,r_itr,Terr);
+                it,dt,T0,theta,maxitnl,tolnl,freeze,r,c,rc,Tobs,id,r_itr,Terr);
             
             parfor L=1:lregpar
 

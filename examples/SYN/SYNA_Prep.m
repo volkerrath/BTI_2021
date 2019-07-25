@@ -37,7 +37,7 @@ freeze          =  1;                     % include freezing/thawing
 zDatTop         =   0;
 zDatBot         =   2000;
 
-Qb              =  -30*2.3253e+00;
+Qb              =  -30*2.3253e+00*1e-3;
 Qbshift         = -0.0000;
 Qb              =   Qb+Qbshift;
 
@@ -90,7 +90,7 @@ load (meshfileZ);
 meshfileT=[name,'_TimeGrid'];
 load (meshfileT);
 
-
+% disp([mfilename '    spatial mesh: ',num2str(nz),' temporal mesh:',num2str(nt)]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % STEP: READ & PREPROCESS DATA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -175,12 +175,11 @@ if plotit
     figure
     zK = zm;
     K = K(:);
-    whos zK K
     plot(K,zK,'.b','LineWidth',1); hold on
     plot(K,zm,'-r','LineWidth',2); hold on
     
-    ylim([0 2750]);
-    xlim([0 10]);
+    %ylim([0 2750]);
+    %xlim([0 10]);
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('\lambda (W m^{-1}K^{-1})','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
@@ -228,7 +227,7 @@ if estq
         % PLOT GRADIENTS
         figure
         plot(Qobs*1000,zG,'-r','LineWidth',2); hold on
-        ylim([0 2750]);
+        %ylim([0 2750]);
         set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
         xlabel('HFD T (mW/m^2)','FontSize',fontsz,'FontWeight',fontwg)
         ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)

@@ -94,9 +94,10 @@ if set_t
         otherwise
             disp([' ']);disp([' ...spatial mesh ',ztype,' not implemented!']);
     end
-    
+  
     F=strcat([name '_TimeGrid']);
     save(F,'t','dt','nt','it','tm')
     disp([' ...temporal mesh written to: ', F]);
-    
+%     
+%    disp([mfilename '    spatial mesh: ',num2str(nz),' temporal mesh:',num2str(nt)]);
 end
