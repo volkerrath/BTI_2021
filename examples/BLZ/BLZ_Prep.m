@@ -35,7 +35,7 @@ relaxnl         =  1.;
 freeze          =  1;                     % include freezing/thawing
 
 % PARAMETER FOR PREPROCESSING
-zDatTop         =   50.;
+zDatTop         =   100.;
 zDatBot         =   777.5;
 
 Qb              =  -70e-3;
@@ -53,7 +53,7 @@ ErrDeflt        =   0.1;
 smooth_props='m';
 avgmeth ='h';
 smooth_data='s';
-nspline=101;
+nspline=7;
 wspline=0.5;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -224,7 +224,7 @@ if estq
         % PLOT GRADIENTS
         figure
         plot(Qobs*1000,zG,'-r','LineWidth',2); hold on
-        ylim([0 2750]);
+        %ylim([0 2750]);
         set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
         xlabel('HFD T (mW/m^2)','FontSize',fontsz,'FontWeight',fontwg)
         ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
@@ -237,7 +237,7 @@ if estq
         
         figure
         plot(TG*1000,zG,'-r','LineWidth',2); hold on
-        ylim([0 2750]);
+        %ylim([0 2750]);
         set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
         xlabel('\nabla T (mW/m^2)','FontSize',fontsz,'FontWeight',fontwg)
         ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
@@ -281,7 +281,7 @@ kB=0.00*nones';
 r=RHOBs;
 c=RHOCs;
 rc=[];
-whos r
+
 h = RHPs;
 p = PORs;
 

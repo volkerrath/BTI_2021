@@ -67,9 +67,9 @@ else
 end
 
 disp(['   '])
-run='Synthetic - Balling mod B';
+run='Synthetic - Balling mod A';
 %run = strrep()
-TMP=dir('*_results.mat');
+TMP=dir('SYNA_*_results.mat');
 Files={TMP.name};
 %Files={...
 % };
