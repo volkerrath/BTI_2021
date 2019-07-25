@@ -1,7 +1,7 @@
 % PLOT OF INVERSIONS
-clear all
-close all
-clc
+% clear all
+% close all
+% clc
 
 load common
 
@@ -37,7 +37,7 @@ avgmeth ='h';
 smoothpl=1;
 
 smooth_data='m';
-nsplineD=21;wsplineD=0.5;
+nsplineD=101;wsplineD=0.5;
 smoothdl=1;
 
 smooth_grads = 'm';

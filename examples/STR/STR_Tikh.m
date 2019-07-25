@@ -38,13 +38,13 @@ set_graphpars
 plotfmt='png';
 
 %
-site       = 'TMP';
-props       = 'tmp';
+site       = 'STR';
+props       = 'str';
 
 
 
 
-for Qb = -[72.]*1e-3;
+for Qb = -[90]*1e-3;
     
     prepstr       = strcat( ['_Q',num2str(abs(Qb*1000.)),'_gcv'] );
     name=[site prepstr];
@@ -103,7 +103,7 @@ for Qb = -[72.]*1e-3;
     init_type='p';
     init_form= 'steps';
     method = 'linear';
-    GSTH_file='TMP_LGC.csv';
+    GSTH_file='STR_LGC.csv';
     init_in=mstruct(plotit,init_type,init_form,method,GSTH_file);
     F=[name,'_Init_in'];
     save(F,'init_in');
@@ -127,6 +127,6 @@ for Qb = -[72.]*1e-3;
     
     Tikh_gsth(name);
     if plot_results
-        TMP_TikhPlot
+        STR_TikhPlot
     end
 end

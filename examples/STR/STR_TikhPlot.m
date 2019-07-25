@@ -1,7 +1,7 @@
 % PLOT OF INVERSIONS
-clear all
-close all
-clc
+% clear all
+% close all
+% clc
 
 load common
 

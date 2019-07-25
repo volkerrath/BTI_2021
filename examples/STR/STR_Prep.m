@@ -1,4 +1,4 @@
-function [ierr]=TMP_Prep(name)
+function [ierr]=STR_Prep(name)
 % Site TEMPLIN
 % Prepare Data and Model for inversion
 
@@ -20,8 +20,8 @@ addpath([datpath]);
 % GENERAL SETTINGS
 
 
-site             = 'TMP';
-props           = 'tmp';
+site             = 'STR';
+props           = 'str';
 out             = 0;
 estq            = 1;
 estq_int        = [100 200 300 400 500];
@@ -36,7 +36,7 @@ freeze          =  1;                     % include freezing/thawing
 
 % PARAMETER FOR PREPROCESSING
 zDatTop         =   50.;
-zDatBot         =   1640;
+zDatBot         =   1620;
 
 Qb              =  -70e-3;
 Qbshift         = -0.0000;
@@ -45,9 +45,9 @@ Qb              =   Qb+Qbshift;
 GST0            =   0;
 POM             = -4; 
 POR             =   0.01;
-KTop            =   5;   % mean aus TC-m top 100
-KBot            =   3.6; % mean aus TC-m entire well
-KMean           =   3.6;
+KTop            =   3.5;   % mean aus TC-m top 100
+KBot            =   5.5; % mean aus TC-m entire well
+KMean           =   5.5;
 ErrDeflt        =   0.1;
 
 smooth_props='m';
@@ -57,7 +57,7 @@ nspline=101;
 wspline=0.5;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% VARIABLES OUTSIDE TMP_PREP OVERWRITE DEFAULTS ABOVE!
+% VARIABLES OUTSIDE STR_PREP OVERWRITE DEFAULTS ABOVE!
 F=strcat([name,'_Prep_in.mat']);
 if exist(F)
     disp([mfilename ' defaults overwritten!'])
@@ -99,7 +99,7 @@ load (meshfileT);
 step=step+1;
 disp(strcat([ ' ...>>> Step ',num2str(step),': read obs']));
 
-O1    =   importdata([datpath,'/Gt_Tp_1.95_Annahme_Parameter.csv']);
+O1    =   importdata([datpath,'/Gt_Ss_2.85_Annahme_Parameter.csv']);
 
 % Version 2012b
 zT = O1.data(:,1); 
@@ -143,10 +143,10 @@ Tobs=Ts(id);zobs=z(id); nd=length(id);Tobs=Tobs';
 
 % BULK THERMAL CONDUCTIVITY, RHOB, RHOC, POR
 Ks = prop2cell(K,zK,z,KTop,KBot,'h');
-PORs = prop2cell(POR,zK,z,0.25,0.15,'a');
-RHOBs = prop2cell(RHOB,zK,z,2200.,2500.,'a');
-RHOCs = prop2cell(RHOC,zK,z,1700.,1700.,'a');
-RHPs = prop2cell(RHP,zK,z,600000.,1800000.,'a');
+PORs = prop2cell(POR,zK,z,0.075,0.26,'a');
+RHOBs = prop2cell(RHOB,zK,z,2500.,2200.,'a');
+RHOCs = prop2cell(RHOC,zK,z,1800.,1600.,'a');
+RHPs = prop2cell(RHP,zK,z,350000.,650000.,'a');
 rm = RHOBs; 
 cpm = RHOCs; 
 

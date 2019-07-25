@@ -53,7 +53,7 @@ ErrDeflt        =   0.1;
 smooth_props='m';
 avgmeth ='h';
 smooth_data='s';
-nspline=21;
+nspline=101;
 wspline=0.5;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

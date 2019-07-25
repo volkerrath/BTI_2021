@@ -44,7 +44,7 @@ props       = 'tmp';
 
 
 
-for Qb = -[80. 85. 90.]*1e-3
+for Qb = -[ 83.]*1e-3
     
     prepstr       = strcat( ['_Q',num2str(abs(Qb*1000.)),'_gcv'] );
     
@@ -127,6 +127,7 @@ for Qb = -[80. 85. 90.]*1e-3
     
     
     Tikh_gsth(name);
+    
     if plot_results
         TMP_TikhPlot
     end
