@@ -87,7 +87,10 @@ props       = 'syn';
 
 
 
-for Qb = -[26. 28. 30. 32. 34.]*2.3253*1e-3;
+Gb = [26. 28. 30. 32. 34.];
+
+for Qb = -Gb*2.3253*1e-3;
+    
     
     
     prepstr       = strcat( ['_synthetic_Q',num2str(-Qb*1000,'%.2g')] );
