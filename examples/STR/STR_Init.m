@@ -1,4 +1,4 @@
-function [ierr]=TMP_Init(name)
+function [ierr]=STR_Init(name)
 % Site OTUKUMPU
 % Prepare paeloclimate initial
 
@@ -18,12 +18,12 @@ zlimits             =[0 2400];
 
 % CONSTANTS
 
-site                = 'TMP';
-props               = 'tmp';
+site                = 'STR';
+props               = 'str';
 init_type           = 'p';
 init_form           = 'steps';
 method              = 'linear';
-GSTH_file           = 'TMP_LGC.csv';
+GSTH_file           = 'STR_LGC.csv';
 L                   = 0;
 initial_iter        = 30;
 GST0                = 7.;

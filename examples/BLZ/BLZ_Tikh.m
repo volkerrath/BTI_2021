@@ -44,11 +44,11 @@ props       = 'blz';
 
 
 
-for Qb = -[90]*1e-3;
+for Qb = -[92.]*1e-3;
     
     prepstr       = strcat( ['_Q',num2str(abs(Qb*1000.)),'_gcv'] );
     name=[site prepstr];
-    
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % NUMERICAL PARAMETER FOR FORWARD MODEL
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,13 +57,13 @@ for Qb = -[90]*1e-3;
     tolnl           =   0.00001;
     relaxnl         =  1.;
     freeze          =  1;                     % include freezing/thawing
-    
+
     fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
     F=strcat([name,'_FwdPar.mat']);
     save(F, 'fwdpar')
-    
-    
-    
+
+
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % GENERATE MESHES
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,7 +78,7 @@ for Qb = -[90]*1e-3;
     disp(strcat([' generate meshes for ' name]));
     C=strcat([site,'_Mesh(name);']);
     eval(C);
-    
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % GENERATE PHYSICAL MODEL
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,7 +92,7 @@ for Qb = -[90]*1e-3;
     disp(strcat([' generate model for ' name]));
     C=strcat([site,'_Prep(name);']);
     eval(C);
-    
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % GENERATE INITIAL VALUES
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -109,7 +109,7 @@ for Qb = -[90]*1e-3;
     save(F,'init_in');
     disp(strcat([' generate initial values for ' name]));
     C=strcat([site,'_Init(name);']);eval(C);
-    
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % GENERATE INVERSION PARAMETER
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -119,12 +119,12 @@ for Qb = -[90]*1e-3;
    disp(strcat([' generate inversion setup for ' name]));
    C=strcat([site,'_InvPar(name);']);eval(C);
     site
-    
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % RUN inversion
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     site
-    
+
     Tikh_gsth(name);
     site
 end

@@ -12,7 +12,7 @@ y2s=3600*24*365.25;s2y=1./y2s;
 set_z = 1;
 set_t = 1;
 
-site            = 'TMP';
+site            = 'STR';
 zstart          = 0;
 zend            = 5000;
 zlmax           = 2400;
