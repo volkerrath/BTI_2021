@@ -34,7 +34,7 @@ relaxnl         =  1.;
 freeze          =  1;                     % include freezing/thawing
 
 % PARAMETER FOR PREPROCESSING
-zDatTop         =   0;
+zDatTop         =   50;
 zDatBot         =   2000;
 
 Qb              =  -30*2.3253e+00*1e-3;
@@ -48,6 +48,9 @@ KTop            =   2.3253e+00;   % mean aus TC-m top 100
 KBot            =   2.3253e+00; % mean aus TC-m entire well
 KMean           =   2.3253e+00;
 ErrDeflt        =   0.1;
+L=3;
+CovType = 'g';
+
 
 smooth_props='m';
 avgmeth ='h';
@@ -105,8 +108,22 @@ zT = O1(:,1);
 T = O1(:,4); zT = zT(isfinite(T)); T = T(isfinite(T));
 
 N = length(T(:,1));
-L=3;
+
 Err = ErrDeflt;
+switch lower(CovType)
+    case{'e' 'markov' 'exponential'}
+        Cov=CovarExpnl(Err*ones(N,1),L);
+    case{'g' 'gauss'}
+         Cov=CovarGauss(Err*ones(N,1),L);
+%     case{'m' 'matern'}
+%         Cov=CovarMatern(Err*ones(N,1),L);
+    otherwise
+        error([lower(CovFun), ' not implemented. STOP']);
+end
+
+
+
+
 Cov=CovarGauss(Err*ones(N,1),L);
 C    = chol(Cov);
 err_nor =  0.3*randn(N,1);
