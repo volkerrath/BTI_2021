@@ -13,7 +13,7 @@ addpath([srcpath,'/src/'])
 
 dfmt=1;ffmt='.zip';
 archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
-SITE='TMP';
+SITE='SYN';
 
 % LOCAL OPTIONS
 yeartosec=31557600;sectoyear=1/yeartosec;
@@ -67,7 +67,7 @@ else
 end
 
 disp(['   '])
-run='GCV - Q_b Experiment';
+run='Synthetic - Balling mod B';
 %run = strrep()
 TMP=dir('*_results.mat');
 Files={TMP.name};
