@@ -6,11 +6,11 @@ function [cpmT]=cpmT(cpm,T,P,T0,T1)
 if nargin < 4, T0=25.;T1=800; end
 
 T=T(:);
-cpm=cpm(:);
+cpmT=cpm(:);
 
- a = -0.0015*ones(size(T));
- b = 1.0367*ones(size(T));
- Ts = T-T0;         % T ist in situ, T0 Labor (25 Grad)
- 
- cpmT = a.*Ts.*Ts + b.*Ts + cpm;
+%  a = -0.0015*ones(size(T));
+%  b = 1.0367*ones(size(T));
+%  Ts = T-T0;         % T ist in situ, T0 Labor (25 Grad)
+%  
+%  cpmT = a.*Ts.*Ts + b.*Ts + cpm;
  

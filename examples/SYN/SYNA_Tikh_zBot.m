@@ -165,7 +165,7 @@ for zDatBot = [500 1000  1500 2000 2500];
     % GENERATE INVERSION PARAMETER
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     F=[name,'_InvPar_in'];
-    invpar_in=struct();
+    invpar_in=struct();Jan Schlaudraff 
     save(F,'invpar_in');
     disp(strcat([' generate inversion setup for ' name]));
     C=strcat([site,'_InvPar(name);']);eval(C);
