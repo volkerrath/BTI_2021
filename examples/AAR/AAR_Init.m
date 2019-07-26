@@ -1,5 +1,5 @@
 function [ierr]=AAR_Init(name)
-% Site OTUKUMPU
+% Site AARS
 % Prepare paeloclimate initial
 
 ierr = 0;
@@ -114,7 +114,7 @@ switch lower(init_type)
         if strcmp(init_form,'steps')
             % SETUP FORCING
             PGSTH =importdata(GSTH_file); PGSTH = flipud(PGSTH);
-            tGSTH=-PGSTH(:,1)*y2s; 
+            tGSTH=-PGSTH(:,1)*y2s;
             TGSTH=PGSTH(:,5);TGSTH=[TGSTH; TGSTH(end)];
             [Tgst] = set_stpgst(t,TGSTH,tGSTH,L,0);
             %
@@ -126,8 +126,8 @@ switch lower(init_type)
                     Tin=Tgst(1)+POM;
                     T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
                     Tinit = T0;
-%                     Tref=Tgst(length(Tgst));
-%                     Tr=heat1dns(k, kA, kB,h,p,Qb,Tref,dz,ip,maxitnl,tolnl,freeze,out);
+                    %                     Tref=Tgst(length(Tgst));
+                    %                     Tr=heat1dns(k, kA, kB,h,p,Qb,Tref,dz,ip,maxitnl,tolnl,freeze,out);
                 end
                 
                 GST=Tgst;
@@ -141,21 +141,66 @@ switch lower(init_type)
                     num2str(norm((T0(:)-T0old(:))/T0(:),'inf'))]);
             end
             
-             
+            if plotit
+                figure
+                ty= t*s2y;
+                tscal = 1.; % 1e-3;1
+                plot(-ty(:)*tscal,[Tgst(:)] ,'-b','LineWidth',3);hold on
+                grid on;
+                xlim([20 150000]);
+                ylim([-15 20]);
+                TXT=strcat([name,'/',props,' Uniform']);
+                textloc(TXT,'south','FontSize',0.5*fontsz,'FontWeight',fontwg);
+                xlabel('Time BP/2000 (a)');ylabel('\Delta T (K)');
+                
+                set(gca,'xscale','lin','xdir','rev',...
+                    'FontSize',fontsz,'FontWeight',fontwg);
+                S=strcat([name,'_GLinGSTH']);
+                saveas(gcf,S,plotfmt)
+                
+                set(gca,'xscale','log','xdir','rev',...
+                    'xtick',[10 100 1000 10000 100000],...
+                    'FontSize',fontsz,'FontWeight',fontwg);
+                S=strcat([name,'_GLogGSTH']);
+                saveas(gcf,S,plotfmt);
+            end
         elseif strcmp(init_form,'points')
- 
+            
             DGSTH =load(GSTH_file);
-            tx = DGSTH(:,1)*y2s; 
+            tx = DGSTH(:,1)*y2s;
             Tavg =  DGSTH(:,2);
-
+            
             [Tgst]=set_pntgst(t,tx,Tavg,method,debug);
             
+            if plotit
+                figure
+                ty= t*s2y;
+                tscal = 1.; % 1e-3;1
+                plot(-ty(:)*tscal,[Tgst(:)] ,'-b','LineWidth',3);hold on
+                grid on;
+                xlim([20 150000]);
+                ylim([-15 20]);
+                TXT=strcat([name,'/',props,' Uniform']);
+                textloc(TXT,'south','FontSize',0.5*fontsz,'FontWeight',fontwg);
+                xlabel('Time BP/2000 (a)');ylabel('\Delta T (K)');
+                
+                set(gca,'xscale','lin','xdir','rev',...
+                    'FontSize',fontsz,'FontWeight',fontwg);
+                S=strcat([name,'_GLinGSTH']);
+                saveas(gcf,S,plotfmt)
+                
+                set(gca,'xscale','log','xdir','rev',...
+                    'xtick',[10 100 1000 10000 100000],...
+                    'FontSize',fontsz,'FontWeight',fontwg);
+                S=strcat([name,'_GLogGSTH']);
+                saveas(gcf,S,plotfmt);
+            end
             
-%              plot(tx*s2y/1000,Tavg,'ob')
-%              grid on
-%              hold on
-% 
-%              plot(t*s2y/1000,Tgst,'-r')
+            %              plot(tx*s2y/1000,Tavg,'ob')
+            %              grid on
+            %              hold on
+            %
+            %              plot(t*s2y/1000,Tgst,'-r')
             Tit = [];
             for iter=1:initial_iter
                 
@@ -163,8 +208,8 @@ switch lower(init_type)
                     Tin=Tgst(1)+POM;
                     T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
                     Tinit = T0;
-%                     Tref=Tgst(length(Tgst));
-%                     Tr=heat1dns(k, kA, kB,h,p,Qb,Tref,dz,ip,maxitnl,tolnl,freeze,out);
+                    %                     Tref=Tgst(length(Tgst));
+                    %                     Tr=heat1dns(k, kA, kB,h,p,Qb,Tref,dz,ip,maxitnl,tolnl,freeze,out);
                 end
                 
                 GST=Tgst;
@@ -177,34 +222,12 @@ switch lower(init_type)
                 disp(['iteration #',num2str(iter),': norm (T0-T0old)/T0)= ',...
                     num2str(norm((T0(:)-T0old(:))/T0(:),'inf'))]);
             end
-  
+            
             
         end
         
         
         if plotit
-            figure
-            ty= t*s2y;
-            tscal = 1.; % 1e-3;1
-            plot(-ty(:)*tscal,[Tgst(:)] ,'-b','LineWidth',3);hold on
-            grid on;
-            xlim([20 150000]);
-            ylim([-15 20]);
-            TXT=strcat([name,'/',props,' Uniform']);
-            textloc(TXT,'south','FontSize',0.5*fontsz,'FontWeight',fontwg);
-            xlabel('Time BP/2000 (a)');ylabel('\Delta T (K)');
-            
-            set(gca,'xscale','lin','xdir','rev',...
-                'FontSize',fontsz,'FontWeight',fontwg);
-            S=strcat([name,'_GLinGSTH']);
-            saveas(gcf,S,plotfmt)
-            
-            set(gca,'xscale','log','xdir','rev',...
-                'xtick',[10 100 1000 10000 100000],...
-                'FontSize',fontsz,'FontWeight',fontwg);
-            S=strcat([name,'_GLogGSTH']);
-            saveas(gcf,S,plotfmt);
-            
             
             
             figure;
