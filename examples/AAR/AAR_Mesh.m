@@ -17,7 +17,8 @@ zstart          = 0;
 zend            = 5000;
 zlmax           = 2400;
 nz              = 301;
-dzstart=10; gfac=1.005;ngen=999;
+dzstart=10; gfac=1.008;
+ngen=999;
 ztype='log';
 
 tstart= 110000*y2s;
