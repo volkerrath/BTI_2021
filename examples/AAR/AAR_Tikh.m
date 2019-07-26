@@ -44,7 +44,7 @@ props       = 'aar';
 
 
 
-for Qb = -[68 ]*1e-3;
+for Qb = -[75 ]*1e-3;
     
     prepstr       = strcat( ['_Q',num2str(abs(Qb*1000.)),'_gcv'] );
     name=[site prepstr];
