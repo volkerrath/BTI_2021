@@ -55,7 +55,7 @@ gmode={'box','mir'};
 
 Tlimits=[-15 20];
 
-zlimits=[0 1800];
+zlimits=[0 4000];
 if plot_tlog,
     tscal=1.;
     %tlimits=[10 150000];
@@ -177,7 +177,7 @@ if plot_gsth
 %             %legstr=[legstr lLuto];
 %             %plot(tLut,TLut_orig,'.m','LineWidth',1);
 %         end
-        xlim(tlimits);
+        %xlim(tlimits);
         set(gca,'xscale','log','xdir','rev',...
             'xtick',[10 100 1000 10000 100000],...            
             'FontSize',fontsz,'FontWeight',fontwg);
@@ -192,7 +192,7 @@ if plot_gsth
 %             %plot(tHist,THist,'*m','LineWidth',1);
 %         end
 
-        xlim(tlimits);
+        %xlim(tlimits);
         set(gca,'xdir','rev',...
             'FontSize',fontsz,'FontWeight',fontwg);
         %            'xtick',[0:2:16],...
@@ -217,9 +217,9 @@ if plot_resd
     grid on;
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg);
     ylabel('depth (m)');xlabel('\Delta T (K)');
-    ylim(zlimits);
-%     xlim([-0.225 0.075]);
-    %xlim([-0.02 0.02]);
+    %ylim(zlimits);
+%     %xlim([-0.225 0.075]);
+    %%xlim([-0.02 0.02]);
     title(strcat([SITE,': ',run]),'FontSize',fontsz,'FontWeight',fontwg);
     legend(legstr,'location','northwest');
     filename=strcat(SITE,'_RESID_',run);
@@ -234,8 +234,8 @@ if plot_grad,
     for ii=1:N
         plot(allQcal{ii}*1000,allzm{ii},cols{ii},'LineWidth',2); hold on
     end
-     ylim(zlimits);
-%     xlim([20 60]);
+     %ylim(zlimits);
+%     %xlim([20 60]);
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('\lambda \nabla T (K/km)','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)

@@ -18,7 +18,7 @@ addpath([srcpath,filesep,strcat(['tools'])]);
 
 % ONLY FOR PARRALLEL  EXECUTION
 run_parallel=1;
-parcors=   4;
+parcors=   2;
 
 
 
@@ -44,7 +44,7 @@ props       = 'aar';
 
 
 
-for Qb = -[75 80 85 90 95]*1e-3;
+for Qb = -[68 ]*1e-3;
     
     prepstr       = strcat( ['_Q',num2str(abs(Qb*1000.)),'_gcv'] );
     name=[site prepstr];
@@ -129,5 +129,5 @@ for Qb = -[75 80 85 90 95]*1e-3;
     site
 end
     if plot_results
-        BLZ_TikhPlot
+        AAR_TikhPlot
     end

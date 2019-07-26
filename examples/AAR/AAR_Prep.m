@@ -35,10 +35,10 @@ relaxnl         =  1.;
 freeze          =  1;                     % include freezing/thawing
 
 % PARAMETER FOR PREPROCESSING
-zDatTop         =   50.;
+zDatTop         =   130.;
 zDatBot         =   3399;
 
-Qb              =  -70e-3;
+Qb              =  -75e-3;
 Qbshift         = -0.0000;
 Qb              =   Qb+Qbshift;
 
@@ -99,7 +99,7 @@ load (meshfileT);
 step=step+1;
 disp(strcat([ ' ...>>> Step ',num2str(step),': read obs']));
 
-O1    =   importdata([datpath,'/AAR_Annahme_Parameter.csv']);
+O1    =   importdata([datpath,'/AAR_Annahme_Parameter_mod.csv']);
 
 % Version 2012b
 zT = O1.data(:,1); 
@@ -110,6 +110,8 @@ POR = O1.data(:,5);
 RHOC = O1.data(:,4)*1000;
 RHOB = O1.data(:,6)*1000;
 RHP = O1.data(:,13)/1000000;
+
+RHOC(RHOC<=0) = NaN;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
