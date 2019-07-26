@@ -51,7 +51,7 @@ maxiter_inv     =   100;                    % maximal number of iterations
 % reg_opt           =  'LC';            % L-Curve (disabled)
 % reg_opt         =   'FIX';            % fixed regularization parameter
 reg_opt         =   'GCV';              % fixed regularization parameter
-start_regpar    =    1;                  % when to start search
+start_regpar    =    5;                  % when to start search
 modul_regpar    =    1;                 % how often
 mregpar_adaptint =   1;
 %
@@ -68,7 +68,7 @@ modul_relax     =   1;
 min_relax       =   0.1;
 reg_shift=1;
 
-outsteps=0;
+outsteps=1;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES OUTSIDE TMP_PREP OVERWRITE DEFAULTS ABOVE!

@@ -207,8 +207,8 @@ for iter=1:maxiter_inv
     end
     
     
-    if theold-thenew <= tol_inv(2), break; end
-    if thenew < tol_inv(1), break; end
+    if theold-thenew <= tol_inv(2) & iter >= start_regpar, break; end
+    if thenew < tol_inv(1) & iter >= start_regpar, break; end
     
     theold=thenew;
     disp([' ... calculate sensitivities   ']);
