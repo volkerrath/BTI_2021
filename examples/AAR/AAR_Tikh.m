@@ -18,7 +18,7 @@ addpath([srcpath,filesep,strcat(['tools'])]);
 
 % ONLY FOR PARRALLEL  EXECUTION
 run_parallel=1;
-parcors=   2;
+parcors=   4;
 
 
 
@@ -44,7 +44,7 @@ props       = 'aar';
 
 
 
-for Qb = -[75 ]*1e-3;
+for Qb = -[68]*1e-3;
     
     prepstr       = strcat( ['_Q',num2str(abs(Qb*1000.)),'_gcv'] );
     name=[site prepstr];
@@ -114,19 +114,19 @@ for Qb = -[75 ]*1e-3;
     % GENERATE INVERSION PARAMETER
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    F=[name,'_InvPar_in'];
+   
    invpar_in=struct();
    save(F,'invpar_in');
    disp(strcat([' generate inversion setup for ' name]));
    C=strcat([site,'_InvPar(name);']);eval(C);
-    site
+
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % RUN inversion
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    site
 
     Tikh_gsth(name);
-    site
+     
 end
     if plot_results
         AAR_TikhPlot

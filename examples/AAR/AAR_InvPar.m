@@ -31,7 +31,7 @@ base            =   0.;                     % base
 tstart          =  110000*yeartosec;        % from
 tend            =  30*yeartosec;            % to
 m_apr_set       = 1;                        % prior value
-m_ini_set       = 1;                        % initial value
+m_ini_set       = m_apr_set;                        % initial value
 
 % SENSITVITY CALCULATION PARAMETERS
 diffmeth        =   'FD';                   % how to calculate Sensitivity
@@ -49,21 +49,22 @@ maxiter_inv     =   100;                    % maximal number of iterations
 % reg_opt           =  'GCV';           % Generalized Cross-Validation
 % reg_opt           =  'MLE';           % Maximum Likelihood  (disabled)
 % reg_opt           =  'LC';            % L-Curve (disabled)
-% reg_opt         =   'FIX';            % fixed regularization parameter
+reg_opt         =   'FIX';            % fixed regularization parameter
 reg_opt         =   'GCV';              % fixed regularization parameter
-start_regpar    =    1;                  % when to start search
+start_regpar    =    5;                  % when to start search
 modul_regpar    =    1;                 % how often
 mregpar_adaptint =   1;
 %
 msteps_regpar    =   48;                % number of test values
-regpar0=[0.1 0.1 0];
-reg0par=[0.001];                         % logspace(-1,1,10);31
-reg1par=logspace(-3.,3,msteps_regpar);
+regpar0=[1. 3. 0];
+reg0par=0.3 ;% [0.001];                         % logspace(-1,1,10);31
+reg1par=1.; %logspace(-3.,3,msteps_regpar);
+%reg1par=logspace(-3.,3,msteps_regpar);
 reg2par=[0];
 
 % RELAXATION
-relax           =   1;                  % 0.98;
-start_relax     =   2;
+relax           =   0.98;                  % 0.98;
+start_relax     =   1;
 modul_relax     =   1;
 min_relax       =   0.1;
 reg_shift=1;
@@ -82,7 +83,9 @@ end
 
 
 F=strcat([name,'_TimeGrid.mat']);load(F);
-[gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps);
+% [gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps);
+thin=[];
+[gsth,pt]=set_mgsth(t,base,tstart,tend,nsteps,'log',thin);
 
 invpar=mstruct(...
     gsth,pt,nsteps,m_apr_set,m_ini_set,...
