@@ -31,7 +31,7 @@ dfmt=1;ffmt='.zip';
 yeartosec=31557600;sectoyear=1/yeartosec;
 
 %GRAPHICS
-plot_results = 1;
+plot_results = 0;
 
 set_graphpars
 %plotfmt='epsc2';
@@ -87,7 +87,7 @@ for Reg1 = [logspace(-3.,2,msteps_regpar)];
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    plotit=1;
+    plotit=0;
     CovType='g';
     ErrDeflt=0.05;
     L=3;
@@ -106,7 +106,7 @@ for Reg1 = [logspace(-3.,2,msteps_regpar)];
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     % VARIABLES SET HERE OUTSIDE INIT OVERWRITE DEFAULTS INSIDE!
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    plotit=1;
+    plotit=0;
     init_type='p';
     init_form= 'steps';
     method = 'linear';

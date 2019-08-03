@@ -68,7 +68,7 @@ modul_relax     =   1;
 min_relax       =   0.1;
 reg_shift=1;
 
-outsteps=1;
+outsteps=0;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES OUTSIDE TMP_PREP OVERWRITE DEFAULTS ABOVE!
