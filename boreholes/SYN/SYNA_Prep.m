@@ -88,9 +88,9 @@ disp(strcat([ ' ...>>> Step ',num2str(step),': set grids']));
 % SPATIAL AND TEMPORAL MESH
 disp([' ...set grids'])
 
-meshfileZ=[name,'_DepthGrid'];
+meshfileZ=[name,'_DepthGrid.mat'];
 load (meshfileZ);
-meshfileT=[name,'_TimeGrid'];
+meshfileT=[name,'_TimeGrid.mat'];
 load (meshfileT);
 
 % disp([mfilename '    spatial mesh: ',num2str(nz),' temporal mesh:',num2str(nt)]);
