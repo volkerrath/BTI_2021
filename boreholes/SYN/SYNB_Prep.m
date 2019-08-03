@@ -101,7 +101,7 @@ load (meshfileT);
 step=step+1;
 disp(strcat([ ' ...>>> Step ',num2str(step),': read obs']));
 
-O1    =   importdata([datpath,'/DeltaTBallingB.csv']);
+O1    =   importdata([datpath,'/DataBallingB.csv']);
 
 % Version 2012b
 zT = O1(:,1); 
