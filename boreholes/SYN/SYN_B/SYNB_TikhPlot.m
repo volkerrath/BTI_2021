@@ -13,7 +13,7 @@ addpath([srcpath,'/src/'])
 
 dfmt=1;ffmt='.zip';
 archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
-SITE='SYN';
+SITE='SYNB';
 
 % LOCAL OPTIONS
 yeartosec=31557600;sectoyear=1/yeartosec;
@@ -67,9 +67,9 @@ else
 end
 
 disp(['   '])
-run='Synthetic - Balling mod B';
+run='Balling mod A';
 %run = strrep()
-TMP=dir('*_results.mat');
+TMP=dir('SYNB_*_results.mat');
 Files={TMP.name};
 %Files={...
 % };

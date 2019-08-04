@@ -1,5 +1,4 @@
-function [ierr]=SYN_Prep(name)
-% Site TEMPLIN
+function [ierr]=SITE_Prep(name)
 % Prepare Data and Model for inversion
 
 ierr = 0;
@@ -18,8 +17,8 @@ addpath([datpath]);
 
 % GENERAL SETTINGS
 
-
-site             = 'SYNB';
+Data_file 		= 'DataBallingB.csv';
+site            = 'SYNB';
 props           = 'syn';
 out             = 0;
 estq            = 1;
@@ -50,6 +49,7 @@ KMean           =   2.3253e+00;
 ErrDeflt        =   0.1;
 L=3;
 CovType = 'g';
+
 
 
 smooth_props='m';
@@ -101,7 +101,7 @@ load (meshfileT);
 step=step+1;
 disp(strcat([ ' ...>>> Step ',num2str(step),': read obs']));
 
-O1    =   importdata([datpath,'/DataBallingB.csv']);
+O1    =   importdata([datpath,Data_File]);
 
 % Version 2012b
 zT = O1(:,1); 
@@ -218,12 +218,12 @@ end
 if estq
     step=step+1;
     disp(strcat([ ' ...>>> Step ',num2str(step),': Estimate Qb - only info']));
-    
     zTx=zobs';
     Tx=Tobs;
     TG=diff(Tx)./diff(zTx);
     zG= 0.5*(zTx(1:length(zTx)-1)+zTx(2:length(zTx)));
-    Kx=K(id);Kx=Kx(1:length(Kx)-1)';
+    Kx=K(id);Kx=Kx(1:length(Kx)-1);
+    whos Kx  TG
     Qobs = Kx.*TG;
     
     

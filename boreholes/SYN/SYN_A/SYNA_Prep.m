@@ -1,4 +1,4 @@
-function [ierr]=SYN_Prep(name)
+function [ierr]=SITE_Prep(name)
 % Site TEMPLIN
 % Prepare Data and Model for inversion
 
@@ -18,8 +18,8 @@ addpath([datpath]);
 
 % GENERAL SETTINGS
 
-
-site             = 'SYNA';
+Data_file 		= 'DataBallingA.csv';
+site            = 'SYNA';
 props           = 'syn';
 out             = 0;
 estq            = 1;
@@ -50,6 +50,7 @@ KMean           =   2.3253e+00;
 ErrDeflt        =   0.1;
 L=3;
 CovType = 'g';
+
 
 
 smooth_props='m';
@@ -101,7 +102,7 @@ load (meshfileT);
 step=step+1;
 disp(strcat([ ' ...>>> Step ',num2str(step),': read obs']));
 
-O1    =   importdata([datpath,'/DataBallingA.csv']);
+O1    =   importdata([datpath,Data_File]);
 
 % Version 2012b
 zT = O1(:,1); 

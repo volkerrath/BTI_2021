@@ -10,15 +10,15 @@ rng('shuffle');
 % SET PATHS
 pltpath='./';
 datpath='./';
-srcpath='../../';
-utlpath='../../';
+srcpath='../../../';
+utlpath='../../../';
 
 addpath([srcpath,filesep,'src']);
 addpath([srcpath,filesep,strcat(['tools'])]);
 
 % ONLY FOR PARRALLEL  EXECUTION
 run_parallel=1;
-parcors=   2;
+parcors=   8;
 
 
 

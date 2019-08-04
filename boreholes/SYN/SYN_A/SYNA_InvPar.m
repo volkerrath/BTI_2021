@@ -1,6 +1,5 @@
-function [ierr]=TMP_InvPar(name)
+function [ierr]=SITE_InvPar(name)
 
-% Site TEMPLIN
 % Prepare Data and Model for inversion
 
 yeartosec=31557600;sectoyear=1/yeartosec;
@@ -22,8 +21,8 @@ addpath([datpath]);
 % GENERAL SETTINGS
 
 %
-site       = 'TMP';
-props       = 'tmp';
+site       = 'SYNB';
+props       = 'syn';
 
 % DEFINE LOGARITHMIC GSTH INVERSION GRID
 nsteps          =   21;                     % number of steps

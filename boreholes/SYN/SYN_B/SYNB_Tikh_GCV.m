@@ -10,8 +10,8 @@ rng('shuffle');
 % SET PATHS
 pltpath='./';
 datpath='./';
-srcpath='../../';
-utlpath='../../';
+srcpath='../../../';
+utlpath='../../../';
 
 addpath([srcpath,filesep,'src']);
 addpath([srcpath,filesep,strcat(['tools'])]);
@@ -42,13 +42,14 @@ site       = 'SYNB';
 props       = 'syn';
 
 
-Reg0= 0.01;
-msteps_regpar=32;
-for Reg1 = [logspace(-3.,2,msteps_regpar)];
-    prepstr       = strcat( ['_lc',...
-        '_0tau',strrep(strrep(num2str(log10(Reg0)),'-','m'),'.','d'),...
-        '_1tau',strrep(strrep(num2str(log10(Reg1)),'-','m'),'.','d')] );
 
+Reg0= [0.01];
+Reg1 = [logspace(-3.,2,32)];
+
+
+NSamp=32;
+for sample = [1:NSamp]
+    prepstr       = strcat( ['_Sample',num2str(sample),'_FGCV',] );
     name=[site prepstr];
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -76,7 +77,7 @@ for Reg1 = [logspace(-3.,2,msteps_regpar)];
     set_z = 1;
     set_t = 1;
     mesh_in=mstruct(set_z, set_t);
-    save(F,'mesh_in');
+    save(F,'Mesh_in');
     disp(strcat([' generate meshes for ' name]));
     C=strcat([site,'_Mesh(name);']);
     eval(C);
@@ -121,10 +122,13 @@ for Reg1 = [logspace(-3.,2,msteps_regpar)];
     % GENERATE INVERSION PARAMETER
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     F=[name,'_InvPar_in'];
-    reg0par=Reg0; 
+    reg0par=Reg0;
     reg1par=Reg1;
     reg2par=[0];
-    invpar_in=mstruct(msteps_regpar,reg0par,reg1par);
+    invpar_in=mstruct(reg0par,reg1par);
+    
+    
+    
     save(F,'invpar_in');
     disp(strcat([' generate inversion setup for ' name]));
     C=strcat([site,'_InvPar(name);']);eval(C);
@@ -136,7 +140,7 @@ for Reg1 = [logspace(-3.,2,msteps_regpar)];
     
     
     Tikh_gsth(name);
-    if plot_results
-        SYNB_TikhPlot
-    end
+end
+if plot_results
+    SYNB_TikhPlot
 end

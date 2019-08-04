@@ -1,4 +1,4 @@
-function [ierr]=TMP_Init(name)
+function [ierr]=SITE_Init(name)
 % Site OTUKUMPU
 % Prepare paeloclimate initial
 
@@ -23,7 +23,7 @@ props               = 'tmp';
 init_type           = 'p';
 init_form           = 'steps';
 method              = 'linear';
-GSTH_file           = 'TGSTHBallingA.csv';
+GSTH_file           = 'GSTHBallingA.csv';
 L                   = 0;
 initial_iter        = 30;
 GST0                = 7.;

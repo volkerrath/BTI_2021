@@ -1,3 +1,4 @@
+
 clear all
 close all
 clc
@@ -37,18 +38,18 @@ set_graphpars
 plotfmt='png';
 
 %
-site       = 'SYNA';
+site       = 'SYNB';
 props       = 'syn';
 
 
-NSamp=32;
-Gb = [26. 28. 30. 32. 34.];
 
-for Qb = -Gb*2.3253*1e-3;
-    
-    
-    
-    prepstr       = strcat( ['_Sample',num2str(sample),'_Q',num2str(-Qb*1000,'%.2g')] );
+Reg0= [0.01];
+Reg1 = [logspace(-3.,2,32)];
+
+
+NSamp=32;
+for sample = [1:NSamp]
+    prepstr       = strcat( ['_Sample',num2str(sample),'_FGCV',] );
     name=[site prepstr];
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -76,7 +77,7 @@ for Qb = -Gb*2.3253*1e-3;
     set_z = 1;
     set_t = 1;
     mesh_in=mstruct(set_z, set_t);
-    save(F,'mesh_in');
+    save(F,'Mesh_in');
     disp(strcat([' generate meshes for ' name]));
     C=strcat([site,'_Mesh(name);']);
     eval(C);
@@ -87,12 +88,12 @@ for Qb = -Gb*2.3253*1e-3;
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    plotit=1;
+    plotit=0;
     CovType='g';
     ErrDeflt=0.05;
     L=3;
     zDatTop=10;zDatBot=2000;
-    prep_in=mstruct(plotit,CovType,ErrDeflt,L,zDatTop,zDatBot,Qb);
+    prep_in=mstruct(plotit,CovType,ErrDeflt,L,zDatTop,zDatBot);
     
     F=[name,'_Prep_in'];
     save(F,'prep_in');
@@ -106,11 +107,11 @@ for Qb = -Gb*2.3253*1e-3;
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     % VARIABLES SET HERE OUTSIDE INIT OVERWRITE DEFAULTS INSIDE!
     %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    plotit=1;
+    plotit=0;
     init_type='p';
     init_form= 'steps';
     method = 'linear';
-    GSTH_file='GSTHBallingA.csv';
+    GSTH_file='GSTHBallingB.csv';
     init_in=mstruct(plotit,init_type,init_form,method,GSTH_file);
     F=[name,'_Init_in'];
     save(F,'init_in');
@@ -121,7 +122,13 @@ for Qb = -Gb*2.3253*1e-3;
     % GENERATE INVERSION PARAMETER
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     F=[name,'_InvPar_in'];
-    invpar_in=struct();
+    reg0par=Reg0;
+    reg1par=Reg1;
+    reg2par=[0];
+    invpar_in=mstruct(msteps_regpar,reg0par,reg1par);
+    
+    
+    
     save(F,'invpar_in');
     disp(strcat([' generate inversion setup for ' name]));
     C=strcat([site,'_InvPar(name);']);eval(C);
@@ -133,8 +140,6 @@ for Qb = -Gb*2.3253*1e-3;
     
     
     Tikh_gsth(name);
-    
-    
 end
 if plot_results
     SYNB_TikhPlot

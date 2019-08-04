@@ -12,7 +12,7 @@ y2s=3600*24*365.25;s2y=1./y2s;
 set_z = 1;
 set_t = 1;
 
-site            = 'TMP';
+site            = 'SYNB';
 zstart          = 0;
 zend            = 5000;
 zlmax           = 2400;
@@ -68,7 +68,7 @@ if set_z
             disp([' ']);disp([' ...spatial mesh ',ztype,' not implemented!']);
     end
     
-    F=strcat([name '_DepthGrid']);
+    F=strcat([name '_DepthGrid.mat']);
     disp([' ...spatial mesh written to: ', F]);
     save(F,'z','dz','nz','ip','zm')
 end
@@ -95,7 +95,7 @@ if set_t
             disp([' ']);disp([' ...spatial mesh ',ztype,' not implemented!']);
     end
   
-    F=strcat([name '_TimeGrid']);
+    F=strcat([name '_TimeGrid.mat']);
     save(F,'t','dt','nt','it','tm')
     disp([' ...temporal mesh written to: ', F]);
 %     
