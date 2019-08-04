@@ -114,7 +114,7 @@ switch lower(init_type)
         if strcmp(init_form,'steps')
             % SETUP FORCING
             PGSTH =importdata(GSTH_file); 
-            PGSTH = flipud(PGSTH);
+%             PGSTH = flipud(PGSTH);
             tGSTH=-PGSTH(:,1)*y2s; 
             TGSTH=PGSTH(:,2);
             TGSTH=[TGSTH; TGSTH(end)];

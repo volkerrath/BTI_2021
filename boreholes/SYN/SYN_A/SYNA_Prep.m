@@ -102,7 +102,7 @@ load (meshfileT);
 step=step+1;
 disp(strcat([ ' ...>>> Step ',num2str(step),': read obs']));
 
-O1    =   importdata([datpath,Data_File]);
+O1    =   importdata([datpath,Data_file]);
 
 % Version 2012b
 zT = O1(:,1); 
@@ -110,24 +110,22 @@ T = O1(:,4); zT = zT(isfinite(T)); T = T(isfinite(T));
 
 N = length(T(:,1));
 
-Err = ErrDeflt;
+
 switch lower(CovType)
     case{'e' 'markov' 'exponential'}
-        Cov=CovarExpnl(Err*ones(N,1),L);
+        Cov=CovarExpnl(ones(N,1),L);
     case{'g' 'gauss'}
-         Cov=CovarGauss(Err*ones(N,1),L);
+         Cov=CovarGauss(ones(N,1),L);
 %     case{'m' 'matern'}
-%         Cov=CovarMatern(Err*ones(N,1),L);
+%         Cov=CovarMatern(ones(N,1),L);
     otherwise
         error([lower(CovFun), ' not implemented. STOP']);
 end
-
-
-
-
-Cov=CovarGauss(Err*ones(N,1),L);
 C    = chol(Cov);
-err_nor =  0.3*randn(N,1);
+
+Err = ErrDeflt;
+
+err_nor =  Err*randn(N,1);
 err_cor =  err_nor'*C;
 
 T = T+err_cor';
@@ -225,7 +223,7 @@ if estq
     zG= 0.5*(zTx(1:length(zTx)-1)+zTx(2:length(zTx)));
     Kx=K(id);Kx=Kx(1:length(Kx)-1);
     whos Kx  TG
-    Qobs = Kx.*TG;
+    Qobs = Kx(:).*TG(:);
     
     
     for Q_EstDepth=zDatBot-estq_int

@@ -11,9 +11,12 @@ if nargin <4, L=0; end
 ns=length(steptime);
 nt=length(t);
 maske=find(t<steptime(1));
+% maske
 T(maske)=stepamp(1);
-for i=2:ns
+for i=2:ns 
+%     i
     maske=find(t<steptime(i) & t>=steptime(i-1));
+%     maske
     T(maske)=stepamp(i);
 end
 maske=find(t>steptime(ns));

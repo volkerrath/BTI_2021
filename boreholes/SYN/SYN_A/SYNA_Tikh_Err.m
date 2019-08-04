@@ -43,9 +43,9 @@ props       = 'syn';
 
 Qb = -30*2.3253*1e-3;
 
-NSamp=32:
+NSamp=32;
 for sample = [1:NSamp]
-    for ErrDeflt = [0.01 0.03 0.1 0.3 1.]
+    for ErrDeflt = [0.03 0.1 0.3 1.]
         
         prepstr       = strcat( ['_Sample',num2str(sample),'_Err',num2str(ErrDeflt*1000,'%.2g'),'mK'] );
         
@@ -76,7 +76,7 @@ for sample = [1:NSamp]
         set_z = 1;
         set_t = 1;
         mesh_in=mstruct(set_z, set_t);
-        save(F,'Mesh_in');
+        save(F,'mesh_in');
         disp(strcat([' generate meshes for ' name]));
         C=strcat([site,'_Mesh(name);']);
         eval(C);
@@ -87,11 +87,11 @@ for sample = [1:NSamp]
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        plotit=1;
+        plotit=0;
         CovType='g';
         %ErrDeflt=0.05;
         L=3;
-        zDatTop=10;zDatBot=2000;
+        zDatTop=10;zDatBot=1500;
         prep_in=mstruct(plotit,CovType,ErrDeflt,L,zDatTop,zDatBot,Qb);
         
         F=[name,'_Prep_in'];
@@ -106,7 +106,7 @@ for sample = [1:NSamp]
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         % VARIABLES SET HERE OUTSIDE INIT OVERWRITE DEFAULTS INSIDE!
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        plotit=1;
+        plotit=0;
         init_type='p';
         init_form= 'steps';
         method = 'linear';

@@ -65,7 +65,7 @@ relax           =   1;                  % 0.98;
 start_relax     =   2;
 modul_relax     =   1;
 min_relax       =   0.1;
-reg_shift=1;
+reg_shift=-1;
 
 outsteps=0;
 
