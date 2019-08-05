@@ -43,10 +43,10 @@ props       = 'syn';
 
 NSamp=32;
 Gb = [26. 28. 30. 32. 34.];
-for sample = [1:NSamp]
-    for Qb = -Gb*2.3253*1e-3
-        
-        
+
+for Qb = -Gb*2.3253*1e-3
+    
+    for sample = [1:NSamp]
         
         prepstr       = strcat( ['_Sample',num2str(sample),'_Q',num2str(-Qb*1000,'%.2g')] );
         name=[site prepstr];
@@ -87,7 +87,7 @@ for sample = [1:NSamp]
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        plotit=1;
+        plotit=0;
         CovType='g';
         ErrDeflt=0.05;
         L=3;
@@ -106,7 +106,7 @@ for sample = [1:NSamp]
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         % VARIABLES SET HERE OUTSIDE INIT OVERWRITE DEFAULTS INSIDE!
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        plotit=1;
+        plotit=0;
         init_type='p';
         init_form= 'steps';
         method = 'linear';
