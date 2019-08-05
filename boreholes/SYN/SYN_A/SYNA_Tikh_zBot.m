@@ -75,7 +75,7 @@ for sample = [1:NSamp]
         set_z = 1;
         set_t = 1;
         mesh_in=mstruct(set_z, set_t);
-        save(F,'Mesh_in.mat');
+        save(F,'mesh_in');
         disp(strcat([' generate meshes for ' name]));
         C=strcat([site,'_Mesh(name);']);
         eval(C);
