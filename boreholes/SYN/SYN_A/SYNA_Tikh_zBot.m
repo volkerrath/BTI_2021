@@ -41,10 +41,10 @@ plotfmt='png';
 site       = 'SYNA';
 props       = 'syn';
 
-NSamp = 32;
+NSamp = 24;
 Qb = -30*2.3253*1e-3
 ErrDeflt = 0.03;
-for sample = [1:NSamp]
+for sample = [13:NSamp]
     for zDatBot = [500 1000  1500 2000 2500]
         
         prepstr       = strcat( ['_Sample',num2str(sample),'_Bottom',num2str(zDatBot),'m'] );
