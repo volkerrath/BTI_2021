@@ -41,14 +41,14 @@ site       = 'SYNB';
 props       = 'syn';
 
 
-NSamp=32;
+NSamp=24;
 Gb = [26. 28. 30. 32. 34.];
 
 for Qb = -Gb*2.3253*1e-3
     
     for sample = [1:NSamp]
         
-        prepstr       = strcat( ['_Sample',num2str(sample),'_Q',num2str(-Qb*1000,'%.2g')] );
+        prepstr       = strcat( ['_Sample#',num2str(sample),'_',num2str(randi(100000,1,1)),'_Q',num2str(-Qb*1000,'%.2g')] );
         name=[site prepstr];
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

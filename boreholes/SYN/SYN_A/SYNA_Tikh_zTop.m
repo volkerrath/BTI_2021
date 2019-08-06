@@ -37,14 +37,14 @@ set_graphpars
 plotfmt='png';
 
 %
-site       = 'SYNB';
+site       = 'SYNA';
 props       = 'syn';
 
+Qb = -30*2.3253*1e-3
 
 NSamp=24;
-Gb = [26. 28. 30. 32. 34.];
 
-for Qb = -Gb*2.3253*1e-3
+for zDatTop = [10 30 100 200]
     
     for sample = [1:NSamp]
         
@@ -91,7 +91,8 @@ for Qb = -Gb*2.3253*1e-3
         CovType='g';
         ErrDeflt=0.05;
         L=3;
-        zDatTop=10;zDatBot=2000;
+        %zDatTop=10;
+        zDatBot=1800;
         prep_in=mstruct(plotit,CovType,ErrDeflt,L,zDatTop,zDatBot,Qb);
         
         F=[name,'_Prep_in'];
