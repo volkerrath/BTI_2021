@@ -37,7 +37,7 @@ set_graphpars
 plotfmt='png';
 
 %
-site       = 'SYNB';
+site       = 'SYNA';
 props       = 'syn';
 
 
