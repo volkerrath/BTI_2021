@@ -56,7 +56,7 @@ mregpar_adaptint =   1;
 %
 msteps_regpar    =   48;                % number of test values
 regpar0=[0.1 0.1 0];
-reg0par=[0.001];                         % logspace(-1,1,10);31
+reg0par=[0.01];                         % logspace(-1,1,10);31
 reg1par=logspace(-3.,3,msteps_regpar);
 reg2par=[0];
 
@@ -65,7 +65,7 @@ relax           =   1;                  % 0.98;
 start_relax     =   2;
 modul_relax     =   1;
 min_relax       =   0.1;
-reg_shift=-1;
+reg_shift=1;
 
 outsteps=0;
 
