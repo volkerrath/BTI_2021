@@ -125,7 +125,7 @@ for sample = [1:NSamp]
         reg_opt= 'GCV';
         reg_shift=1;
         nsteps =NSteps;
-        invpar_in=struct(reg_opt,reg_shift,nsteps);
+        invpar_in=mstruct(reg_opt,reg_shift,nsteps);
         save(F,'invpar_in');
         disp(strcat([' generate inversion setup for ' name]));
         C=strcat([site,'_InvPar(name);']);eval(C);
