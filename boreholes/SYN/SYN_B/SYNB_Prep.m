@@ -109,27 +109,26 @@ T = O1(:,4); zT = zT(isfinite(T)); T = T(isfinite(T));
 
 N = length(T(:,1));
 
-
-
-switch lower(CovType)
-    case{'e' 'markov' 'exponential'}
-        Cov=CovarExpnl(ones(N,1),L);
-    case{'g' 'gauss'}
-         Cov=CovarGauss(ones(N,1),L);
-%     case{'m' 'matern'}
-%         Cov=CovarMatern(ones(N,1),L);
-    otherwise
-        error([lower(CovFun), ' not implemented. STOP']);
+if L~= 0
+    switch lower(CovType)
+        case{'e' 'markov' 'exponential'}
+            Cov=CovarExpnl(ones(N,1),L);
+        case{'g' 'gauss'}
+            Cov=CovarGauss(ones(N,1),L);
+            %     case{'m' 'matern'}
+            %         Cov=CovarMatern(ones(N,1),L);
+        otherwise
+            error([lower(CovFun), ' not implemented. STOP']);
+    end
+    C    = chol(Cov);
+    
+    Err = ErrDeflt;
+    
+    err_nor =  Err*randn(N,1);
+    err_cor =  err_nor'*C;
+    
+    T = T+err_cor';
 end
-C    = chol(Cov);
-
-Err = ErrDeflt;
-
-err_nor =  Err*randn(N,1);
-err_cor =  err_nor'*C;
-
-T = T+err_cor';
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -311,10 +310,8 @@ errT=ErrDeflt;
 Terr=errT*ones(size(id))';
 Tcov=spdiags(Terr.^2,0,nd,nd);
 
-Err_corr=err_corr;
-Err_cov=Cov;
 
-sitepar=mstruct(k,kA,kB,h,p,r,c,rc,z,ip,t,it,qb,gts,Tobs,id,zobs,Tcov,Terr,Err_corr,Err_cov,props,name);
+sitepar=mstruct(k,kA,kB,h,p,r,c,rc,z,ip,t,it,qb,gts,Tobs,id,zobs,Tcov,Terr,props,name);
 
 
 F=strcat([name '_SitePar.mat']);

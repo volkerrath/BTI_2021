@@ -43,10 +43,10 @@ props       = 'syn';
 
 Qb = -30*2.3253*1e-3;
 ErrDeflt=0.03;
-NSamp=32;
+NSamp=24;
 
 for sample = [1:NSamp]
-    for L = [0 1 2 3 5 7]
+    for L = [10 15 20 25 30 35 70]
         
         prepstr       = strcat(['_Sample',num2str(sample),'_ErrL',num2str(L*20),'m'] );
         
@@ -90,8 +90,8 @@ for sample = [1:NSamp]
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         plotit=0;
         CovType='g';
-        %ErrDeflt=0.05;
-        %L=3;
+        ErrDeflt=0.03;
+        L=3;
         zDatTop=10;zDatBot=2000;
         prep_in=mstruct(plotit,CovType,ErrDeflt,L,zDatTop,zDatBot,Qb);
         
