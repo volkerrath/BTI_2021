@@ -37,9 +37,9 @@ set_graphpars
 plotfmt='png';
 
 %
-site       = 'TMP';
-props       = 'tmp';
-prepstr       = '_test';
+site       = 'SYNB';
+props       = 'syn';
+prepstr       = '_QMesh';
 name=[site prepstr];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -55,13 +55,6 @@ fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
 F=strcat([name,'_FwdPar.mat']);
 save(F, 'fwdpar')
 
-
-outsteps=0;
-
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GENERATE MESHES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -69,7 +62,7 @@ outsteps=0;
 % VARIABLES SET HERE OUTSIDE MESH OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 F=strcat([name,'_Mesh_in.mat']);
-set_z = 1; 
+set_z = 1;
 set_t = 1;
 mesh_in=mstruct(set_z, set_t);
 save(F,'mesh_in');
@@ -78,13 +71,19 @@ C=strcat([site,'_Mesh(name);']);
 eval(C);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % GENERATE PHYSICAL MODEL
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 plotit=0;
-prep_in=mstruct(plotit);
+CovType='g';
+ErrDeflt=0.00;
+L=0;
+zDatTop=0;zDatBot=5000;
+prep_in=mstruct(plotit,CovType,ErrDeflt,L,zDatTop,zDatBot,Qb);
+
 F=[name,'_Prep_in'];
 save(F,'prep_in');
 disp(strcat([' generate model for ' name]));
@@ -113,7 +112,5 @@ C=strcat([site,'_Init(name);']);eval(C);
 % % START Modelling
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
 Fwd_gsth(name);
-    
+
