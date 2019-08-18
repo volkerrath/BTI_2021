@@ -46,9 +46,9 @@ ErrDeflt=0.03;
 NSamp=24;
 
 for sample = [1:NSamp]
-    for L = [10 15 20 25 30 35 70]
+    for NSteps = [10 15 20 25 30 35 70]
         
-        prepstr       = strcat(['_Sample',num2str(sample),'_ErrL',num2str(L*20),'m'] );
+        prepstr       = strcat(['_Sample',num2str(sample),'_NSteps',num2str(NSteps),'m'] );
         
         name=[site prepstr];
         
@@ -124,7 +124,8 @@ for sample = [1:NSamp]
         F=[name,'_InvPar_in'];
         reg_opt= 'GCV';
         reg_shift=1;
-        invpar_in=struct(reg_opt,reg_shift);
+        nsteps =NSteps;
+        invpar_in=struct(reg_opt,reg_shift,nsteps);
         save(F,'invpar_in');
         disp(strcat([' generate inversion setup for ' name]));
         C=strcat([site,'_InvPar(name);']);eval(C);
