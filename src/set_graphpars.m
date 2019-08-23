@@ -1,5 +1,5 @@
-%plotfmt='epsc2';
-plotfmt='png';
+plotfmt='epsc2';
+%plotfmt='png';
 
 linwdt=2;
 fontwg='normal';

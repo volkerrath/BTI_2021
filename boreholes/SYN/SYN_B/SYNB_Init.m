@@ -14,7 +14,7 @@ debug=0;%
 
 plotit              = 1;
 plotmod             = 0;
-zlimits             =[0 2400];
+zlimits             =[0 5000];
 
 % CONSTANTS
 
@@ -56,7 +56,7 @@ addpath([srcpath,filesep,strcat(['tools'])]);
 
 F=strcat([name,'_FwdPar.mat']);
 load(F);
-mstruct(fwdpar)
+mstruct(fwdpar);
 
 % load MODEL
 disp(strcat([' load model for ' name ]));
@@ -120,12 +120,14 @@ switch lower(init_type)
             TGSTH=[TGSTH; TGSTH(end)];
             [Tgst] = set_stpgst(t,TGSTH,tGSTH,L,0);
             
- 
+            tGSTH/y2s
+            t/y2s
             
             Tit = [];
             for iter=1:initial_iter
                 
                 if iter==1
+                    Tgst(1)
                     Tin=Tgst(1)+POM;
                     T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
                     Tinit = T0;
