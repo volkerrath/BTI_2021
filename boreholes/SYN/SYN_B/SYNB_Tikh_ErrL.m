@@ -46,7 +46,7 @@ ErrDeflt=0.03;
 NSamp=25;
 
 for sample = [1:NSamp]
-    for L = [0 1 2 3 4 5 6 7]
+    for L = [0 1 2 4 8]
         
         prepstr       = strcat(['_Sample',num2str(sample),'_ErrL',num2str(L*20),'m'] );
         
