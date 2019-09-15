@@ -142,7 +142,7 @@ for iter=1:maxiter_inv
 
     dt=diff(t);nt=length(t);
     dz=diff(z);nz=length(z);
-    gts
+   
     GST=m+gts;POM=GST(1);
 
 

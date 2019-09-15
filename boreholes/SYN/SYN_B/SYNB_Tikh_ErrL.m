@@ -140,6 +140,6 @@ for sample = [1:NSamp]
         
     end
 end
-if plot_results
-    SYNB_TikhPlot
-end
+% if plot_results
+%     SYNB_TikhPlot
+% end
