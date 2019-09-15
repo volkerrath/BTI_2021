@@ -41,7 +41,8 @@ site       = 'SYNB';
 props       = 'syn';
 prepstr       = '_QMesh';
 name=[site prepstr]; 
-QB = -[24:1:36]*2.3253*1e-3
+qstep=0.5;
+QB = -[24:qstep:36]*2.3253*1e-3
 QMesh = [];
 for Qi = QB
     
@@ -119,5 +120,5 @@ for Qi = QB
     load(F)
     QMesh =[QMesh Tinit(:)];
 end
-F=strcat([name,'_Delta100']);
+F=strcat([name,'_Delta',num2str(100*qstep)]);
 save(F,'zinit','QMesh', 'QB')
