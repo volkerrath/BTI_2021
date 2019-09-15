@@ -40,6 +40,7 @@ relaxnl= 1.;
 freeze= 1;
 out            = 1;
 
+
 %prepstr= ['_' init_type];
 prepstr= [''];
 
@@ -72,6 +73,7 @@ if exist(F)
     load(F);
     mstruct(init_in);
 end
+
 
 
 if plotit

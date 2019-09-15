@@ -3,8 +3,10 @@ close all
 clc
 
 % SET RANDOM GENERATOR
-rng('shuffle');
+%rng('shuffle');
 %randn('state',sum(100*clock));
+s=rng;
+
 
 % SET PATHS
 pltpath='./';
@@ -46,6 +48,7 @@ ErrDeflt=0.03;
 NSamp=25;
 
 for sample = [1:NSamp]
+    s=rng('shuffle')
     for L = [0 1 2 4 8]
         
         prepstr       = strcat(['_Sample',num2str(sample),'_ErrL',num2str(L*20),'m'] );
@@ -93,7 +96,8 @@ for sample = [1:NSamp]
         %ErrDeflt=0.05;
         %L=3;
         zDatTop=10;zDatBot=2000;
-        prep_in=mstruct(plotit,CovType,ErrDeflt,L,zDatTop,zDatBot,Qb);
+        
+        prep_in=mstruct(plotit,CovType,ErrDeflt,L,zDatTop,zDatBot,Qb,s);
         
         F=[name,'_Prep_in'];
         save(F,'prep_in');

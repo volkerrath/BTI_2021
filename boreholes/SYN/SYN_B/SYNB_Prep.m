@@ -50,7 +50,8 @@ ErrDeflt        =   0.1;
 L=3;
 CovType = 'g';
 
-
+% s='shuffle';
+% s=rng;
 
 smooth_props='m';
 avgmeth ='h';
@@ -110,6 +111,10 @@ T = O1(:,4); zT = zT(isfinite(T)); T = T(isfinite(T));
 N = length(T(:,1));
 
 if L~= 0
+    if exist('s')
+        rng(s);
+    end
+    
     switch lower(CovType)
         case{'e' 'markov' 'exponential'}
             Cov=CovarExpnl(ones(N,1),L);
