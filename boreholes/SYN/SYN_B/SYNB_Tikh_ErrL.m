@@ -17,7 +17,7 @@ addpath([srcpath,filesep,strcat(['tools'])]);
 
 % ONLY FOR PARRALLEL  EXECUTION
 run_parallel=1;
-parcors=   8;
+parcors=   4;
 
 
 
@@ -43,10 +43,10 @@ props       = 'syn';
 
 Qb = -30*2.3253*1e-3;
 ErrDeflt=0.03;
-NSamp=32;
+NSamp=1;
 
 for sample = [1:NSamp]
-    for L = [0 1 2 3 5 7]
+    for L = [0 1 2 3 4 5 6 7]
         
         prepstr       = strcat(['_Sample',num2str(sample),'_ErrL',num2str(L*20),'m'] );
         

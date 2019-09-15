@@ -94,7 +94,7 @@ switch lower(init_type)
         T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
         Tinit = T0;
         zinit =z;
-        GST=Tin;
+        GSTinit=Tin;
         if plotit
             figure;
             plot(Tinit,zinit,'-r','LineWidth',3);hold on
@@ -138,10 +138,10 @@ switch lower(init_type)
 %                     Tr=heat1dns(k, kA, kB,h,p,Qb,Tref,dz,ip,maxitnl,tolnl,freeze,out);
                 end
                 
-                GST=Tgst;
+                GSTinit=Tgst;
                 
                 [Tcalc,G,Q,K]=heat1dnt(k,kA,kB,h,r,c,rc,p,Qb,...
-                    dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,freeze,out);
+                    dz,ip,dt,it,GSTinit,T0,theta,maxitnl,tolnl,freeze,out);
                 
                 T0old=T0;T0=Tcalc(:,nt);
                 Tit=[Tit T0(:)];
@@ -175,10 +175,10 @@ switch lower(init_type)
 %                     Tr=heat1dns(k, kA, kB,h,p,Qb,Tref,dz,ip,maxitnl,tolnl,freeze,out);
                 end
                 
-                GST=Tgst;
+                GSTinit=Tgst;
                 
                 [Tcalc,G,Q,K]=heat1dnt(k,kA,kB,h,r,c,rc,p,Qb,...
-                    dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,freeze,out);
+                    dz,ip,dt,it,GSTinit,T0,theta,maxitnl,tolnl,freeze,out);
                 
                 T0old=T0;T0=Tcalc(:,nt);
                 Tit=[Tit T0(:)];
@@ -261,7 +261,7 @@ Tinit=T0;
 F=strcat([name,'_Init']);
 disp([' ']);
 disp([ 'results to ',F]);
-save(F,'zinit','Tinit','GST');
+save(F,'zinit','Tinit','GSTinit');
 
 
 

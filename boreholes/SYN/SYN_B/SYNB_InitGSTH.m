@@ -136,11 +136,11 @@ for sample = [1:NSamp]
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         
-%        Tikh_gsth(name);
+       Tikh_gsth(name);
 %         
 %         
     end
 end
-if plot_results
-    SYNB_TikhPlot
-end
+% if plot_results
+%     SYNB_TikhPlot
+% end
