@@ -238,6 +238,7 @@ for iter=1:maxiter_inv
     if iter <= start_regpar
         regpar_loc = regpar0;
         regpar_iter(iter,:) =  regpar_loc;
+        disp([' ...RegPar = ',num2str(regpar_loc)]);
         disp([' ...solving for new par']);
         A=[Jw;...
             sqrt(regpar_loc(3))*L2; ...
@@ -306,7 +307,7 @@ for iter=1:maxiter_inv
                     error(['GSTH_Tikh: method ' reg_opt ' not implemented!'])
             end
             index=find(val==min(val));
-            if reg_shift~=0,
+            if reg_shift~=0
                 index=index+reg_shift;
                 index=min([index,length(val)]); index=max([index,1]);
             end
