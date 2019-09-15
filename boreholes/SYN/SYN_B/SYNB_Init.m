@@ -130,7 +130,7 @@ switch lower(init_type)
             for iter=1:initial_iter
                 
                 if iter==1
-                    Tgst(1)
+                    
                     Tin=Tgst(1)+POM;
                     T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
                     Tinit = T0;
