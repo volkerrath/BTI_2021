@@ -62,7 +62,7 @@ wspline=0.5;
 % VARIABLES OUTSIDE SYN_PREP OVERWRITE DEFAULTS ABOVE!
 F=strcat([name,'_Prep_in.mat']);
 if exist(F)
-    disp([mfilename ' defaults overwritten!'])
+    disp([mfilename ' defaults overwritten from ', F])
     load(F); mstruct(prep_in);
 end
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

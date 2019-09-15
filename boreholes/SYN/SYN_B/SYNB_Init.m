@@ -66,9 +66,9 @@ mstruct(sitepar);
 
 Qb=qb;
 
-F=[name '_Init_in.mat'];
+F=strcat([name '_Init_in.mat']);
 if exist(F)
-    disp([mfilename ' defaults overwritten!'])
+    disp([mfilename ' defaults overwritten from ',F])
     load(F);
     mstruct(init_in);
 end
@@ -76,6 +76,7 @@ end
 
 if plotit
     set_graphpars
+    %plotfmt='epsc2';
     close all
 end
 
@@ -88,6 +89,7 @@ nz = length(z);dz=diff(z);
 
 switch lower(init_type)
     case {'e' 'equi' 'equilibrium'}
+        disp(strcat([ ' ... initial values: ', init_type]));
         Tin=GST0-POM;
         T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
         Tinit = T0;
@@ -111,6 +113,7 @@ switch lower(init_type)
         
         
     case {'p' 'prior' 'periodic'}
+        disp(strcat([ ' ... initial values: ', init_type]));
         if strcmp(init_form,'steps')
             % SETUP FORCING
             PGSTH =importdata(GSTH_file); 
@@ -118,10 +121,10 @@ switch lower(init_type)
             tGSTH=-PGSTH(:,1)*y2s; 
             TGSTH=PGSTH(:,2);
             TGSTH=[TGSTH; TGSTH(end)];
-            [Tgst] = set_stpgst(t,TGSTH,tGSTH,L,0);
+            [Tgst] = set_stpgst(t,TGSTH,tGSTH,L,POM,0);
             
-            tGSTH/y2s
-            t/y2s
+%             tGSTH/y2s
+%             t/y2s
             
             Tit = [];
             for iter=1:initial_iter
@@ -190,12 +193,12 @@ switch lower(init_type)
         if plotit
             figure
             ty= t*s2y;
-            tscal = 1e-3;1
+            tscal = 1.;%%e-3;1
             plot(-ty(:)*tscal,[Tgst(:)] ,'-b','LineWidth',3);hold on
             grid on;
-            xlim([3 120000]);
+            xlim([10 120000]);
             ylim([-10 10]);
-            TXT=strcat([name,'/',props,' Uniform']);
+            TXT=strrep(strcat([name,'/',props,' Uniform']),'_',' ');
             textloc(TXT,'south','FontSize',0.5*fontsz,'FontWeight',fontwg);
             xlabel('Time BP/2000 (a)');ylabel('\Delta T (K)');
             
@@ -214,7 +217,7 @@ switch lower(init_type)
             
             figure;
             plot(Tinit,z,':k','LineWidth',2);hold on
-            plot(Tit,z,'LineWidth',1);hold on
+            %plot(Tit,z,'LineWidth',1);hold on
             plot(Tit(:,initial_iter),z,'-r','LineWidth',3);hold on
             ylim(zlimits);    grid on
             ylabel('z (m)','FontSize',fontsz);
@@ -223,6 +226,7 @@ switch lower(init_type)
             set(gca,'FontSize',fontsz, 'FontWeight',fontwg);
             dtext= strcat(['Initial temperatures, props = ',props,', iterations: ',num2str(initial_iter,'%i')]);
             textloc(dtext,'northeast','FontSize',fontsz-4,'FontWeight',fontwg);
+            legend('equi',' final (it=30)')
             file=strcat([name, '_Iterations']);
             saveas(gcf,file,plotfmt);
             
