@@ -41,7 +41,7 @@ Qbshift         = -0.0000;
 Qb              =   Qb+Qbshift;
 
 GST0            =   0;
-POM             = -4; 
+POM             =  0; 
 POR             =   0.00;
 KTop            =   2.3253e+00;   % mean aus TC-m top 100
 KBot            =   2.3253e+00; % mean aus TC-m entire well
@@ -222,7 +222,6 @@ if estq
     TG=diff(Tx)./diff(zTx);
     zG= 0.5*(zTx(1:length(zTx)-1)+zTx(2:length(zTx)));
     Kx=K(id);Kx=Kx(1:length(Kx)-1);
-    whos Kx  TG
     Qobs = Kx(:).*TG(:);
     
     
