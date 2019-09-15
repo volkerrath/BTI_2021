@@ -41,7 +41,7 @@ dp              =   0.001;                  % FD perturbation
 tol_solve       =   0.00001;                % tolerance for solver
 maxiter_solve   =   32;                     % number of solver iterations
 tol_inv         =   [0.0001,0.00001];       % tolerance for inversion rms
-maxiter_inv     =   100;                    % maximal number of iterations
+maxiter_inv     =   150;                    % maximal number of iterations
 
 % REGULARIZATION PARAMETER FOR TIKHONOV
 % reg_opt           =  'UPRE';          % Unbiased Predictive Risk Estimator
@@ -50,12 +50,12 @@ maxiter_inv     =   100;                    % maximal number of iterations
 % reg_opt           =  'LC';            % L-Curve (disabled)
 % reg_opt         =   'FIX';            % fixed regularization parameter
 reg_opt         =   'GCV';              % fixed regularization parameter
-start_regpar    =    5;                  % when to start search
+start_regpar    =   25;                  % when to start search
 modul_regpar    =    1;                 % how often
 mregpar_adaptint =   1;
 %
 msteps_regpar    =   48;                % number of test values
-regpar0=[0.01 0.1 0];
+regpar0=[0.001 1 0];
 reg0par=[0.001];                         % logspace(-1,1,10);31
 reg1par=logspace(-3.,3,msteps_regpar);
 reg2par=[0];
