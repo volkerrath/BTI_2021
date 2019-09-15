@@ -1,7 +1,7 @@
 function [Tcalc,dT,Q,K] = forward_solven(m,k,kA,kB,h,r,c,rc,p,ip,dz,qb,gts,...
     it,dt,T0,theta,maxitnl,tolnl,freeze,out)
 % FORWARD_SOLVE solves forward problem
-%   Detailed explanation goes here
+
 GST=m+gts;POM=GST(1);
 
 if isempty(T0)

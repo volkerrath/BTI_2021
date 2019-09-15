@@ -142,6 +142,9 @@ for iter=1:maxiter_inv
 
     dt=diff(t);nt=length(t);
     dz=diff(z);nz=length(z);
+    
+    GST=m+gts;POM=GST(1);
+
 
     if isempty(T0)
         T0=heat1dns(k, kA, kB,r,h,p,qb,POM,dz,ip,maxitnl,tolnl,freeze,out);
