@@ -37,23 +37,19 @@ set_graphpars
 plotfmt='png';
 
 %
-site       = 'SYNB';
+site       = 'TEST1';
 props       = 'syn';
-prepstr       = '_QMesh';
+prepstr       = '_steadt_state';
 name=[site prepstr];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PARAMETER FOR FORWARD MODEL
+% JOINT PHYSICAL PARAMETERS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-theta           =   1.;                   % time steping weight 1/FI .5/CN
-maxitnl         =   4;                    % number of nl iterations
-tolnl           =   0.00001;
-relaxnl         =  1.;
-freeze          =  1;                     % include freezing/thawing
+GST0=  10.  ; % 10; %
+Qb= -60e-3;               				
+RC =  [ 2 ];
+H =  2.5e-6;
 
-fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
-F=strcat([name,'_FwdPar.mat']);
-save(F, 'fwdpar')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GENERATE MESHES
@@ -69,6 +65,27 @@ save(F,'mesh_in');
 disp(strcat([' generate meshes for ' name]));
 C=strcat([site,'_Mesh(name);']);
 eval(C);
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PARAMETER FOR FORWARD MODEL
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+theta           =   1.;                   % time steping weight 1/FI .5/CN
+maxitnl         =   4;                    % number of nl iterations
+tolnl           =   0.00001;
+relaxnl         =  1.;
+freeze          =  1;                     % include freezing/thawing
+
+fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
+F=strcat([name,'_FwdPar.mat']);
+save(F, 'fwdpar')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

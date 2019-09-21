@@ -8,7 +8,8 @@ function []=Tikh_gsth(name)
 % it        accociates paleotemperatures to temporal grid cells
 %
 % structures used:
-% sitepar     information defining parameter and observations forgiven site
+% sitemod     information defining parameter for given site
+% sitedat     information defining observations for given site
 % fwdpar      numerical control for forward modeling
 % invpar      numerical control for inversion
 %
@@ -56,22 +57,33 @@ end
 disp([' ']); disp([' ...read & organize obs ' ]);
 nobs=0;
 
-F=strcat([name '_SitePar.mat']);
+F=strcat([name '_SiteMod.mat']);
 if exist(F,'file')
     load(F);
     disp([' >>>>> site obs read from: ' F]);
     disp([' ']);
-    mstruct(sitepar);
+    mstruct(sitemod);
 else
     error([F ' does not exist in path!']);
 end
+
+F=strcat([name '_SiteObs.mat']);
+if exist(F,'file')
+    load(F);
+    disp([' >>>>> site obs read from: ' F]);
+    disp([' ']);
+    mstruct(siteobs);
+else
+    error([F ' does not exist in path!']);
+end
+
 nd=length(id);nobs=nobs+nd;
 
 % SITE SPECIFIC PATHS
 addpath([srcpath,'/src/props/',props]);
 disp([' ']); disp([' ...local property model: ' props]);
 
-% READ LOCAL MODELLING PARAMETERS
+% READ FORWARD MODELLING PARAMETERS
 F=strcat([name,'_FwdPar.mat']);
 if exist(F,'file')
     disp([' ']);disp([mfilename,': local inversion pars loaded from file ',F]);
@@ -79,7 +91,7 @@ if exist(F,'file')
 else
     error([F ' does not exist in path! STOP.']);
 end
-% READ LOCAL INVERSION PARAMETERS
+% READ INVERSION PARAMETERS
 F=strcat([name,'_InvPar.mat']);
 if exist(F,'file')
     disp([' ']);disp([mfilename,': local inversion pars loaded from file ',F]);

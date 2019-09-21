@@ -8,7 +8,7 @@ function []=Fwd_gsth(name)
 % it        accociates paleotemperatures to temporal grid cells
 %
 % structures used:
-% sitepar     information defining parameter and observations forgiven site
+% sitemod     information defining parameter for given site
 % fwdpar      numerical control for forward modeling
 % invpar      numerical control for inversion
 %
@@ -56,16 +56,16 @@ disp([' ']);
 disp([' ']); disp([' ...read & organize obs ' ]);
 nobs=0;
 
-F=strcat([name '_SitePar.mat']);
+F=strcat([name '_SiteMod.mat']);
 if exist(F,'file')
     load(F);
     disp([' >>>>> site obs read from: ' F]);
     disp([' ']);
-    mstruct(sitepar);
+    mstruct(sitemod);
 else
     error([F ' does not exist in path!']);
 end
-nd=length(id);nobs=nobs+nd;
+
 
 % SITE SPECIFIC PATHS
 addpath([srcpath,'/src/props/',props]);
