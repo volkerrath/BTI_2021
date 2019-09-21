@@ -103,7 +103,7 @@ if isempty(T0)
     T0=heat1dns(k, kA, kB,h,r,p,qb,GST(1),dz,ip,maxitnl,tolnl,freeze,out);
 end
 
-[Tcalc,dT,Q,K]=heat1dnt(k,kA,kB,h,r,c,rc,p,qb,...
+[Tcalc,dT,Q,K]=heat1dnt(k,kA,kBgit poush,h,r,c,rc,p,qb,...
     dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,freeze,1);
 % CALCULATE RESIDUAL
 r=Tobs(:)-Tcalc(id,nt);
