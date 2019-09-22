@@ -55,16 +55,16 @@ CovType = 'g';
 
 smooth_props='m';
 avgmeth ='h';
-smooth_props='s';
+smooth_data='s';
 nspline=101;
 wspline=0.5;
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES OUTSIDE SYN_PREP OVERWRITE DEFAULTS ABOVE!
-F=strcat([name,'_Mod_in.mat']);
+F=strcat([name,'_Prep_in.mat']);
 if exist(F)
     disp([mfilename ' defaults overwritten from ', F])
-    load(F); mstruct(mod_in);
+    load(F); mstruct(prep_in);
 end
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -85,8 +85,9 @@ step = 0;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 step=step+1;
-disp(strcat([ ' ...>>> Step ',num2str(step),': get grids']));
+disp(strcat([ ' ...>>> Step ',num2str(step),': set grids']));
 % SPATIAL AND TEMPORAL MESH
+disp([' ...set grids'])
 
 meshfileZ=[name,'_DepthGrid.mat'];
 load (meshfileZ);
@@ -94,9 +95,48 @@ meshfileT=[name,'_TimeGrid.mat'];
 load (meshfileT);
 
 % disp([mfilename '    spatial mesh: ',num2str(nz),' temporal mesh:',num2str(nt)]);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% STEP: READ & PREPROCESS DATA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+step=step+1;
+disp(strcat([ ' ...>>> Step ',num2str(step),': read obs']));
+
+O1    =   importdata([datpath,Data_file]);
+
+% Version 2012b
+zT = O1(:,1); 
+T = O1(:,4); zT = zT(isfinite(T)); T = T(isfinite(T));
+
+N = length(T(:,1));
+
+if L~= 0
+    if exist('s')
+        rng(s);
+    end
+    
+    switch lower(CovType)
+        case{'e' 'markov' 'exponential'}
+            Cov=CovarExpnl(ones(N,1),L);
+        case{'g' 'gauss'}
+            Cov=CovarGauss(ones(N,1),L);
+            %     case{'m' 'matern'}
+            %         Cov=CovarMatern(ones(N,1),L);
+        otherwise
+            error([lower(CovFun), ' not implemented. STOP']);
+    end
+    C    = chol(Cov);
+    
+    Err = ErrDeflt;
+    
+    err_nor =  Err*randn(N,1);
+    err_cor =  err_nor'*C;
+    
+    T = T+err_cor';
+end
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% STEP: READ & PREPROCESS MOEL
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 step=step+1;
@@ -106,6 +146,22 @@ disp(strcat([ ' ...>>> Step ',num2str(step),...
 
 % CELL CENTERS
 zm=0.5*(z(1:nz-1)+z(2:nz));nc=length(zm);
+
+% TEMPERATURE
+breaks=linspace(min(zT),max(zT),nspline);
+ss=splinefit(zT,T,breaks,'r',wspline);dd=ppdiff(ss);
+Tx=ppval(ss,z);Tc=ppval(ss,zm);dTc=ppval(dd,zm);
+resT=ppval(ss,zT)-T;no=length(resT);errT=norm(resT)/sqrt(no);
+Ts=NaN(size(z));
+Ts(z>=min(zT) & z <=max(zT))=Tx(z>=min(zT) & z <=max(zT));
+
+
+% CUT LOG
+Ts(z< zDatTop)=NaN;
+Ts(z> zDatBot)=NaN;
+id=find(isfinite(Ts));
+Tobs=Ts(id);zobs=z(id); nd=length(id);Tobs=Tobs';
+
 
 % BULK THERMAL CONDUCTIVITY, RHOB, RHOC, POR
 
