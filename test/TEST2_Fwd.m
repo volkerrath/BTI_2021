@@ -37,8 +37,8 @@ plotfmt='png';
 
 %
 site       = 'TEST1';
-props       = 'syn';
-prepstr       = '_steadt_state';
+props       = 'const';
+prepstr       = '_steady_state';
 name=[site prepstr];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,7 +53,7 @@ RC      = R*C;
 D       = K/RC;
 H       =  [ 0.  2.  4.]*1.e-6;
 
-name = strcat([ site '_steady-state']);
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GENERATE JOINT Z-MESH

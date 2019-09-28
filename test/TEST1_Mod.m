@@ -1,4 +1,4 @@
-function [ierr]=SITE_Prep(name)
+function [ierr]=SITE_Mod(name)
 % Prepare Data and Model for inversion
 
 ierr = 0;
@@ -18,7 +18,7 @@ addpath([datpath]);
 % GENERAL SETTINGS
 out             = 0;
 plotit          = 0;
-
+props           = 'const'
 
 Qb              =  -60*1e-3;
 H               =   0.;
@@ -67,13 +67,8 @@ disp(strcat([ ' ...>>> Step ',num2str(step),...
 % CELL CENTERS
 zm=0.5*(z(1:nz-1)+z(2:nz));nc=length(zm);
 
-% BULK THERMAL CONDUCTIVITY, RHOB, RHOC, POR, HEAT PRODUCTION
+% BULK THERMAL CONDUCTIVITY, RHO, CP, POR, HEAT PRODUCTION
 
-Kn          = ones(size(dz)).*K;
-Pn          = ones(size(dz)).*P; 
-Rn          = ones(size(dz)).*R;
-Cn          = ones(size(dz)).*C;
-Hn          = ones(size(dz)).*H;
 
 
 
@@ -97,20 +92,17 @@ dz=diff(z);
 gts=T0;
 qb=Qb;
 
-k=K;
-kA=0.00*nones';
-kB=0.00*nones';
+k           = ones(size(dz)).*K;
+kA          = 0.00*nones';
+kB          = 0.00*nones';
+r           = ones(size(dz)).*R;
+c           = ones(size(dz)).*C;
+h           = ones(size(dz)).*H;
+p           = ones(size(dz)).*P;
 
-
-r=R;
-c=C;
 rc=r.*c;
 
-h = Hn;
-p = Pn;
-
-
-sitemod=mstruct(k,kA,kB,h,p,r,c,rc,z,ip,t,it,qb,gts,props,name);
+sitemod=mstruct(k,kA,kB,h,p,r,c,rc,z,ip,qb,gts,props,name);
 
 
 F=strcat([name '_SiteMod.mat']);

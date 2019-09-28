@@ -10,7 +10,6 @@ function []=Fwd_gsth(name)
 % structures used:
 % sitemod     information defining parameter for given site
 % fwdpar      numerical control for forward modeling
-% invpar      numerical control for inversion
 %
 % V. R. March 2019
 
@@ -39,19 +38,6 @@ if run_parallel
 end
 disp([' ']);
 
-
-% if run_parallel
-%     if isempty(gcp('nocreate')), parpool(parcors); end
-% end
-
-% if exist('matlabpool')==0
-% if isempty(gcp('nocreate')), parpool(parcors); end
-% else
-%      if matlabpool('size') == 0
-%         matlabpool (parcors)
-%      end
-% end
-
 % READ PARAMETERS AND DATA FOR SITE
 disp([' ']); disp([' ...read & organize obs ' ]);
 nobs=0;
@@ -66,6 +52,17 @@ else
     error([F ' does not exist in path!']);
 end
 
+F=strcat([name '_SiteObs.mat']);
+if exist(F,'file')
+    load(F);
+    disp([' >>>>> site obs read from: ' F]);
+    disp([' ']);
+    mstruct(siteobs);
+else
+    Tobs=[]; 
+    disp([' >>>>> no site obs found! ']);
+    disp([' ']);
+end
 
 % SITE SPECIFIC PATHS
 addpath([srcpath,'/src/props/',props]);
@@ -86,48 +83,18 @@ end
 disp(['   ']);disp([' ... start iteration   ']);
 
 % SOLVE FORWARD PROBLEM
-
-dt=diff(t);nt=length(t);
 dz=diff(z);nz=length(z);
-
-    T0=heat1dns(k, kA, kB,h,r,p,qb,GST(1),dz,ip,maxitnl,tolnl,freeze,out);
-
-
-[Tcalc,dT,Q,K]=heat1dns(k, kA, kB,h,r,p,qb,GST(1),dz,ip,maxitnl,tolnl,freeze,out);
-
+out=0;
+Tcalc=heat1dns(k, kA, kB,h,r,p,qb,gts,dz,ip,maxitnl,tolnl,freeze,out);
 
 %==========================================================================
 %  Postpocessing
 %==========================================================================
-% if exist('matlabpool')==0
-% if ~isempty(gcp('nocreate')),delete(gcp); end
-% else
-%      if matlabpool('size') ~= 0
-%         matlabpool ('close')
-%      end
-% end
 
 % SAVE DATA
 filename=strcat([name,'_FwdStat.mat']);
 disp(['   ']);disp([' ...save results to: ',filename]);
-save(filename,'Tcalc','z',)
-
-S=fopen('INFO.dat','a+');
-sline=strcat([...
-    ' ',num2str(rms,'% 10.6g'),...
-    ' ',num2str(mae,'%10.6g'),...
-    ' ' name]);
-
-fprintf(S,'%s \n',sline);
-fclose(S);
-
-
-clear
-
-
-
-clear
-
+save(filename,'Tcalc','z')
 
 disp(['   '])
 

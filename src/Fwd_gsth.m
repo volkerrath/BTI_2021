@@ -39,19 +39,6 @@ if run_parallel
 end
 disp([' ']);
 
-
-% if run_parallel
-%     if isempty(gcp('nocreate')), parpool(parcors); end
-% end
-
-% if exist('matlabpool')==0
-% if isempty(gcp('nocreate')), parpool(parcors); end
-% else
-%      if matlabpool('size') == 0
-%         matlabpool (parcors)
-%      end
-% end
-
 % READ PARAMETERS AND DATA FOR SITE
 disp([' ']); disp([' ...read & organize obs ' ]);
 nobs=0;
@@ -59,13 +46,26 @@ nobs=0;
 F=strcat([name '_SiteMod.mat']);
 if exist(F,'file')
     load(F);
-    disp([' >>>>> site obs read from: ' F]);
+    disp([' >>>>> site parameter read from: ' F]);
     disp([' ']);
     mstruct(sitemod);
 else
     error([F ' does not exist in path!']);
 end
 
+
+
+F=strcat([name '_SiteObs.mat']);
+if exist(F,'file')
+    load(F);
+    disp([' >>>>> site obs read from: ' F]);
+    disp([' ']);
+    mstruct(siteobs);
+else
+    Tobs=[]; 
+    disp([' >>>>> no site obs found! ']);
+    disp([' ']);
+end
 
 % SITE SPECIFIC PATHS
 addpath([srcpath,'/src/props/',props]);
@@ -81,7 +81,7 @@ else
     error([F ' does not exist in path! STOP.']);
 end
 
-F=[name '_Init.mat'];
+F=strcat([name '_Init.mat']);
 if exist(F,'file')
     load(F)  ;
     disp([' ']);disp(['Fwd_gsth: initial conditions loaded from file ',F]);
