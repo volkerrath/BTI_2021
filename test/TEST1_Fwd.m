@@ -57,7 +57,7 @@ Hi      = [ 0.  2.  4.]*1.e-6;
 Qbm      = -60 *1e-3;
 Qbi     = [-40 -60  -80]*1e-3;
 nzm     = 251;
-nzi     = [101 201 301 401 501];
+nzi     = [101 201 301 401 501 1001];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NUMERICAL FORWARD MODEL CTRL PARAMETER
@@ -150,7 +150,7 @@ if plotit
     title(strcat([site, ' temperatures/Q']),'FontSize',fontsz,'FontWeight',fontwg);
     S1=strcat(['numerical']);
     S2=strcat(['analytic']);
-    legend(S1,S2,'location', 'southwest')
+    legend(S1,S2,'location', 'best')
     grid on
     file=strcat([name '_Temp_Q']);
     saveas(gcf,file,plotfmt)
@@ -165,9 +165,7 @@ if plotit
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('T (C)','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
-    title(strcat([site, ' temperatures']),'FontSize',fontsz,'FontWeight',fontwg);
-
-    legend(S1,S2,'location', 'southwest')
+    title(strcat([site, ' residuals/Q']),'FontSize',fontsz,'FontWeight',fontwg);
     grid on
     file=strcat([name '_Res_Q']);
     saveas(gcf,file,plotfmt)
@@ -232,10 +230,9 @@ if plotit
     title(strcat([site, ' temperatures/H']),'FontSize',fontsz,'FontWeight',fontwg);
     S1=strcat(['numerical']);
     S2=strcat(['analytic']);
-
-    legend(S1,S2,'location', 'southwest')
+    legend(S1,S2,'location', 'best')
     grid on
-    file=strcat([name '_Temp']);
+    file=strcat([name '_Temp_H']);
     saveas(gcf,file,plotfmt)
     
     figure    % PLOT TEMPERATURES
@@ -248,12 +245,9 @@ if plotit
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('T (C)','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
-    title(strcat([site, ' temperatures']),'FontSize',fontsz,'FontWeight',fontwg);
-    S1=strcat(['orig']);
-    S2=strcat(['mod']);
-    legend(S1,S2,'location', 'southwest')
+    title(strcat([site, ' residuals/H']),'FontSize',fontsz,'FontWeight',fontwg);
     grid on
-    file=strcat([name '_Temp_H']);
+    file=strcat([name '_ResH']);
     saveas(gcf,file,plotfmt)
     
 end
@@ -328,8 +322,11 @@ if plotit
     step=10;
     
     figure    % PLOT TEMPERATURES
-    step = 10;
-    for nzx=nzi
+    step = 10;    
+    icurv = 0;
+    for nzx=nzi         
+        icurv=icurv+1;
+        legstr{icurv}= strcat([' Nz = ',num2str(nzx)]);
         F=strcat([name '_N',num2str(nzx)]);load(F);
         disp([' Results loaded from: ', F]);
         %plot(Ta(:,2:end),Ta(:,1),':','LineWidth',1); hold on
@@ -338,21 +335,24 @@ if plotit
     end
     %     xlim([0 50]);
     %     ylim([0 2750]);
-    
+
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('T (C)','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
-    title(strcat([site, ' temperatures']),'FontSize',fontsz,'FontWeight',fontwg);
-    S1=strcat(['orig']);
-    S2=strcat(['mod']);
-    legend(S1,S2,'location', 'southwest')
+    title(strcat([site, ' temperatures/Nz']),'FontSize',fontsz,'FontWeight',fontwg);
+    legend(legstr,'location','best');
     grid on
-    file=strcat([name '_Temp']);
+    file=strcat([name '_TempN']);
     saveas(gcf,file,plotfmt)
     
     figure    % PLOT TEMPERATURES
-    
+    icurv = 0;
     for nzx =nzi
+         icurv=icurv+1;
+         legstr{icurv}= strcat([' Nz = ',num2str(nzx)]);
+%          strcat([' Nz = ',num2str(nzx),', dx = ',num2str(5000/(nzx-1)),' m']);
+         strcat([' Nz = ',num2str(nzx)]);
+        F=strcat([name '_N',num2str(nzx)]);load(F);
         Tr=Tn(:,2)-Ta(:,2);
         %plot(Ta(:,2:end),Ta(:,1),':','LineWidth',1); hold on
         plot(Tr(:),Tn(:,1),'-','LineWidth',1); hold on
@@ -363,12 +363,10 @@ if plotit
     set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
     xlabel('T (C)','FontSize',fontsz,'FontWeight',fontwg)
     ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
-    title(strcat([site, ' temperatures']),'FontSize',fontsz,'FontWeight',fontwg);
-    S1=strcat(['orig']);
-    S2=strcat(['mod']);
-    legend(S1,S2,'location', 'southwest')
+    title(strcat([site, ' residuals/Nz']),'FontSize',fontsz,'FontWeight',fontwg);
+    legend(legstr,'location','best');
     grid on
-    file=strcat([name '_Temp_H']);
+    file=strcat([name '_Res_N']);
     saveas(gcf,file,plotfmt)
     
 end
