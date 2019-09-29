@@ -74,7 +74,7 @@ z=[0 ;cumsum(dz)];
 %disp([mfilename '    spatial mesh: ',num2str(nz),' temporal mesh:',num2str(nz)]);
 
 zc=0.5*(z(1:nz-1)+z(2:nz));
-Pcl=[101325; 9.81*cumsum(dz.*rm)];Pcl=n2c(Pcl,dz);
+Pcl=[101325; 9.81*cumsum(dz.*rm)];  Pcl=n2c(Pcl,dz);
 Pch=[101325; 9.81*cumsum(dz.*998.)];Pch=n2c(Pch,dz);
 
 GST=GST(:);T0=T0(:);
@@ -103,9 +103,8 @@ for itime = 1:nt-1
         %        build SYSTEM MATRIX
         %        initialize diagonals
         a(1:nz)=0.;b(1:nz)=0.;c(1:nz)=0.;
-        %        define  coefficienGST for interior poinGST
+        %        interior points
 
-      
             Titer=relax*Titer+(1-relax)*Tlast;
             Tc=n2c(Titer,dz);
 

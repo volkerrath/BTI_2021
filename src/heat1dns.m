@@ -44,10 +44,10 @@ k=kl(ip(1:  nc));  k=k(:);             % thermal conductivity
 kA =    kAl(ip(1:  nc));  kA=kA(:);    % thermal conductivity coefficient A
 kB =    kBl(ip(1:  nc));  kB=kB(:);    % thermal conductivity coefficient B
 h  =     hl(ip(1:  nc));  h=h(:);      % heat production
-rm  =     rl(ip(1:  nc));  rm=rm(:);      % heat production 
+rm  =    rl(ip(1:  nc));  rm=rm(:);    % density 
 por   =  porl(ip(1:  nc));  por=por(:);    % porosity
 one=ones(size(ip));
-Pcl=[101325; 9.81*cumsum(dz.*rm)];Pcl=n2c(Pcl,dz);
+Pcl=[101325; 9.81*cumsum(dz.*rm)]  ;Pcl=n2c(Pcl,dz); %lithostatc
 Pch=[101325; 9.81*cumsum(dz.*998.)];Pch=n2c(Pch,dz);
 
 dc= 0.5 * (dz(2:nc,1)+dz(1:nc-1,1));
@@ -58,16 +58,20 @@ for iter=1:maxiter
     %      define  coefficients for interior points
 
     if iter==1
-        km = k;ki=kiT(zeros(size(km)));
-        Pch = 9.81*cumsum(dz.*rhofT(25,Pch)); %startet mit dichte von 25 grad, wird in naechster it korrigiert
-
-        kf=kfT(20.*ones(size(km)),Pch);
+        km = k;
+        ki=kiT(zeros(size(km)));
+    
+        ka = mean(k); ha=mean(h); pa=mean(por);zb=max(z);
+        T  =Ts - (qb.*z/ka)  + (ha.*z/ka).*(zb-z/2);
+        Pch = 9.81*cumsum(dz.*rhofT(T,Pch)); %start at 2 deg, corrected next step 
+        kf=kfT(T,Pch);
         gf=one;
     else
         Tc=n2c(T,dz);
         
         km=kmT(k,Tc,kA,kB,Pcl);
-        ki=kiT(Tc);kf=kfT(Tc,Pch);
+        ki=kiT(Tc);
+        kf=kfT(Tc,Pch);
         % permafrost
         if freeze==1,
             [gf]=ftheta(Tc,Tf,w);
