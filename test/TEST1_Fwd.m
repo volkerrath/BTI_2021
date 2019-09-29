@@ -24,7 +24,7 @@ save('common','srcpath','utlpath','datpath','pltpath','run_parallel','parcors'),
 
 
 dfmt=1;ffmt='.zip';
-%archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
+archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
 
 
 yeartosec=31557600;sectoyear=1/yeartosec;
