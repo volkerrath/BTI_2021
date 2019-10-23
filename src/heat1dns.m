@@ -25,30 +25,35 @@ function [T,dT,kbulk,ipor] ...
 %
 % V. R., May 18, 2005
 
-solver='direct';
-mean='g';Tf=0;w=1;
+mavg='g';Tf=0;w=1;
 debug=0;
 
 if nargin<11, maxiter=10;tol=1.e-5; end
-if nargin<12, freeze='no';  end
-if nargin<13, out= 'no';end
+if nargin<12, freeze=0;  end
+if nargin<13, out= 0;end
 if nargout>3,ipor=zeros(size(dz));end
 
-nc=length(ip); nz=nc+1; 
+nc=length(ip); nz=nc+1;
 ip=ip(:); dz=dz(:);z=[0 ;cumsum(dz)];
 zc=0.5*(z(1:nz-1)+z(2:nz));
-
+one=ones(size(ip));
 % disp([mfilename '    spatial mesh: ',num2str(nz)]);
 
-k=kl(ip(1:  nc));  k=k(:);             % thermal conductivity
-kA =    kAl(ip(1:  nc));  kA=kA(:);    % thermal conductivity coefficient A
-kB =    kBl(ip(1:  nc));  kB=kB(:);    % thermal conductivity coefficient B
-h  =     hl(ip(1:  nc));  h=h(:);      % heat production
-rm  =    rl(ip(1:  nc));  rm=rm(:);    % density 
-por   =  porl(ip(1:  nc));  por=por(:);    % porosity
-one=ones(size(ip));
-Pcl=[101325; 9.81*cumsum(dz.*rm)]  ;Pcl=n2c(Pcl,dz); %lithostatc
-Pch=[101325; 9.81*cumsum(dz.*998.)];Pch=n2c(Pch,dz);
+k   = kl(ip(1:  nc));       k = k(:);     % thermal conductivity
+kA  =    kAl(ip(1:  nc));  kA = kA(:);    % thermal conductivity coefficient A
+kB  =    kBl(ip(1:  nc));  kB = kB(:);    % thermal conductivity coefficient B
+h   =     hl(ip(1:  nc));  h  = h(:);     % heat production
+rm  =    rl(ip(1:  nc));  rm  = rm(:);    % density
+por =  porl(ip(1:  nc));  por = por(:);   % porosity
+
+Pcl=[101325; 9.81*cumsum(dz.*rm)]  ;
+Pcl=n2c(Pcl,dz); %lithostatic
+
+ka      = mean(k); ha = mean(h);pa=mean(por);zb=max(z);
+T       = Ts - (qb.*z/ka)  + (ha.*z/ka).*(zb-z/2);
+Pch     =  9.81*cumsum(dz.*998.);
+Pch     = [101325; 9.81*cumsum(dz.*rhofT(T(2:end),Pch))];
+Pch     = n2c(Pch,dz); %hydrostatic
 
 dc= 0.5 * (dz(2:nc,1)+dz(1:nc-1,1));
 
@@ -56,54 +61,45 @@ dc= 0.5 * (dz(2:nc,1)+dz(1:nc-1,1));
 for iter=1:maxiter
     %      MATRIX A
     %      define  coefficients for interior points
-
-    if iter==1
-        km = k;
-        ki=kiT(zeros(size(km)));
     
-        ka = mean(k); ha=mean(h); pa=mean(por);zb=max(z);
-        T  =Ts - (qb.*z/ka)  + (ha.*z/ka).*(zb-z/2);
-        Pch = 9.81*cumsum(dz.*rhofT(T,Pch)); %start at 2 deg, corrected next step 
-        kf=kfT(T,Pch);
-        gf=one;
+    
+    Tc=n2c(T,dz);
+    
+    km=kmT(k,Tc,kA,kB,Pcl);
+    ki=kiT(Tc);
+    kf=kfT(Tc,Pch);
+    % permafrost
+    if freeze==1
+        [gf]=ftheta(Tc,Tf,w);
     else
-        Tc=n2c(T,dz);
-        
-        km=kmT(k,Tc,kA,kB,Pcl);
-        ki=kiT(Tc);
-        kf=kfT(Tc,Pch);
-        % permafrost
-        if freeze==1,
-            [gf]=ftheta(Tc,Tf,w);
-        else
-            gf=one;
-        end
+        gf=one;
     end
+    
     porm=(one-por);
     porf= por.*gf;
     pori= por-porf;
-%     switch lower(mean)
-%         case {'a' ,'ari', 'arithmetic'}
-%             keff  = porf.*kf +  pori.*ki + porm.*km;
-%         case {'g','geo','geometric'}
-            keff= exp(log(kf).*porf+log(ki).*pori+log(km).*porm);
-%         case {'h','har','harmonic'}
-%             keff= 1./ (porf./kf +pori./ki + porm./km);
-%         case {'s','sqr','sqrmean'}
-%             keff=(porf.*sqrt(kf)+pori.*sqrt(ki)+porm.*sqrt(km)).^2;
-%         case {'n','none'}
-%             keff = km;
-%         otherwise
-%             disp(['WMEAN: mode set to arithmetic, >', mean, '<  not defined'])
-%             keff  = porf.*kf +  pori.*ki +  porm.*km;
-%     end
-% 
-%    if nargout > 2, k_eff=keff; end
-
+    %     switch lower(mavg)
+    %         case {'a' ,'ari', 'arithmetic'}
+    %             keff  = porf.*kf +  pori.*ki + porm.*km;
+    %         case {'g','geo','geometric'}
+    keff= exp(log(kf).*porf+log(ki).*pori+log(km).*porm);
+    %         case {'h','har','harmonic'}
+    %             keff= 1./ (porf./kf +pori./ki + porm./km);
+    %         case {'s','sqr','sqrmean'}
+    %             keff=(porf.*sqrt(kf)+pori.*sqrt(ki)+porm.*sqrt(km)).^2;
+    %         case {'n','none'}
+    %             keff = km;
+    %         otherwise
+    %             disp(['WMEAN: mode set to arithmetic, >', mean, '<  not defined'])
+    %             keff  = porf.*kf +  pori.*ki +  porm.*km;
+    %     end
+    %
+    %    if nargout > 2, k_eff=keff; end
+    
     if strcmpi(freeze,'yes')==1,
         if nargout > 3,ipor=pori;end
     end
-
+    
     dl = keff./dz;
     %      define matrix coefficients for interior points
     a(1:nz)=0.;b(1:nz)=0.;c(1:nz)=0.;q(1:nz)=0.;

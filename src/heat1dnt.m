@@ -37,7 +37,7 @@ function [T,dT,Q,kbulk,ipor]=...
 %
 %
 % V. R., July 20, 2005
-
+avg = 'g';
 rref=2650;
 relax=1.;
 Lh=333600;Tf=0;w=1.;
@@ -56,26 +56,28 @@ thetstep=theta*ones(1,nt-1);
 k       =   kl(ip(1:  nc));     k=k(:);                      % thermal conductivity
 kA      =   kAl(ip(1:  nc));   kA=kA(:);        % thermal conductivity coefficient A
 kB      =   kBl(ip(1:  nc));   kB=kB(:);        % thermal conductivity coefficient B
-rm       =   rl(ip(1:  nc));     rm=rm(:);         % rock density
-cpm      =   cpl(ip(1:  nc));    cpm=cpm(:);       % rock cp
+rm      =   rl(ip(1:  nc));     rm=rm(:);         % rock density
+cpm     =   cpl(ip(1:  nc));    cpm=cpm(:);       % rock cp
 h       =   hl(ip(1:  nc));     h=h(:);         % heat production
 por     =   porl(ip(1:  nc));   por=por(:);     % porosity
 
 
 one=ones(size(ip));zero=zeros(size(ip));
 
-
 %INITIAL VALUES
-
 % initialize time, depth and pressure
 t=[0; cumsum(dt)];
 z=[0 ;cumsum(dz)];
-
-%disp([mfilename '    spatial mesh: ',num2str(nz),' temporal mesh:',num2str(nz)]);
-
 zc=0.5*(z(1:nz-1)+z(2:nz));
-Pcl=[101325; 9.81*cumsum(dz.*rm)];  Pcl=n2c(Pcl,dz);
-Pch=[101325; 9.81*cumsum(dz.*998.)];Pch=n2c(Pch,dz);
+% LITHOSTATIC PRESSURE
+Pcl=[101325; 9.81*cumsum(dz.*rm)]  ;
+Pcl=n2c(Pcl,dz); %lithostatic
+% HYDROSTATIC  PRESSURE
+ka      = mean(k); ha = mean(h);pa=mean(por);zb=max(z);
+T       = Ts - (qb.*z/ka)  + (ha.*z/ka).*(zb-z/2);
+Pch     =  9.81*cumsum(dz.*998.);
+Pch     = [101325; 9.81*cumsum(dz.*rhofT(T(2:end),Pch))];
+Pch     = n2c(Pch,dz); %hydrostatic
 
 GST=GST(:);T0=T0(:);
 Tlast=T0(:);Tlast(1)=GST(1);
@@ -130,7 +132,7 @@ for itime = 1:nt-1
         porf=por.*gf;
         pori=por-porf;
 
-%         switch lower(mean)
+%         switch lower(avg)
 %             case {'a' ,'ari', 'arithmetic'}
 %                 keff  = porf.*kf +  pori.*ki + porm.*km;
 %             case {'g','geo','geometric'}

@@ -64,15 +64,14 @@ else
     disp([' ']);
 end
 
-% SITE SPECIFIC PATHS
-addpath([srcpath,'/src/props/',props]);
-disp([' ']); disp([' ...local property model: ' props]);
+% SITE SPECIFIC SRC PATHS
+addpath([locpath]);
 
 % READ LOCAL MODELLING PARAMETERS
 F=strcat([name,'_FwdPar.mat']);
 if exist(F,'file')
     disp([' ']);
-    disp([mfilename,': local inversion pars loaded from file ',F]);
+    disp([mfilename,': local modelling pars loaded from file ',F]);
     load(F);mstruct(fwdpar);
 else
     error([F ' does not exist in path! STOP.']);
@@ -80,11 +79,12 @@ end
 
 
 % ITERATION
-disp(['   ']);disp([' ... start iteration   ']);
+% disp(['   ']);disp([' ... start iteration   ']);
 
 % SOLVE FORWARD PROBLEM
 dz=diff(z);nz=length(z);
 out=0;
+
 Tcalc=heat1dns(k, kA, kB,h,r,p,qb,gts,dz,ip,maxitnl,tolnl,freeze,out);
 
 %==========================================================================

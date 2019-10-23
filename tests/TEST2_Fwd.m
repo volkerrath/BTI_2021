@@ -11,6 +11,7 @@ pltpath='./';
 datpath='./';
 srcpath='../';
 utlpath='../';
+locpath='./local'
 
 addpath([srcpath,filesep,'src']);
 addpath([srcpath,filesep,strcat(['tools'])]);
@@ -19,8 +20,9 @@ addpath([srcpath,filesep,strcat(['tools'])]);
 run_parallel=1;
 parcors=   2;
 
+save('common','srcpath','utlpath','datpath','pltpath','locpath',...
+    'run_parallel','parcors'),
 
-save('common','srcpath','utlpath','datpath','pltpath','run_parallel','parcors'),
 
 
 dfmt=1;ffmt='.zip';
