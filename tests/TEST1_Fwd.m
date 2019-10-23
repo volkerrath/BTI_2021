@@ -97,7 +97,8 @@ eval(Proc);
 F=strcat([name,'_DepthGrid.mat']);
 load(F)
 
-if run_Q
+if run_Q 
+    disp([ ' Running test for Qb'])
     Ta = [z(:)];Tn = [z(:)];
     for Qb = Qbi
         
@@ -183,6 +184,7 @@ if run_Q
 end
 
 if run_K
+    disp([ ' Running test for K'])
     Ta = [z(:)];Tn = [z(:)];
     for K = Ki
         
@@ -268,6 +270,7 @@ if run_K
 end
 
 if run_H
+    disp([ ' Running test for H'])
     Ta = [z(:)];Tn = [z(:)];
     for H = Hi
         
@@ -352,7 +355,7 @@ if run_H
 end
 
 if run_Nz
-    
+    disp([ ' Running test for Nz'])
     for nz = nzi
         
         disp([ 'nz_{in} = ' num2str(nz)])

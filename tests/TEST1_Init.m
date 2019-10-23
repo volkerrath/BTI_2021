@@ -49,9 +49,8 @@ prepstr= [''];
 % SET PATHS
 
 addpath([srcpath,filesep,'src']);
-addpath([srcpath,filesep,strcat(['src/props/',props])]);
 addpath([srcpath,filesep,strcat(['tools'])]);
-
+addpath([strcat(['./local'])]);
 % dfmt=1;ffmt='.zip';
 % archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
 
