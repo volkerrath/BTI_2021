@@ -53,11 +53,11 @@ it=it(:); dt=dt(:);nt=length(dt)+1;
 thetstep=theta*ones(1,nt-1);
 
 
-k       =   kl(ip(1:  nc));     k=k(:);                      % thermal conductivity
+k       =   kl(ip(1:  nc));     k=k(:);         % thermal conductivity
 kA      =   kAl(ip(1:  nc));   kA=kA(:);        % thermal conductivity coefficient A
 kB      =   kBl(ip(1:  nc));   kB=kB(:);        % thermal conductivity coefficient B
-rm      =   rl(ip(1:  nc));     rm=rm(:);         % rock density
-cpm     =   cpl(ip(1:  nc));    cpm=cpm(:);       % rock cp
+rm      =   rl(ip(1:  nc));     rm=rm(:);       % rock density
+cpm     =   cpl(ip(1:  nc));    cpm=cpm(:);      % rock cp
 h       =   hl(ip(1:  nc));     h=h(:);         % heat production
 por     =   porl(ip(1:  nc));   por=por(:);     % porosity
 

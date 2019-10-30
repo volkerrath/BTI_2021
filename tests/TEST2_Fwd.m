@@ -123,16 +123,16 @@ load(F)
 %     Ta = [z(:)];Tn = [z(:)];
 %     for Qb = Qbi
 %         
-%         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%         % ANALYTICAL FORWARD MODEL
-%         % Analytical  solution for temperature with heat production
-%         % Stüwe, K. Geodynamiics of the Lithosphere, Springer, Berlin, 2002
-%         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%         zb=zend;
-%         Tia=T0 - (Qb.*z/Km)  + (Hm.*z/Km).*(zb-z/2);
-%         Qia = K*diff(Tia)./diff(z);
-%         disp([ 'Qb_{in} = ' num2str(Qia(nz-1)*1000)])
-%         Ta = [Ta Tia(:)];
+% %         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %         % ANALYTICAL FORWARD MODEL
+% %         % Analytical  solution for temperature with heat production
+% %         % Stüwe, K. Geodynamiics of the Lithosphere, Springer, Berlin, 2002
+% %         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %         zb=zend;
+% %         Tia=T0 - (Qb.*z/Km)  + (Hm.*z/Km).*(zb-z/2);
+% %         Qia = K*diff(Tia)./diff(z);
+% %         disp([ 'Qb_{in} = ' num2str(Qia(nz-1)*1000)]) 
+% %         Ta = [Ta Tia(:)];
 %         
 %         %
 %         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

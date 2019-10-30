@@ -11,7 +11,7 @@ function []=Fwd_gsth(name)
 % sitemod     information defining parameter for given site
 % fwdpar      numerical control for forward modeling
 %
-% V. R. March 2019
+% V. R. Oct 2019
 
 inv_debug=1;
 year2sec=31557600;
@@ -83,7 +83,9 @@ dz=diff(z);nz=length(z);
 out=0;
 
 Tcalc=heat1dns(k, kA, kB,h,r,p,qb,gts,dz,ip,maxitnl,tolnl,freeze,out);
-
+[T,dT,Q,kbulk,ipor]=...
+    heat1dnt(kl,kAl,kBl,hl,rl,cpl,rcl,porl,qb,...
+        dz,ip,dt,it,GST,T0,theta,maxiter,tol,freeze,out)
 %==========================================================================
 %  Postpocessing
 %==========================================================================
