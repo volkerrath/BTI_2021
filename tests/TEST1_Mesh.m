@@ -5,7 +5,7 @@ load common
 
 ierr=0;
 plotit= 0;
-debug=1;
+debug=0;
 
 y2s=3600*24*365.25;s2y=1./y2s;
 
@@ -81,7 +81,7 @@ if set_t
             t=union(t1(:),union(t2(:),t3(:)));t=sort(t);
         case{'read'}
             meshfile='Input_tmesh';
-            disp([' ']);disp([' ...load  temporalal mesh from ',meshfile]);
+            disp([' ']);disp([' ...load  temporal mesh from ',meshfile]);
             load(meshfile);
         case {'logarithmic','log'}
             [t,dt]= set_mesh(tstart, tend, nt, ttype, dir, debug);

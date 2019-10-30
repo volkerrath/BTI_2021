@@ -6,6 +6,8 @@ clc
 rng('shuffle');
 %randn('state',sum(100*clock));
 
+y2s=3600*24*365.25;s2y=1./y2s;
+
 % SET PATHS
 pltpath='./';
 datpath='./';
@@ -26,7 +28,7 @@ save('common','srcpath','utlpath','datpath','pltpath','locpath',...
 
 
 dfmt=1;ffmt='.zip';
-archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
+% archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
 
 
 yeartosec=31557600;sectoyear=1/yeartosec;
@@ -61,14 +63,26 @@ K       = 2.5;
 RC      = R*C;
 D       = K/RC;
 P       = 0.00000;
-Km      = 2.5;          Ki      = [ 1.  2.  4.];
-Hm      =  2.*1.e-6;    Hi      = [ 0.  2.  4.]*1.e-6;
-Qbm      = -60 *1e-3;   Qbi     = [-40 -60  -80]*1e-3;
-nzm     = 251;          nzi     = [101 201 301 401 501 1001];
-ntm     = 251;          nti     = [101 201 301 401 501 1001];
+Km      = 2.5;          Ki =  Km;       %   = [ 1.  2.  4.];
+Hm      =  2.*1.e-6;    Hi =  Hm;       %   = [ 0.  2.  4.]*1.e-6;
+Qbm      = -60 *1e-3;   Qbi = Qbm;      %    = [-40 -60  -80]*1e-3;
+nzm     = 251;          nzi = nzm;      %   = [101 201 301 401 501 1001];
+ntm     = 251;          nti = ntm;      %   = [101 201 301 401 501 1001];
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NUMERICAL FORWARD MODEL CTRL PARAMETER
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+theta           =   1.;                   % time steping weight 1/FI .5/CN
+maxitnl         =   4;                    % number of nl iterations
+tolnl           =   0.00001;
+relaxnl         =  1.;
+freeze          =  1;                     % include freezing/thawing
+fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
+F=strcat([name,'_FwdPar.mat']);
+save(F, 'fwdpar')
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GENERATE JOINT Z-MESH
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -76,14 +90,16 @@ ntm     = 251;          nti     = [101 201 301 401 501 1001];
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 F=strcat([name,'_Mesh_in.mat']);
 set_z   = 1;set_t   = 1;
+
+
 zstart  = 0;
 zend    = 5000;
 ztype   = 'log';
 nz=nzm;
 
-tstart  = 0;
-tend    = 5000;
-ttype   = 'log';
+tstart  = 110000*y2s;
+tend    = 30*y2s;
+ttype= 'log';
 nt=ntm;
 
 mesh_in=mstruct(set_z, set_t, ...
@@ -95,20 +111,10 @@ eval(Proc);
 
 F=strcat([name,'_DepthGrid.mat']);
 load(F)
-F=strcat([name,'_TempGrid.mat']);
+F=strcat([name,'_TimeGrid.mat']);
 load(F)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% NUMERICAL FORWARD MODEL CTRL PARAMETER
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-theta           =   1.;                   % time steping weight 1/FI .5/CN
-maxitnl         =   4;                    % number of nl iterations
-tolnl           =   0.00001;
-relaxnl         =  1.;
-freeze          =  1;                     % include freezing/thawing
-fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
-F=strcat([name,'_FwdPar.mat']);
-save(F, 'fwdpar')
+
 % 
 % 
 % 
