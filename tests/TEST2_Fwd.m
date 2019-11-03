@@ -114,7 +114,19 @@ load(F)
 F=strcat([name,'_TimeGrid.mat']);
 load(F)
 
-
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ANALYTICAL FORWARD MODEL
+% Analytical  solution for temperature without heat production
+%
+% Beltrami, H.; Jessop, A. M. & Mareschal, J.-C. 
+%   Ground temperature histories in eastern and central Canada from 
+%   geothermal measurements: evidence of climate change 
+%   Palaeogeography, Palaeoclimatology, Palaeoecology, 1992, 98, 167-184
+% Mareschal, J.-C. & Beltrami, H. 
+%   Evidence for recent warming from perturbed thermal gradients: examples 
+%   from eastern Canada Clim. Dyn., 1992, 6, 135-143
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+[T,Q]=heat1dat(Km,R,C,Qbm,z,t,gst,T0,tlog,refyr,out) 
 % 
 % 
 % 

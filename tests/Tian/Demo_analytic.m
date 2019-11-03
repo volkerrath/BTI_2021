@@ -39,8 +39,9 @@ T0   = 0.;
 gtime=flipud(-t');
 gsth=flipud(Ts);
 
+
 parvec=[gsth;T0;Qb];
-[T,Q]=heat1dat(parvec,gtime,kappa,k,z',tlog,refyr,out);
+[T,Q]=heat1dana(parvec,gtime,kappa,k,z',tlog,refyr,out);
 
 T0=T.val;z=T.z;
 save('LGM_all_AN.mat'); 

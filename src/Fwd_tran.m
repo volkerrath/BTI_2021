@@ -82,9 +82,9 @@ addpath([locpath]);
 dz=diff(z);nz=length(z);
 out=0;
 
-Tcalc=heat1dns(k, kA, kB,h,r,p,qb,gts,dz,ip,maxitnl,tolnl,freeze,out);
-[T,dT,Q,kbulk,ipor]=...
-    heat1dnt(kl,kAl,kBl,hl,rl,cpl,rcl,porl,qb,...
+T0=heat1dns(k, kA, kB,h,r,p,qb,gts,dz,ip,maxitnl,tolnl,freeze,out);
+
+[Tcalc]=heat1dnt(kl,kAl,kBl,hl,rl,cpl,rcl,porl,qb,...
         dz,ip,dt,it,GST,T0,theta,maxiter,tol,freeze,out)
 %==========================================================================
 %  Postpocessing
