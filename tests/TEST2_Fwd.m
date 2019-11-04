@@ -127,13 +127,13 @@ load(F)
 %   from eastern Canada Clim. Dyn., 1992, 6, 135-143
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-GSTH_data =     importdata(GSTH_file);
-tGSTH =         GSTH_data(:,1)*y2s;
-TGSTH =         GSTH_data(:,2);
-TGSTH =         [TGSTH; TGSTH(end)]; 
-POM   =         TGSTH(1)-4;
-T0    =         TGSTH(end);
-[Tgst] = set_stpgst(t,TGSTH,tGSTH,L,POM,0);
+GSTH_data   =         importdata(GSTH_file);
+tGSTH       =         GSTH_data(:,1)*y2s;
+TGSTH       =         GSTH_data(:,2);
+TGSTH       =         [TGSTH; TGSTH(end)]; 
+POM         =         TGSTH(1)-4;
+T0          =         TGSTH(end);
+[Tgst]      =         set_stpgst(t,TGSTH,tGSTH,L,POM,0);
 
 [T,Q]=heat1dat(Km,R,C,Qbm,z,t,Tgst,T0,tlog,refyr,out)
 % 
