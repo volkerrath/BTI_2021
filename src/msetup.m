@@ -2,11 +2,20 @@ function [M] = msetup(time,diffu,conduc,zdat,tlog,refyr,out)
 % setting up matrix for inversion.
 % This function will be called from the heat1dat
 % and sets up the model matrix for the inversion.
+% 
 % Method  is described in:
-% Beltrami, H. & Mareschal, J.-C.
-% Recent warming in eastern Canada inferred from Geothermal Measurements
-% Geophys. Res. Lett., 1991, 18(4), 605-608
-
+% 
+% Beltrami, H. & Mareschal, J.-C. 
+%   Recent warming in eastern Canada inferred from Geothermal Measurements 
+%   Geophys. Res. Lett., 1991, 18(4), 605-608
+% Beltrami, H.; Jessop, A. M. & Mareschal, J.-C. 
+%   Ground temperature histories in eastern and central Canada from 
+%   geothermal measurements: evidence of climate change 
+%   Palaeogeography, Palaeoclimatology, Palaeoecology, 1992, 98, 167-184
+% Mareschal, J.-C. & Beltrami, H. 
+%   Evidence for recent warming from perturbed thermal gradients: examples 
+%   from eastern Canada Clim. Dyn., 1992, 6, 135-143
+%
 % Original code by J.C. Mareschal
 % Last modified:
 % A. Hartmann, 3-May-01, created a separate function

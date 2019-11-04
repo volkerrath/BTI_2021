@@ -18,12 +18,11 @@ zlimits             =[0 5000];
 
 % CONSTANTS
 
-site                = 'SYNB';
-props               = 'syn';
+site                = 'Test2';
 init_type           = 'p';
 init_form           = 'steps';
 method              = 'linear';
-GSTH_file           = 'GSTHBallingB.csv';
+GSTH_file           = 'Test2_GSTH.dat';
 L                   = 0;
 initial_iter        = 30;
 GST0                = 7.;
@@ -34,7 +33,7 @@ POM                 = 0.;
 % >>>>>>>>>>>>>>>>>>>> FIX POINT ITERATION
 maxitnl= 4;
 tolnl= 1.e-5;
-relaxnl= 1.;
+% relaxnl= 1.;
 
 % >>>>>>>>>>>>>>>>>>>> FREEZE-THAW SWITCH
 freeze= 1;

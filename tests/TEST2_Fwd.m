@@ -68,7 +68,7 @@ Hm      =  2.*1.e-6;    Hi =  Hm;       %   = [ 0.  2.  4.]*1.e-6;
 Qbm      = -60 *1e-3;   Qbi = Qbm;      %    = [-40 -60  -80]*1e-3;
 nzm     = 251;          nzi = nzm;      %   = [101 201 301 401 501 1001];
 ntm     = 251;          nti = ntm;      %   = [101 201 301 401 501 1001];
-
+GSTH_file           = 'Test2_GSTH.dat';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NUMERICAL FORWARD MODEL CTRL PARAMETER
@@ -126,7 +126,16 @@ load(F)
 %   Evidence for recent warming from perturbed thermal gradients: examples 
 %   from eastern Canada Clim. Dyn., 1992, 6, 135-143
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[T,Q]=heat1dat(Km,R,C,Qbm,z,t,gst,T0,tlog,refyr,out) 
+
+GSTH_data =     importdata(GSTH_file);
+tGSTH =         GSTH_data(:,1)*y2s;
+TGSTH =         GSTH_data(:,2);
+TGSTH =         [TGSTH; TGSTH(end)]; 
+POM   =         TGSTH(1)-4;
+T0    =         TGSTH(end);
+[Tgst] = set_stpgst(t,TGSTH,tGSTH,L,POM,0);
+
+[T,Q]=heat1dat(Km,R,C,Qbm,z,t,Tgst,T0,tlog,refyr,out)
 % 
 % 
 % 
