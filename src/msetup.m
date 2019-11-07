@@ -24,26 +24,21 @@ function [M] = msetup(time,diffu,conduc,zdat,tlog,refyr,out)
 % V. Rath,  1-Nov-19
 
 % t0=cputime;
-
+shift=refyr-tlog;
 nt=length(time);npar=nt+2;
 nz = length(zdat);
 M=zeros(nz,npar);
 
 % disp(strcat(['Mstetup: ',num2str([nt ndat alldat allpar])]));
 % begin loop on temperature profiles
-mindat=maxdat+1;
-maxdat=mindat+nz-1;
-shift=refyr-tlog;
 active=find(time > shift);na=length(active);
 tinv(active)= .5./sqrt(diffu*(time(active)-shift));
-for idata=mindat:maxdat
+for idata=1:nz
     % ...................number of steps after logging date
     M(idata,active)=erfc(zdat(idata)*tinv(active));
     M(idata,active(2:na))=M(idata,active(2:na))-M(idata,active(1:na-1));
     M(idata,npar-1)=1.;
     M(idata,npar)=zdat(idata)/conduc;
 end
-%     if out>1, disp(['... row ',num2str(iprof),' finished, ', ...
-%             num2str(cputime-t0,'%0.5g'),' seconds']); end
-% finish setting up matrix: end loop on temperature profiles
+% finish setting up matrix: end loop on temperature profile
 % if out>0, disp([' finished, ', num2str(cputime-t0,'%0.5g'),' seconds']); end

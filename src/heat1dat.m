@@ -17,24 +17,26 @@ function [T,Q]=heat1dat(k,r,c,Qb,z,t,gst,T0,tlog,refyr,out)
 % Mareschal, J.-C. & Beltrami, H. 
 %   Evidence for recent warming from perturbed thermal gradients: examples 
 %   from eastern Canada Clim. Dyn., 1992, 6, 135-143
+%
+% Last modified:
+% V. Rath,  4-Nov-19
 
-nz=length(z);nt=length(time);
-
+nz=length(z);nt=length(t);
+z=  z(:);
 gtime=-flipud(t);
 gsth=flipud(gst);
-
 kappa = k/(r*c);
-parvec=[gsth;T0;Qb];
+parvec=[gsth;T0;-Qb];
 
 % setup matrix for forward modeling
-[M,nmod] = msetup(t,kappa,k,z,nz,tlog,refyr,nt,out);
+[M] = msetup(t,kappa,k,z,tlog,refyr,out);
 % solve forward problem
 Temp=M*parvec;
-T.val=Temp;T.z=z;T.grd=diff(Temp)./diff(z);
+T.val=Temp;T.z=z(:);T.grd=diff(Temp)./diff(z)';
 T.zm=0.5*(z(1:nz-1)+z(2:nz));
-
+ 
 if nargout>1
-   Q.val=k*T.grd;
+   Q.val=k.*T.grd;
    Q.z=T.zm;
 end
 

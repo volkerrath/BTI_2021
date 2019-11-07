@@ -61,9 +61,9 @@ mstruct(fwdpar);
 
 % load MODEL
 disp(strcat([' load model for ' name ]));
-F=strcat([datpath name '_SitePar.mat']);
+F=strcat([datpath name '_SiteMod.mat']);
 load(F);
-mstruct(sitepar);
+mstruct(sitemod);
 
 Qb=qb;
 

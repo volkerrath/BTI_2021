@@ -12,7 +12,7 @@ y2s=3600*24*365.25;s2y=1./y2s;
 set_z = 1;
 set_t = 1;
 
-site            = 'TEST1';
+site            = 'TEST2';
 zstart          = 0;
 zend            = 5000;
 z1max           = 2400;

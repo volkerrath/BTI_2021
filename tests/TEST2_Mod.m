@@ -18,7 +18,6 @@ addpath([datpath]);
 % GENERAL SETTINGS
 out             = 0;
 plotit          = 0;
-props           = 'const'
 
 Qb              =  -60*1e-3;
 H               =   0.;
@@ -102,7 +101,7 @@ p           = ones(size(dz)).*P;
 
 rc=r.*c;
 
-sitemod=mstruct(k,kA,kB,h,p,r,c,rc,z,ip,qb,gts,props,name);
+sitemod=mstruct(k,kA,kB,h,p,r,c,rc,z,ip,qb,gts,name);
 
 
 F=strcat([name '_SiteMod.mat']);

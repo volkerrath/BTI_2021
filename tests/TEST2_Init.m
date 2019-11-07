@@ -1,5 +1,5 @@
 function [ierr]=SITE_Init(name)
-% Site OTUKUMPU
+% Site
 % Prepare paeloclimate initial
 
 ierr = 0;
@@ -13,13 +13,12 @@ debug=0;%
 
 
 plotit              = 1;
-plotmod             = 0;
 zlimits             =[0 5000];
 
 % CONSTANTS
 
 site                = 'Test2';
-init_type           = 'p';
+init_type           = 'equi';
 init_form           = 'steps';
 method              = 'linear';
 GSTH_file           = 'Test2_GSTH.dat';
@@ -27,7 +26,7 @@ L                   = 0;
 initial_iter        = 30;
 GST0                = 7.;
 Qb                  = -0.038;
-POM                 = 0.;
+POM                 = -4.;
 
 % NUMERICAL PARAMETERS
 % >>>>>>>>>>>>>>>>>>>> FIX POINT ITERATION
@@ -49,7 +48,7 @@ prepstr= [''];
 
 addpath([srcpath,filesep,'src']);
 addpath([srcpath,filesep,strcat(['tools'])]);
-addpath([strcat(['local',props])]);
+addpath([strcat(['local'])]);
 
 % dfmt=1;ffmt='.zip';
 % archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
@@ -60,11 +59,12 @@ mstruct(fwdpar);
 
 % load MODEL
 disp(strcat([' load model for ' name ]));
-F=strcat([datpath name '_SitePar.mat']);
+F=strcat([datpath name '_SiteMod.mat']);
 load(F);
-mstruct(sitepar);
+mstruct(sitemod);
 
 Qb=qb;
+GST0=gts;
 
 F=strcat([name '_Init_in.mat']);
 if exist(F)
@@ -84,6 +84,8 @@ end
 disp(['   ']);
 disp(strcat([ ' ... Generating initial values for ', name]));
 
+F=strcat([name,'_TimeGrid.mat']);
+load(F)
 
 nt = length(t);dt=diff(t);
 nz = length(z);dz=diff(z);
@@ -105,7 +107,7 @@ switch lower(init_type)
             xlabel('T (C)','FontSize',fontsz);
             set(gca,'YDir','reverse');
             set(gca,'FontSize',fontsz, 'FontWeight',fontwg);
-            dtext= strcat(['Initial temperatures, equi, props = ',props]);
+            dtext= strcat(['Initial temperatures, equilibrium']);
             textloc(dtext,'northeast','FontSize',fontsz-4,'FontWeight',fontwg);
             
             file=strcat([site prepstr, '_Equi']);
@@ -117,15 +119,15 @@ switch lower(init_type)
         disp(strcat([ ' ... initial values: ', init_type]));
         if strcmp(init_form,'steps')
             % SETUP FORCING
-            PGSTH =importdata(GSTH_file); 
-%             PGSTH = flipud(PGSTH);
-            tGSTH=-PGSTH(:,1)*y2s; 
+            PGSTH =importdata(GSTH_file);
+            %             PGSTH = flipud(PGSTH);
+            tGSTH=-PGSTH(:,1)*y2s;
             TGSTH=PGSTH(:,2);
             TGSTH=[TGSTH; TGSTH(end)];
             [Tgst] = set_stpgst(t,TGSTH,tGSTH,L,POM,0);
             
-%             tGSTH/y2s
-%             t/y2s
+            %             tGSTH/y2s
+            %             t/y2s
             
             Tit = [];
             for iter=1:initial_iter
@@ -135,8 +137,8 @@ switch lower(init_type)
                     Tin=Tgst(1)+POM;
                     T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
                     Tinit = T0;
-%                     Tref=Tgst(length(Tgst));
-%                     Tr=heat1dns(k, kA, kB,h,p,Qb,Tref,dz,ip,maxitnl,tolnl,freeze,out);
+                    %                     Tref=Tgst(length(Tgst));
+                    %                     Tr=heat1dns(k, kA, kB,h,p,Qb,Tref,dz,ip,maxitnl,tolnl,freeze,out);
                 end
                 
                 GSTinit=Tgst;
@@ -150,21 +152,21 @@ switch lower(init_type)
                     num2str(norm((T0(:)-T0old(:))/T0(:),'inf'))]);
             end
             
-             
+            
         elseif strcmp(init_form,'points')
- 
+            
             DGSTH =load(GSTH_file);
-            tx = DGSTH(:,1)*y2s; 
+            tx = DGSTH(:,1)*y2s;
             Tavg =  DGSTH(:,2);
-
+            
             [Tgst]=set_pntgst(t,tx,Tavg,method,debug);
             
             
-%              plot(tx*s2y/1000,Tavg,'ob')
-%              grid on
-%              hold on
-% 
-%              plot(t*s2y/1000,Tgst,'-r')
+            %              plot(tx*s2y/1000,Tavg,'ob')
+            %              grid on
+            %              hold on
+            %
+            %              plot(t*s2y/1000,Tgst,'-r')
             Tit = [];
             for iter=1:initial_iter
                 
@@ -172,8 +174,8 @@ switch lower(init_type)
                     Tin=Tgst(1)+POM;
                     T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
                     Tinit = T0;
-%                     Tref=Tgst(length(Tgst));
-%                     Tr=heat1dns(k, kA, kB,h,p,Qb,Tref,dz,ip,maxitnl,tolnl,freeze,out);
+                    %                     Tref=Tgst(length(Tgst));
+                    %                     Tr=heat1dns(k, kA, kB,h,p,Qb,Tref,dz,ip,maxitnl,tolnl,freeze,out);
                 end
                 
                 GSTinit=Tgst;
@@ -186,7 +188,7 @@ switch lower(init_type)
                 disp(['iteration #',num2str(iter),': norm (T0-T0old)/T0)= ',...
                     num2str(norm((T0(:)-T0old(:))/T0(:),'inf'))]);
             end
-  
+            
             
         end
         
@@ -199,7 +201,7 @@ switch lower(init_type)
             grid on;
             xlim([10 120000]);
             ylim([-10 10]);
-            TXT=strrep(strcat([name,'/',props,' Uniform']),'_',' ');
+            TXT=strrep(strcat([name]),'_',' ');
             textloc(TXT,'south','FontSize',0.5*fontsz,'FontWeight',fontwg);
             xlabel('Time BP/2000 (a)');ylabel('\Delta T (K)');
             
@@ -225,7 +227,7 @@ switch lower(init_type)
             xlabel('T (C)','FontSize',fontsz);
             set(gca,'YDir','reverse');
             set(gca,'FontSize',fontsz, 'FontWeight',fontwg);
-            dtext= strcat(['Initial temperatures, props = ',props,', iterations: ',num2str(initial_iter,'%i')]);
+            dtext= strcat(['Initial temperatures, iterations: ',num2str(initial_iter,'%i')]);
             textloc(dtext,'northeast','FontSize',fontsz-4,'FontWeight',fontwg);
             legend('equi',' final (it=30)')
             file=strcat([name, '_Iterations']);
@@ -240,7 +242,7 @@ switch lower(init_type)
             xlabel('T (C)','FontSize',fontsz);
             set(gca,'YDir','reverse');
             set(gca,'FontSize',fontsz, 'FontWeight',fontwg);
-            dtext= strcat(['Initial temperatures, final, props = ',props]);
+            dtext= strcat(['Initial temperatures/equilibrium']);
             textloc(dtext,'northeast','FontSize',fontsz-4,'FontWeight',fontwg);
             
             file=strcat([name, '_Final']);
