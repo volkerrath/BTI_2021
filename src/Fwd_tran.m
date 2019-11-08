@@ -109,7 +109,7 @@ if ~isempty(Tobs)
 end
 
 % SAVE DATA
-filename=strcat([name,'_FwdStat.mat']);
+filename=strcat([name,'_FwdTran.mat']);
 disp([' ...save results to: ',filename]);
 save(filename,'Tcalc','z')
 
