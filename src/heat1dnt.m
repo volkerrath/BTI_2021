@@ -73,6 +73,7 @@ zc=0.5*(z(1:nz-1)+z(2:nz));
 Pcl=[101325; 9.81*cumsum(dz.*rm)]  ;
 Pcl=n2c(Pcl,dz); %lithostatic
 % HYDROSTATIC  PRESSURE
+Ts      = T0(1);
 ka      = mean(k); ha = mean(h);pa=mean(por);zb=max(z);
 T       = Ts - (qb.*z/ka)  + (ha.*z/ka).*(zb-z/2);
 Pch     =  9.81*cumsum(dz.*998.);

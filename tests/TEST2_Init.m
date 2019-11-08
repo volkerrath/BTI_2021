@@ -25,9 +25,9 @@ gsth_file           = 'Test2_GSTH.dat';
 gsth_smooth         = 0;
 
 initial_iter        = 30;
-GST0                = 7.;
-Qb                  = -0.038;
-POM                 = -4.;
+gst0                = 10.;
+Qb                  = -0.060;
+pom                 = -5.;
 
 % NUMERICAL PARAMETERS
 % >>>>>>>>>>>>>>>>>>>> FIX POINT ITERATION
@@ -49,7 +49,7 @@ prepstr= [''];
 
 addpath([srcpath,filesep,'src']);
 addpath([srcpath,filesep,strcat(['tools'])]);
-addpath([strcat(['local'])]);
+addpath([strcat(['./local'])]);
 
 % dfmt=1;ffmt='.zip';
 % archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
@@ -65,7 +65,7 @@ load(F);
 mstruct(sitemod);
 
 Qb=qb;
-GST0=gts;
+
 
 F=strcat([name '_Init_in.mat']);
 if exist(F)
@@ -94,7 +94,7 @@ nz = length(z);dz=diff(z);
 switch lower(init_type)
     case {'e' 'equi' 'equilibrium'}
         disp(strcat([ ' ... initial values: ', init_type]));
-        Tin=GST0-POM;
+        Tin=gst0-pom;
         T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
         Tinit = T0;
         zinit =z;
@@ -125,7 +125,7 @@ switch lower(init_type)
             tgsth=Pgsth(:,1)*y2s;
             Tgsth=Pgsth(:,2);
             Tgsth=[Tgsth; Tgsth(end)];
-            [Tgst] = set_stpgst(t,Tgsth,tgsth,L,POM,0);
+            [Tgst] = set_stpgst(t,Tgsth,tgsth,L,pom,0);
             
             %             tgsth/y2s
             %             t/y2s
@@ -135,7 +135,7 @@ switch lower(init_type)
                 
                 if iter==1
                     
-                    Tin=Tgst(1)+POM;
+                    Tin=Tgst(1)+pom;
                     T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
                     Tinit = T0;
                     %                     Tref=Tgst(length(Tgst));
@@ -172,7 +172,7 @@ switch lower(init_type)
             for iter=1:initial_iter
                 
                 if iter==1
-                    Tin=Tgst(1)+POM;
+                    Tin=Tgst(1)+pom;
                     T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
                     Tinit = T0;
                     %                     Tref=Tgst(length(Tgst));
@@ -265,7 +265,7 @@ Tinit=T0;
 F=strcat([name,'_Init']);
 disp([' ']);
 disp([ 'results to ',F]);
-save(F,'zinit','Tinit','GSTinit','POM');
+save(F,'zinit','Tinit','GSTinit','pom');
 
 
 

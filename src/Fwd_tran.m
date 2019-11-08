@@ -46,7 +46,7 @@ F=strcat([name '_SiteMod.mat']);
 if exist(F,'file')
     load(F);
     disp([' >>>>> site model read from: ' F]);
-    disp([' ']);
+%     disp([' ']);
     mstruct(sitemod);
 else
     error([F ' does not exist in path!']);
@@ -56,28 +56,30 @@ F=strcat([name '_SiteObs.mat']);
 if exist(F,'file')
     load(F);
     disp([' >>>>> site obs read from: ' F]);
-    disp([' ']);
+%     disp([' ']);
     mstruct(siteobs);
 else
     Tobs=[];
     disp([' >>>>> no site obs found! ']);
-    disp([' ']);
+%     disp([' ']);
 end
 
 % READ LOCAL MODELLING PARAMETERS
 F=strcat([name,'_FwdPar.mat']);
 if exist(F,'file')
-    disp([' ']);
+%     disp([' ']);
     disp([mfilename,': local modelling pars loaded from file ',F]);
     load(F);
     mstruct(fwdpar);
 else
     error([F ' does not exist in path! STOP.']);
 end
+
 F=[name '_Init.mat'];
 if exist(F,'file')
     load(F)  ;
-    disp([' ']);disp([mfilename,': initial conditions loaded from file ',F]);
+%     disp([' ']);
+    disp([mfilename,': initial conditions loaded from file ',F]);
     T0=Tinit;
 else
     disp(mfilename,': no T initial conditions loaded. equilibrium assumend')
@@ -89,23 +91,26 @@ addpath([locpath]);
 
 
 % SOLVE FORWARD PROBLEM
-dz=diff(z);nz=length(z);
+dz=diff(z);nz=length(z);dt=diff(t); nt=length(t);
 out=0;
 
 if isempty(T0)
-    T0=heat1dns(k, kA, kB,r,h,p,qb,POM,dz,ip,maxitnl,tolnl,freeze,out);
+    T0=heat1dns(k, kA, kB,r,h,p,qb,pom,dz,ip,maxitnl,tolnl,freeze,out);
 end
 
 
 [Tcalc]=heat1dnt(k,kA,kB,h,r,c,rc,p,qb,...
-    dz,ip,dt,it,GST,T0,theta,maxiter,tol,freeze,out)
+    dz,ip,dt,it,Tgst,T0,theta,maxitnl,tolnl,freeze,out)
 %==========================================================================
 %  Postpocessing
 %==========================================================================
+if ~isempty(Tobs)
+    
+end
 
 % SAVE DATA
 filename=strcat([name,'_FwdStat.mat']);
-disp(['   ']);disp([' ...save results to: ',filename]);
+disp([' ...save results to: ',filename]);
 save(filename,'Tcalc','z')
 
 disp(['   '])

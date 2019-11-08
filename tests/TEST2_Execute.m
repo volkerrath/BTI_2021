@@ -53,8 +53,8 @@ name=[site prepstr];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % JOINT HALF-SPACE  PHYSICAL PARAMETERS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-T0      =  10.  ; % 10; %
-GSTH_file           = 'Test2_GSTH.dat';
+gsth0    =  10.  ; % 10; %
+gsth_file           = 'Test2_GSTH.dat';
 tlog=2000*y2s;
 refyr=tlog;
 K      =    2.5;            Ki =  K;       %   = [ 1.  2.  4.];
@@ -86,13 +86,13 @@ save(F, 'fwdpar')
 % PARAMETER FOR ANALYTICAL FORWARD MODEL
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-GSTH_data   =         importdata(GSTH_file);
-tGSTH       =         GSTH_data(:,1)*y2s;
-TGSTH       =         GSTH_data(:,2);
-TGSTH       =         [TGSTH; TGSTH(end)];
-POM         =         TGSTH(1)-5.;
-T0          =         TGSTH(end);
-L           =         3;
+gsth_data   =         importdata(gsth_file);
+tgsth       =         gsth_data(:,1)*y2s;
+Tgsth       =         gsth_data(:,2);
+Tgsth       =         [Tgsth; Tgsth(end)];
+pom         =         Tgsth(1)-5.;
+gsth0       =         Tgsth(end);
+gsth_smooth           =         0;
 
 
 
@@ -140,7 +140,7 @@ if run_Nz
         % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
-        mod_in=mstruct(Qb,H,K,T0,C,P,R,site);
+        mod_in=mstruct(Qb,H,K,gsth0,C,P,R,site);
         F=[name,'_Mod_in'];
         save(F,'mod_in');
         disp(strcat([' generate model for ' name]));
@@ -166,8 +166,8 @@ if run_Nz
         %   Clim. Dyn., 1992, 6, 135-143
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         out=0;
-        [Tgst]      =         set_stpgst(t,TGSTH,tGSTH,L,POM,out);
-        [Tia]=heat1dat(K,R,C,Qb,z,t,Tgst,T0,tlog,refyr,out);
+        [Tgst]      =         set_stpgst(t,Tgsth,tgsth,gsth_smooth,pom,out);
+        [Tia]=heat1dat(K,R,C,Qb,z,t,Tgst,gsth0,tlog,refyr,out);
         Ta =  [Ta Tia(:)];
         
         
@@ -179,10 +179,12 @@ if run_Nz
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         plotit=0;
         init_type='equi';
-        init_form= 'steps';
-        method = 'linear';
-        GSTH_file='Test2_GSTH.dat';
-        init_in=mstruct(plotit,init_type,init_form,method,GSTH_file);
+        gsth_form= 'steps';
+        gsth_method = 'linear';
+        gsth_file='Test2_GSTH.dat';
+       
+        init_in=mstruct(plotit,init_type,...
+            gsth_form,gsth_method,pom,gsth0,gsth_file);
         F=[name,'_Init_in'];
         save(F,'init_in');
         disp(strcat([' generate initial values for ' name]));
@@ -190,13 +192,13 @@ if run_Nz
         
          Fwd_tran(name);
 %         
-%         filename=strcat([name,'_FwdTran.mat']);
-%         disp(['   ']);disp([' ...load results from: ',filename]);
-%         load(filename)
-%         
-%         Tn =  [Tn Tcalc(:)];
-%         F=strcat([name '_N',num2str(nz)]);disp(' ');disp([' Results written to: ', F]);
-%         save(F, 'Ta','Tn', 'nz');
+        filename=strcat([name,'_FwdTran.mat']);
+        disp(['   ']);disp([' ...load results from: ',filename]);
+        load(filename)
+        
+        Tn =  [Tn Tcalc(:)];
+        F=strcat([name '_N',num2str(nz)]);disp(' ');disp([' Results written to: ', F]);
+        save(F, 'Ta','Tn', 'nz');
 %         
     end
     

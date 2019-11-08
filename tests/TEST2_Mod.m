@@ -1,15 +1,17 @@
 function [ierr]=SITE_Mod(name)
 % Prepare Data and Model for inversion
 
+
 ierr = 0;
 
 load('common.mat')
 
-
+y2s=3600*24*365.25;s2y=1./y2s;
 % SET PATHS
 
 addpath([srcpath,'/src']);
 addpath([srcpath,'/tools']);
+addpath([strcat(['./local'])]);
 addpath([datpath]);
 % 
 % dfmt=1;ffmt='.zip';
@@ -25,7 +27,6 @@ T0              =   10.;
 P               =   0.00001;
 C               =  1000.;
 R               =  1000.;
-
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 % VARIABLES OUTSIDE SYN_PREP OVERWRITE DEFAULTS ABOVE!
