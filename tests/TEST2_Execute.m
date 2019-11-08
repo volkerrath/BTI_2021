@@ -188,7 +188,7 @@ if run_Nz
         disp(strcat([' generate initial values for ' name]));
         C=strcat([site,'_Init(name);']);eval(C);
         
-%         Fwd_tran(name);
+         Fwd_tran(name);
 %         
 %         filename=strcat([name,'_FwdTran.mat']);
 %         disp(['   ']);disp([' ...load results from: ',filename]);

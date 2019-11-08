@@ -19,10 +19,11 @@ zlimits             =[0 5000];
 
 site                = 'Test2';
 init_type           = 'equi';
-init_form           = 'steps';
-method              = 'linear';
-GSTH_file           = 'Test2_GSTH.dat';
-L                   = 0;
+gsth_form           = 'steps';
+gsth_method              = 'linear';
+gsth_file           = 'Test2_GSTH.dat';
+gsth_smooth         = 0;
+
 initial_iter        = 30;
 GST0                = 7.;
 Qb                  = -0.038;
@@ -117,16 +118,16 @@ switch lower(init_type)
         
     case {'p' 'prior' 'periodic'}
         disp(strcat([ ' ... initial values: ', init_type]));
-        if strcmp(init_form,'steps')
+        if strcmp(gsth_form,'steps')
             % SETUP FORCING
-            PGSTH =importdata(GSTH_file);
-            %             PGSTH = flipud(PGSTH);
-            tGSTH=-PGSTH(:,1)*y2s;
-            TGSTH=PGSTH(:,2);
-            TGSTH=[TGSTH; TGSTH(end)];
-            [Tgst] = set_stpgst(t,TGSTH,tGSTH,L,POM,0);
+            Pgsth =importdata(gsth_file);
+            %             Pgsth = flipud(Pgsth);
+            tgsth=Pgsth(:,1)*y2s;
+            Tgsth=Pgsth(:,2);
+            Tgsth=[Tgsth; Tgsth(end)];
+            [Tgst] = set_stpgst(t,Tgsth,tgsth,L,POM,0);
             
-            %             tGSTH/y2s
+            %             tgsth/y2s
             %             t/y2s
             
             Tit = [];
@@ -153,11 +154,11 @@ switch lower(init_type)
             end
             
             
-        elseif strcmp(init_form,'points')
+        elseif strcmp(gsth_form,'points')
             
-            DGSTH =load(GSTH_file);
-            tx = DGSTH(:,1)*y2s;
-            Tavg =  DGSTH(:,2);
+            Dgsth =load(gsth_file);
+            tx = Dgsth(:,1)*y2s;
+            Tavg =  Dgsth(:,2);
             
             [Tgst]=set_pntgst(t,tx,Tavg,method,debug);
             
@@ -264,7 +265,7 @@ Tinit=T0;
 F=strcat([name,'_Init']);
 disp([' ']);
 disp([ 'results to ',F]);
-save(F,'zinit','Tinit','GSTinit');
+save(F,'zinit','Tinit','GSTinit','POM');
 
 
 

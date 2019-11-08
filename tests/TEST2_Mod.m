@@ -46,13 +46,15 @@ disp(strcat([ ' ...Preprocessing site ', site]));
 step = 0;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% STEP: SPATIAL MESH
+% STEP: MESHES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 step=step+1;
 disp(strcat([ ' ...>>> Step ',num2str(step),': get grids']));
-meshfileZ=[name,'_DepthGrid.mat'];
-load (meshfileZ);
+F=[name,'_DepthGrid.mat'];
+load (F);
+F=[name,'_TimeGrid.mat'];
+load (F);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % STEP: PREPROCESS MOEL
@@ -66,42 +68,53 @@ disp(strcat([ ' ...>>> Step ',num2str(step),...
 % CELL CENTERS
 zm=0.5*(z(1:nz-1)+z(2:nz));nc=length(zm);
 
-% BULK THERMAL CONDUCTIVITY, RHO, CP, POR, HEAT PRODUCTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% STEP: DEFINE SITEMOD STRUCTURES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+gsth_form           = 'steps';
+gsth_method         = 'linear';
+gsth_file           = 'Test2_GSTH.dat';
+gsth_smooth         = 0;
+
+gsth_data    =         importdata(gsth_file);
+tgsth       =         gsth_data(:,1)*y2s;
+Tgsth       =         gsth_data(:,2);
+Tgsth       =         [Tgsth; Tgsth(end)];
+pom         =         Tgsth(1)-5.;
+[Tgst] = set_stpgst(t,Tgsth,tgsth,gsth_smooth,pom,0);
 
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% STEP IV: DEFINE STRUCTURES
+% STEP: DEFINE SITEMOD STRUCTURES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 step=step+1;
-disp(strcat([ ' ...>>> Step ',num2str(step),': setup structure']));
+disp(strcat([ ' ...>>> Step ',num2str(step),': setup sitemod structure']));
 %
 
 
 % STRUCTURE MODEL
-nz=length(z);
-ip=[1:nz-1];nip=length(ip);
-nones=ones(nip,1)';
-it =1;t=0;
 
-dz=diff(z);
-gts=T0;
+
 qb=Qb;
 
-k           = ones(size(dz)).*K;
-kA          = 0.00*nones';
-kB          = 0.00*nones';
-r           = ones(size(dz)).*R;
-c           = ones(size(dz)).*C;
-h           = ones(size(dz)).*H;
-p           = ones(size(dz)).*P;
+ip=[1:nz-1];
+it=[1:nt-1];
+nones=ones(nz,1);nones=nones(:);
 
-rc=r.*c;
+k           = nones.*K;
+kA          = 0.00*nones;
+kB          = 0.00*nones;
+r           = nones.*R;
+c           = nones.*C;
+h           = nones.*H;
+p           = nones.*P;
+rc          = r.*c;
 
-sitemod=mstruct(k,kA,kB,h,p,r,c,rc,z,ip,qb,gts,name);
+sitemod=mstruct(k,kA,kB,h,p,c,r,rc,z,ip,t,it,qb,Tgst,pom,name);
 
 
 F=strcat([name '_SiteMod.mat']);

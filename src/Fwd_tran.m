@@ -45,7 +45,7 @@ nobs=0;
 F=strcat([name '_SiteMod.mat']);
 if exist(F,'file')
     load(F);
-    disp([' >>>>> site obs read from: ' F]);
+    disp([' >>>>> site model read from: ' F]);
     disp([' ']);
     mstruct(sitemod);
 else
@@ -59,20 +59,30 @@ if exist(F,'file')
     disp([' ']);
     mstruct(siteobs);
 else
-    Tobs=[]; 
+    Tobs=[];
     disp([' >>>>> no site obs found! ']);
     disp([' ']);
 end
+
 % READ LOCAL MODELLING PARAMETERS
 F=strcat([name,'_FwdPar.mat']);
 if exist(F,'file')
     disp([' ']);
     disp([mfilename,': local modelling pars loaded from file ',F]);
-    load(F);mstruct(fwdpar);
+    load(F);
+    mstruct(fwdpar);
 else
     error([F ' does not exist in path! STOP.']);
 end
-
+F=[name '_Init.mat'];
+if exist(F,'file')
+    load(F)  ;
+    disp([' ']);disp([mfilename,': initial conditions loaded from file ',F]);
+    T0=Tinit;
+else
+    disp(mfilename,': no T initial conditions loaded. equilibrium assumend')
+    T0=[];
+end
 
 % SITE SPECIFIC SRC PATHS
 addpath([locpath]);
@@ -82,10 +92,13 @@ addpath([locpath]);
 dz=diff(z);nz=length(z);
 out=0;
 
-T0=heat1dns(k, kA, kB,h,r,p,qb,gts,dz,ip,maxitnl,tolnl,freeze,out);
+if isempty(T0)
+    T0=heat1dns(k, kA, kB,r,h,p,qb,POM,dz,ip,maxitnl,tolnl,freeze,out);
+end
 
-[Tcalc]=heat1dnt(kl,kAl,kBl,hl,rl,cpl,rcl,porl,qb,...
-        dz,ip,dt,it,GST,T0,theta,maxiter,tol,freeze,out)
+
+[Tcalc]=heat1dnt(k,kA,kB,h,r,c,rc,p,qb,...
+    dz,ip,dt,it,GST,T0,theta,maxiter,tol,freeze,out)
 %==========================================================================
 %  Postpocessing
 %==========================================================================
