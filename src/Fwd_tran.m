@@ -29,7 +29,7 @@ dfmt=1;
 
 disp([' ']);
 disp(strcat([ '============================================']));
-disp(['Nonlinear Thermal Modelling, stationary case'])
+disp(['Nonlinear Thermal Modelling, transient case'])
 disp([name,' --- ',datestr(now,dfmt)])
 disp(strcat([ '============================================']));
 if run_parallel
@@ -100,7 +100,7 @@ end
 
 
 [Tcalc]=heat1dnt(k,kA,kB,h,r,c,rc,p,qb,...
-    dz,ip,dt,it,Tgst,T0,theta,maxitnl,tolnl,freeze,out)
+    dz,ip,dt,it,Tgst,T0,theta,maxitnl,tolnl,freeze,out);
 %==========================================================================
 %  Postpocessing
 %==========================================================================

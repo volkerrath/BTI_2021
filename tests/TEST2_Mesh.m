@@ -64,6 +64,7 @@ if set_z
         otherwise
             disp([' ']);disp([' ...spatial mesh ',ztype,' not implemented!']);
     end
+    z = unique(z,'stable');
     dz=diff(z); nz=length(z);
     ip=[1:nz-1];zm=0.5*(z(1:nz-1)+z(2:nz));
     
@@ -95,6 +96,7 @@ if set_t
         otherwise
             disp([' ']);disp([' ...remporal mesh ',ttype,' not implemented!']);
     end
+    t = unique(t,'stable');
     dt=diff(t);nt=length(t);it=[1:nt];
     tm=0.5*(t(1:nt-1)+t(2:nt));
     

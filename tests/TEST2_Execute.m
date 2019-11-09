@@ -99,10 +99,10 @@ gsth_smooth           =         0;
 
 if run_Nz
     disp([ ' Running test for Nz'])
-    Ta =  [];
+    Ta =  [];Tn=[];
     for nz = nzi
         
-        disp([ 'nz_{in} = ' num2str(nz)])
+        disp([ 'nz = ' num2str(nz)])
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % GENERATE Z-MESH
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -118,7 +118,7 @@ if run_Nz
         set_t   = 1;
         tstart  = 115000*y2s;   tend    = 10*y2s;   ttype= 'log';
         nt=nt;
-        
+               dz              nz   
         mesh_in=mstruct(set_z, set_t, ...
             zstart, zend, ztype, nz,...
             tstart, tend, ttype, nt, site);
@@ -130,7 +130,7 @@ if run_Nz
         load(F)
         F=strcat([name,'_TimeGrid.mat']);
         load(F)
-        
+                             nz   
         
         %
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -147,7 +147,7 @@ if run_Nz
         Proc=strcat([site,'_Mod(name);']);
         eval(Proc);
            
-               
+        
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % ANALYTICAL FORWARD MODEL
         % Analytical  solution for temperature without heat production
@@ -170,14 +170,14 @@ if run_Nz
         [Tia]=heat1dat(K,R,C,Qb,z,t,Tgst,gsth0,tlog,refyr,out);
         Ta =  [Ta Tia(:)];
         
-        
+
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % GENERATE INITIAL VALUES
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         % VARIABLES SET HERE OUTSIDE INIT OVERWRITE DEFAULTS INSIDE!
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        plotit=0;
+        plotit=1;
         init_type='equi';
         gsth_form= 'steps';
         gsth_method = 'linear';
@@ -189,13 +189,13 @@ if run_Nz
         save(F,'init_in');
         disp(strcat([' generate initial values for ' name]));
         C=strcat([site,'_Init(name);']);eval(C);
-        
+
          Fwd_tran(name);
 %         
         filename=strcat([name,'_FwdTran.mat']);
         disp(['   ']);disp([' ...load results from: ',filename]);
         load(filename)
-        
+       
         Tn =  [Tn Tcalc(:)];
         F=strcat([name '_N',num2str(nz)]);disp(' ');disp([' Results written to: ', F]);
         save(F, 'Ta','Tn', 'nz');
@@ -205,57 +205,58 @@ if run_Nz
     
     
     
-%     if plotit
-%         step=10;
-%         
-%         figure    % PLOT TEMPERATURES
-%         step = 10;
-%         icurv = 0;
-%         for nzx=nzi
-%             icurv=icurv+1;
-%             legstr{icurv}= strcat([' Nz = ',num2str(nzx)]);
-%             F=strcat([name '_N',num2str(nzx)]);load(F);
-%             disp([' Results loaded from: ', F]);
-%             %plot(Ta(:,2:end),Ta(:,1),':','LineWidth',1); hold on
-%             plot(Tn(:,2),Tn(:,1),'-','LineWidth',1); hold on
-%             plot(Ta(1:step:end,2),Ta(1:step:end,1),'o','LineWidth',1); hold on
-%         end
-%         %     xlim([0 50]);
-%         %     ylim([0 2750]);
-%         
-%         set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
-%         xlabel('T (C)','FontSize',fontsz,'FontWeight',fontwg)
-%         ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
-%         title(strcat([site, ' temperatures/Nz']),'FontSize',fontsz,'FontWeight',fontwg);
-%         legend(legstr,'location','best');
-%         grid on
-%         file=strcat([name '_Temp_Nz']);
-%         saveas(gcf,file,plotfmt)
-%         
-%         figure    % PLOT TEMPERATURES
-%         icurv = 0;
-%         for nzx =nzi
-%             icurv=icurv+1;
-%             legstr{icurv}= strcat([' Nz = ',num2str(nzx)]);
-%             %          strcat([' Nz = ',num2str(nzx),', dx = ',num2str(5000/(nzx-1)),' m']);
-%             strcat([' Nz = ',num2str(nzx)]);
-%             F=strcat([name '_N',num2str(nzx)]);load(F);
-%             Tr=Tn(:,2)-Ta(:,2);
-%             %plot(Ta(:,2:end),Ta(:,1),':','LineWidth',1); hold on
-%             plot(Tr(:),Tn(:,1),'-','LineWidth',1); hold on
-%             %plot(Ta(1:step:end,2),Ta(1:step:end,1),'o','LineWidth',1); hold on
-%         end
-%         %     xlim([0 50]);
-%         %     ylim([0 2750]);
-%         set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
-%         xlabel('T (C)','FontSize',fontsz,'FontWeight',fontwg)
-%         ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
-%         title(strcat([site, ' residuals/Nz']),'FontSize',fontsz,'FontWeight',fontwg);
-%         textloc('T_{r} = T_{n}-T_{a}','northeast','Color','blue','FontSize',fontsz,'FontWeight',fontwg);
-%         legend(legstr,'location','best');
-%         grid on
-%         file=strcat([name '_Res_Nz']);
-%         saveas(gcf,file,plotfmt)
-%         
-%     end
+    if plotit
+        step=10;
+        
+        figure    % PLOT TEMPERATURES
+        step = 10;
+        icurv = 0;
+        for nzx=nzi
+     
+            icurv=icurv+1;
+            legstr{icurv}= strcat([' Nz = ',num2str(nzx)]);
+            F=strcat([name '_N',num2str(nzx)]);load(F);
+            disp([' Results loaded from: ', F]);
+            %plot(Ta(:,2:end),Ta(:,1),':','LineWidth',1); hold on
+            plot(Tn(:,2),Tn(:,1),'-','LineWidth',1); hold on
+            plot(Ta(1:step:end,2),Ta(1:step:end,1),'o','LineWidth',1); hold on
+        end
+        %     xlim([0 50]);
+        %     ylim([0 2750]);
+        
+        set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
+        xlabel('T (C)','FontSize',fontsz,'FontWeight',fontwg)
+        ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
+        title(strcat([site, ' temperatures/Nz']),'FontSize',fontsz,'FontWeight',fontwg);
+        legend(legstr,'location','best');
+        grid on
+        file=strcat([name '_Temp_Nz']);
+        saveas(gcf,file,plotfmt)
+        
+        figure    % PLOT TEMPERATURES
+        icurv = 0;
+        for nzx =nzi
+            icurv=icurv+1;
+            legstr{icurv}= strcat([' Nz = ',num2str(nzx)]);
+            %          strcat([' Nz = ',num2str(nzx),', dx = ',num2str(5000/(nzx-1)),' m']);
+            strcat([' Nz = ',num2str(nzx)]);
+            F=strcat([name '_N',num2str(nzx)]);load(F);
+            Tr=Tn(:,2)-Ta(:,2);
+            %plot(Ta(:,2:end),Ta(:,1),':','LineWidth',1); hold on
+            plot(Tr(:),Tn(:,1),'-','LineWidth',1); hold on
+            %plot(Ta(1:step:end,2),Ta(1:step:end,1),'o','LineWidth',1); hold on
+        end
+        %     xlim([0 50]);
+        %     ylim([0 2750]);
+        set(gca,'ydir','rev','FontSize',fontsz,'FontWeight',fontwg)
+        xlabel('T (C)','FontSize',fontsz,'FontWeight',fontwg)
+        ylabel('depth (m)','FontSize',fontsz,'FontWeight',fontwg)
+        title(strcat([site, ' residuals/Nz']),'FontSize',fontsz,'FontWeight',fontwg);
+        textloc('T_{r} = T_{n}-T_{a}','northeast','Color','blue','FontSize',fontsz,'FontWeight',fontwg);
+        legend(legstr,'location','best');
+        grid on
+        file=strcat([name '_Res_Nz']);
+        saveas(gcf,file,plotfmt)
+        
+    end
 end
