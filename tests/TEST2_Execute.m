@@ -112,13 +112,13 @@ if run_Nz
         F=strcat([name,'_Mesh_in.mat']);
         
         set_z   = 1;
-        zstart  = 0;            zend    = 5000;     ztype   = 'log';
+        zstart  = 5;            zend    = 5000;     ztype   = 'log';
         nz=nzi;
         
         set_t   = 1;
         tstart  = 115000*y2s;   tend    = 10*y2s;   ttype= 'log';
         nt=nt;
-               dz              nz   
+              
         mesh_in=mstruct(set_z, set_t, ...
             zstart, zend, ztype, nz,...
             tstart, tend, ttype, nt, site);
@@ -130,7 +130,7 @@ if run_Nz
         load(F)
         F=strcat([name,'_TimeGrid.mat']);
         load(F)
-                             nz   
+                           
         
         %
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

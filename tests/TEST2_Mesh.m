@@ -59,8 +59,9 @@ if set_z
             z=linspace(zstart,zend,nz);
         case {'logarithmic','log'}
             disp([' ...set up ' ztype ' spatial mesh ']);
-            dzn=dzstart*gfac.^[1:ngen];
-            z=[0 cumsum(dzn)]; z=z(z<zend); z=[z zend];
+%             dzn=dzstart*gfac.^[1:ngen];
+            z=logspace(log10(zstart),log10(zend),nz-1)
+            z=[0 z]; 
         otherwise
             disp([' ']);disp([' ...spatial mesh ',ztype,' not implemented!']);
     end
