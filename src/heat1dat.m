@@ -25,6 +25,7 @@ nz=length(z);nt=length(t);
 z=  z(:);
 gtime=-flipud(t);
 gsth=flipud(gst);
+
 kappa = k/(r*c);
 parvec=[gsth;T0;-Qb];
 

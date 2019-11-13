@@ -60,7 +60,7 @@ refyr=tlog;
 K      =    2.5;            Ki =  K;       %   = [ 1.  2.  4.];
 H      =    2 .*1.e-6;      Hi =  H;       %   = [ 0.  2.  4.]*1.e-6;
 Qb     =    -60 *1e-3;      Qbi = Qb;      %    = [-40 -60  -80]*1e-3;
-nz     =    251;            nzi = nz;      %   = [101 201 301 401 501 1001];
+nz     =    251;            nzi =  [101 201 301 401 501 1001];
 nt     =    251;            nti = nt;      %   = [101 201 301 401 501 1001];
 
 
@@ -99,9 +99,9 @@ gsth_smooth           =         0;
 
 if run_Nz
     disp([ ' Running test for Nz'])
-    Ta =  [];Tn=[];
+    TT =  {};
     for nz = nzi
-        
+
         disp([ 'nz = ' num2str(nz)])
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % GENERATE Z-MESH
@@ -113,7 +113,7 @@ if run_Nz
         
         set_z   = 1;
         zstart  = 5;            zend    = 5000;     ztype   = 'log';
-        nz=nzi;
+        nz=nz;
         
         set_t   = 1;
         tstart  = 115000*y2s;   tend    = 10*y2s;   ttype= 'log';
@@ -167,8 +167,8 @@ if run_Nz
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         out=0;
         [Tgst]      =         set_stpgst(t,Tgsth,tgsth,gsth_smooth,pom,out);
-        [Tia]=heat1dat(K,R,C,Qb,z,t,Tgst,gsth0,tlog,refyr,out);
-        Ta =  [Ta Tia(:)];
+        [Ta]=heat1dat(K,R,C,Qb,z,t,Tgst,gsth0,tlog,refyr,out);
+      
         
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -188,7 +188,7 @@ if run_Nz
         F=[name,'_Init_in'];
         save(F,'init_in');
         disp(strcat([' generate initial values for ' name]));
-        C=strcat([site,'_Init(name);']);eval(C);
+        Proc=strcat([site,'_Init(name);']);eval(Proc);
 
          Fwd_tran(name);
 %         
@@ -196,12 +196,14 @@ if run_Nz
         disp(['   ']);disp([' ...load results from: ',filename]);
         load(filename)
        
-        Tn =  [Tn Tcalc(:)];
+%         TT = {TT [z Tcalc Ta]}
+        Tn =Tcalc;
         F=strcat([name '_N',num2str(nz)]);disp(' ');disp([' Results written to: ', F]);
         save(F, 'Ta','Tn', 'nz');
 %         
     end
     
+    whos TT
     
     
     
