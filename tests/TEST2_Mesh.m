@@ -60,7 +60,7 @@ if set_z
         case {'logarithmic','log'}
             disp([' ...set up ' ztype ' spatial mesh ']);
 %             dzn=dzstart*gfac.^[1:ngen];
-            z=logspace(log10(zstart),log10(zend),nz-1)
+            z=logspace(log10(zstart),log10(zend),nz-1);
             z=[0 z]; 
         otherwise
             disp([' ']);disp([' ...spatial mesh ',ztype,' not implemented!']);

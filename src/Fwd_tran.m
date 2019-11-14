@@ -98,7 +98,8 @@ if isempty(T0)
     T0=heat1dns(k, kA, kB,r,h,p,qb,pom,dz,ip,maxitnl,tolnl,freeze,out);
 end
 
-
+qb
+pom
 [Tcalc]=heat1dnt(k,kA,kB,h,r,c,rc,p,qb,...
     dz,ip,dt,it,Tgst,T0,theta,maxitnl,tolnl,freeze,out);
 %==========================================================================

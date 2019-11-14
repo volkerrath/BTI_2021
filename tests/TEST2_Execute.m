@@ -39,7 +39,7 @@ run_Nz=1;
 run_Sp=1;
 
 %GRAPHICS
-plotit = 1;
+plotit = 0;
 set_graphpars
 %plotfmt='epsc2';
 plotfmt='png';
@@ -58,9 +58,9 @@ gsth_file           = 'Test2_GSTH.dat';
 tlog=2000*y2s;
 refyr=tlog;
 K      =    2.5;            Ki =  K;       %   = [ 1.  2.  4.];
-H      =    2 .*1.e-6;      Hi =  H;       %   = [ 0.  2.  4.]*1.e-6;
+H      =    0.*1.e-6;      Hi =  H;       %   = [ 0.  2.  4.]*1.e-6;
 Qb     =    -60 *1e-3;      Qbi = Qb;      %    = [-40 -60  -80]*1e-3;
-nz     =    251;            nzi =  [101 201 301 401 501 1001];
+nz     =    251;            nzi = nz; % [101 201 301 401 501 1001];
 nt     =    251;            nti = nt;      %   = [101 201 301 401 501 1001];
 
 
@@ -95,14 +95,12 @@ gsth0       =         Tgsth(end);
 gsth_smooth           =         0;
 
 
-
-
 if run_Nz
     disp([ ' Running test for Nz'])
     TT =  {};
     for nz = nzi
 
-        disp([ 'nz = ' num2str(nz)])
+        disp([ '/n/n nz = ' num2str(nz)])
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % GENERATE Z-MESH
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -139,8 +137,8 @@ if run_Nz
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        mod_in=mstruct(Qb,H,K,gsth0,C,P,R,site);
+        plotit= 0;
+        mod_in=mstruct(plotit,Qb,H,K,gsth0,C,P,R,site);
         F=[name,'_Mod_in'];
         save(F,'mod_in');
         disp(strcat([' generate model for ' name]));
@@ -167,8 +165,9 @@ if run_Nz
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         out=0;
         [Tgst]      =         set_stpgst(t,Tgsth,tgsth,gsth_smooth,pom,out);
-        [Ta]=heat1dat(K,R,C,Qb,z,t,Tgst,gsth0,tlog,refyr,out);
-      
+        
+        [Tai,Qai]=heat1dat(K,R,C,Qb,z,t,Tgst,gsth0,tlog,refyr,out);
+         Ta = Tai.val;
         
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -177,7 +176,7 @@ if run_Nz
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         % VARIABLES SET HERE OUTSIDE INIT OVERWRITE DEFAULTS INSIDE!
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        plotit=1;
+        plotit=0;
         init_type='equi';
         gsth_form= 'steps';
         gsth_method = 'linear';
@@ -189,24 +188,24 @@ if run_Nz
         save(F,'init_in');
         disp(strcat([' generate initial values for ' name]));
         Proc=strcat([site,'_Init(name);']);eval(Proc);
-
-         Fwd_tran(name);
+        
+        
+        Fwd_tran(name);
 %         
         filename=strcat([name,'_FwdTran.mat']);
         disp(['   ']);disp([' ...load results from: ',filename]);
         load(filename)
        
-%         TT = {TT [z Tcalc Ta]}
+
         Tn =Tcalc;
+        TT{end+1}=[z(:) Ta(:) Tn(:)];
+
         F=strcat([name '_N',num2str(nz)]);disp(' ');disp([' Results written to: ', F]);
         save(F, 'Ta','Tn', 'nz');
 %         
     end
     
-    whos TT
-    
-    
-    
+    plotit = 1;
     if plotit
         step=10;
         
@@ -214,14 +213,14 @@ if run_Nz
         step = 10;
         icurv = 0;
         for nzx=nzi
-     
             icurv=icurv+1;
+            Tmp=TT{icurv};
             legstr{icurv}= strcat([' Nz = ',num2str(nzx)]);
             F=strcat([name '_N',num2str(nzx)]);load(F);
             disp([' Results loaded from: ', F]);
             %plot(Ta(:,2:end),Ta(:,1),':','LineWidth',1); hold on
-            plot(Tn(:,2),Tn(:,1),'-','LineWidth',1); hold on
-            plot(Ta(1:step:end,2),Ta(1:step:end,1),'o','LineWidth',1); hold on
+            plot(Tmp(:,2),Tmp(:,1),'-','LineWidth',1); hold on
+            plot(Tmp(3*icurv:step:end,3),Tmp(3*icurv:step:end,1),'o','LineWidth',1); hold on
         end
         %     xlim([0 50]);
         %     ylim([0 2750]);
@@ -235,17 +234,18 @@ if run_Nz
         file=strcat([name '_Temp_Nz']);
         saveas(gcf,file,plotfmt)
         
-        figure    % PLOT TEMPERATURES
+        figure    % PLOT TEMPERATURE DIFFS
         icurv = 0;
         for nzx =nzi
             icurv=icurv+1;
+            Tmp=TT{icurv};
             legstr{icurv}= strcat([' Nz = ',num2str(nzx)]);
             %          strcat([' Nz = ',num2str(nzx),', dx = ',num2str(5000/(nzx-1)),' m']);
             strcat([' Nz = ',num2str(nzx)]);
             F=strcat([name '_N',num2str(nzx)]);load(F);
-            Tr=Tn(:,2)-Ta(:,2);
+            Tr=Tmp(:,2)-Tmp(:,3);
             %plot(Ta(:,2:end),Ta(:,1),':','LineWidth',1); hold on
-            plot(Tr(:),Tn(:,1),'-','LineWidth',1); hold on
+            plot(Tr(:),Tmp(:,1),'-','LineWidth',1); hold on
             %plot(Ta(1:step:end,2),Ta(1:step:end,1),'o','LineWidth',1); hold on
         end
         %     xlim([0 50]);

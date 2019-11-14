@@ -1,6 +1,6 @@
 function [M] = msetup(time,diffu,conduc,zdat,tlog,refyr,out)
 % setting up matrix for inversion.
-% This function will be called from the heat1dat
+% This function will be called from heat1dat
 % and sets up the model matrix for the inversion.
 % 
 % Method  is described in:

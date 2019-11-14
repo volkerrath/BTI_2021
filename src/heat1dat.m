@@ -30,14 +30,14 @@ kappa = k/(r*c);
 parvec=[gsth;T0;-Qb];
 
 % setup matrix for forward modeling
-[M] = msetup(t,kappa,k,z,tlog,refyr,out);
+[M] = msetup(gtime,kappa,k,z,tlog,refyr,out);
 % solve forward problem
 Temp=M*parvec;
-T.val=Temp;T.z=z(:);T.grd=diff(Temp)./diff(z)';
+T.val=Temp;T.z=z(:);T.grd=diff(Temp)./diff(z);
 T.zm=0.5*(z(1:nz-1)+z(2:nz));
  
 if nargout>1
-   Q.val=k.*T.grd;
+   Q.val=-k.*T.grd;
    Q.z=T.zm;
 end
 
