@@ -53,7 +53,7 @@ name=[site prepstr];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % JOINT HALF-SPACE  PHYSICAL PARAMETERS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gsth0    =  10.  ; % 10; %
+
 gsth_file           = 'Test2_GSTH.dat';
 tlog=2000*y2s;
 refyr=tlog;
@@ -82,17 +82,6 @@ fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
 F=strcat([name,'_FwdPar.mat']);
 save(F, 'fwdpar')
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PARAMETER FOR ANALYTICAL FORWARD MODEL
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-gsth_data   =         importdata(gsth_file);
-tgsth       =         gsth_data(:,1)*y2s;
-Tgsth       =         gsth_data(:,2);
-Tgsth       =         [Tgsth; Tgsth(end)];
-pom         =         Tgsth(1)-5.;
-gsth0       =         Tgsth(end);
-gsth_smooth           =         0;
 
 
 if run_Nz
@@ -128,8 +117,17 @@ if run_Nz
         load(F)
         F=strcat([name,'_TimeGrid.mat']);
         load(F)
-                           
-        
+                   %
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % GSTH SETUP
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
+        %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        
+        gsth_form= 'steps';
+        gsth_method = 'linear';
+        gsth_file='Test2_GSTH.dat';
+
         %
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % NUMERICAL FORWARD MODEL SETUP
@@ -144,31 +142,7 @@ if run_Nz
         disp(strcat([' generate model for ' name]));
         Proc=strcat([site,'_Mod(name);']);
         eval(Proc);
-           
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % ANALYTICAL FORWARD MODEL
-        % Analytical  solution for temperature without heat production
-        % Beltrami, H. & Mareschal, J.-C.
-        %   Recent warming in eastern Canada inferred from Geothermal
-        %   Measurements
-        %   Geophys. Res. Lett., 1991, 18(4), 605-608
-        % Beltrami, H.; Jessop, A. M. & Mareschal, J.-C.
-        %   Ground temperature histories in eastern and central Canada from
-        %   geothermal measurements: evidence of climate change
-        %   Palaeogeography, Palaeoclimatology, Palaeoecology, 1992, 98,
-        %   167-184
-        % Mareschal, J.-C. & Beltrami, H.
-        %   Evidence for recent warming from perturbed thermal gradients:
-        %   examples from eastern Canada
-        %   Clim. Dyn., 1992, 6, 135-143
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        out=0;
-        [Tgst]      =         set_stpgst(t,Tgsth,tgsth,gsth_smooth,pom,out);
-        
-        [Tai,Qai]=heat1dat(K,R,C,Qb,z,t,Tgst,gsth0,tlog,refyr,out);
-         Ta = Tai.val;
-        
+
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % GENERATE INITIAL VALUES
@@ -188,6 +162,47 @@ if run_Nz
         save(F,'init_in');
         disp(strcat([' generate initial values for ' name]));
         Proc=strcat([site,'_Init(name);']);eval(Proc);
+        
+              
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % ANALYTICAL FORWARD MODEL
+        % Analytical  solution for temperature without heat production
+        % Beltrami, H. & Mareschal, J.-C.
+        %   Recent warming in eastern Canada inferred from Geothermal
+        %   Measurements
+        %   Geophys. Res. Lett., 1991, 18(4), 605-608
+        % Beltrami, H.; Jessop, A. M. & Mareschal, J.-C.
+        %   Ground temperature histories in eastern and central Canada from
+        %   geothermal measurements: evidence of climate change
+        %   Palaeogeography, Palaeoclimatology, Palaeoecology, 1992, 98,
+        %   167-184
+        % Mareschal, J.-C. & Beltrami, H.
+        %   Evidence for recent warming from perturbed thermal gradients:
+        %   examples from eastern Canada
+        %   Clim. Dyn., 1992, 6, 135-143
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % PARAMETER FOR ANALYTICAL FORWARD MODEL
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        gsth_file='Test2_GSTH.dat';
+        gsth_data   =         importdata(gsth_file);
+        tgsth       =         gsth_data(:,1)*y2s;
+        Tgsth       =         gsth_data(:,2);
+        Tgsth       =         [Tgsth; Tgsth(end)];
+        pom         =         Tgsth(1)-5.;
+        gsth0       =         Tgsth(end);
+        gsth_smooth           =         0;
+        
+        Tgsth(end)
+        
+        out=0;
+        [Tgst]      =         set_stpgst(t,Tgsth,tgsth,gsth_smooth,pom,out);
+        
+        [Tai,Qai]=heat1dat(K,R,C,Qb,z,t,Tgst,gsth0,tlog,refyr,out);
+         Ta = Tai.val;
+             
+        
+        
         
         
         Fwd_tran(name);

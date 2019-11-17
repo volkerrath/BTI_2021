@@ -79,7 +79,7 @@ gsth_method         = 'linear';
 gsth_file           = 'Test2_GSTH.dat';
 gsth_smooth         = 0;
 
-gsth_data    =         importdata(gsth_file);
+gsth_data    =        importdata(gsth_file);
 tgsth       =         gsth_data(:,1)*y2s;
 Tgsth       =         gsth_data(:,2);
 Tgsth       =         [Tgsth; Tgsth(end)];
