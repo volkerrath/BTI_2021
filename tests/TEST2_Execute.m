@@ -89,7 +89,7 @@ if run_Nz
     TT =  {};
     for nz = nzi
 
-        disp([ '/n/n nz = ' num2str(nz)])
+        disp([ newline 'nz = ' num2str(nz)])
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % GENERATE Z-MESH
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -98,20 +98,12 @@ if run_Nz
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         F=strcat([name,'_Mesh_in.mat']);
         
-        set_z   = 1;
-        zstart  = 5;            zend    = 5000;     ztype   = 'log';
-        nz=nz;
-        
-        set_t   = 1;
-        tstart  = 115000*y2s;   tend    = 10*y2s;   ttype= 'log';
-        nt=nt;
-              
+        set_z = 1; zstart = 5; zend = 5000; ztype = 'log'; nz=nz;  
+        set_t = 1; tstart = 115000*y2s; tend = 10*y2s; ttype= 'log'; nt=nt;
         mesh_in=mstruct(set_z, set_t, ...
-            zstart, zend, ztype, nz,...
-            tstart, tend, ttype, nt, site);
+            zstart, zend, ztype, nz, tstart, tend, ttype, nt, site);
         save(F,'mesh_in');
-        Proc=strcat([site,'_Mesh(name);']);
-        eval(Proc);
+        Proc=strcat([site,'_Mesh(name);']); eval(Proc);
         
         F=strcat([name,'_DepthGrid.mat']);
         load(F)
@@ -140,8 +132,7 @@ if run_Nz
         F=[name,'_Mod_in'];
         save(F,'mod_in');
         disp(strcat([' generate model for ' name]));
-        Proc=strcat([site,'_Mod(name);']);
-        eval(Proc);
+        Proc=strcat([site,'_Mod(name);']); eval(Proc);
 
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -161,7 +152,7 @@ if run_Nz
         F=[name,'_Init_in'];
         save(F,'init_in');
         disp(strcat([' generate initial values for ' name]));
-        Proc=strcat([site,'_Init(name);']);eval(Proc);
+        Proc=strcat([site,'_Init(name);']); eval(Proc);
         
               
         
