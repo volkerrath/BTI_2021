@@ -17,20 +17,6 @@ S=interp1(tpoint,apoint,t,method);
 % S(t<tpoint(1))=S(1);
 % S(t>tpoint(length(tpoint)))=S(length(tpoint));
 
-if debug >0
-    figure;
-    year2sec= 31557600;
-    plot(-t/year2sec',S, 'LineWidth',2,'Color','r');hold on;
-    if L ~= 0, plot(-t/year2sec',T, 'LineWidth',2,'Color','b','LineStyle','--');end
-    set(gca,'XScale','log','XDir','reverse')
-    grid on;
-    xlabel('time b. p.(a)','FontSize',14);ylabel('\Delta T','FontSize',14);
-    if L ~= 0, grid on;legend('smoothed','original','Location','NorthWest');end
-    title(['test: set_paleo_boxcar'],'FontSize',14)
-    if debug >=1
-        filename='GST.png';
-        saveas(gcf,filename,'png')
-    end
 end
 
 

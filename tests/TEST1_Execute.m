@@ -75,7 +75,7 @@ maxitnl         =   4;                    % number of nl iterations
 tolnl           =   0.00001;
 relaxnl         =  1.;
 freeze          =  1;                     % include freezing/thawing
-fwdpar=mstruct(theta,maxitnl,tolnl,relaxnl,freeze);
+fwdpar=mstruct(plotit,plotfmt,theta,maxitnl,tolnl,relaxnl,freeze);
 F=strcat([name,'_FwdPar.mat']);
 save(F, 'fwdpar')
 
@@ -91,7 +91,7 @@ zstart  = 0;
 zend    = 5000;
 ztype   = 'linear';
 nz=nzm;
-mesh_in=mstruct(set_z, set_t, zstart, zend, ztype, nz, site);
+mesh_in=mstruct(plotit,plotfmt,set_z, set_t, zstart, zend, ztype, nz, site);
 save(F,'mesh_in');
 Proc=strcat([site,'_Mesh(name);']);
 eval(Proc);
@@ -124,7 +124,7 @@ if run_Q
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         H = Hm;
         K = Km; 
-        mod_in=mstruct(Qb,H,K,T0,C,P,R,site);
+        mod_in=mstruct(plotit,plotfmt,Qb,H,K,T0,C,P,R,site);
         F=[name,'_Mod_in'];
         save(F,'mod_in');
         disp(strcat([' generate model for ' name]));
@@ -210,7 +210,7 @@ if run_K
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         H = Hm;
         Qb = Qbm;
-        mod_in=mstruct(Qb,H,K,T0,C,P,R,site);
+        mod_in=mstruct(plotit,plotfmt,Qb,H,K,T0,C,P,R,site);
         F=[name,'_Mod_in'];
         save(F,'mod_in');
         disp(strcat([' generate model for ' name]));
@@ -295,7 +295,7 @@ if run_H
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         Qb = Qbm;
         K  = Km;
-        mod_in=mstruct(Qb,H,K,T0,C,P,R,site);
+        mod_in=mstruct(plotit,plotfmt,Qb,H,K,T0,C,P,R,site);
         F=[name,'_Mod_in'];
         save(F,'mod_in');
         disp(strcat([' generate model for ' name]));
@@ -372,7 +372,7 @@ if run_Nz
         zstart  = 0;
         zend    = 5000;
         ztype   = 'linear';
-        mesh_in=mstruct(set_z, set_t, zstart, zend, ztype, nz, site);
+        mesh_in=mstruct(plotit,plotfmt,set_z, set_t, zstart, zend, ztype, nz, site);
         save(F,'mesh_in');
         Proc=strcat([site,'_Mesh(name);']);
         eval(Proc);
@@ -400,7 +400,7 @@ if run_Nz
         Qb = Qbm;
         H  = Hm;
         K = Km;
-        mod_in=mstruct(Qb,H,K,T0,C,P,R,site);
+        mod_in=mstruct(plotit,plotfmt,Qb,H,K,T0,C,P,R,site);
         F=[name,'_Mod_in'];
         save(F,'mod_in');
         disp(strcat([' generate model for ' name]));

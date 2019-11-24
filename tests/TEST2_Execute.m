@@ -91,7 +91,7 @@ if run_Nz
 
         disp([ newline 'nz = ' num2str(nz)])
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % GENERATE Z-MESH
+        % GENERATE MESHES
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         % VARIABLES SET HERE OUTSIDE MESH OVERWRITE DEFAULTS INSIDE!
@@ -116,9 +116,15 @@ if run_Nz
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        
-        gsth_form= 'steps';
+        gsth_form   = 'steps';
         gsth_method = 'linear';
-        gsth_file='Test2_GSTH.dat';
+        gsth_file   ='Test2_GSTH.dat';
+        plotit= 0;
+        mod_in=mstruct(plotit,plotfmt,Qb,H,K,gsth0,C,P,R,site);
+        F=[name,'_Mod_in'];
+        save(F,'mod_in');
+        disp(strcat([' generate model for ' name]));
+        Proc=strcat([site,'_Mod(name);']); eval(Proc);
 
         %
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -128,7 +134,7 @@ if run_Nz
         % VARIABLES SET HERE OUTSIDE PREP OVERWRITE DEFAULTS INSIDE!
         %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         plotit= 0;
-        mod_in=mstruct(plotit,Qb,H,K,gsth0,C,P,R,site);
+        mod_in=mstruct(plotit,plotfmt,Qb,H,K,gsth0,C,P,R,site);
         F=[name,'_Mod_in'];
         save(F,'mod_in');
         disp(strcat([' generate model for ' name]));
@@ -147,7 +153,7 @@ if run_Nz
         gsth_method = 'linear';
         gsth_file='Test2_GSTH.dat';
        
-        init_in=mstruct(plotit,init_type,...
+        init_in=mstruct(plotit,plotfmt,init_type,...
             gsth_form,gsth_method,pom,gsth0,gsth_file);
         F=[name,'_Init_in'];
         save(F,'init_in');

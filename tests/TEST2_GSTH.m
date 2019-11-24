@@ -55,36 +55,30 @@ disp(strcat([ ' ... Generating GSTH for ', name]));
 
 F=strcat([name,'_TimeGrid.mat']);
 load(F)
+nt = length(t);
 
-nt = length(t);dt=diff(t);
-
+Dgsth =importdata(gsth_file);    
+tgsth   = Dgsth(:,1)*y2s;
+Tgsth   = Dgsth(:,2);
 
 if strcmp(gsth_form,'steps')
     
-    % SETUP FORCING
-    Dgsth =importdata(gsth_file);
-    %             Pgsth = flipud(Pgsth);
-    tgsth=Dgsth(:,1)*y2s;
-    Tgsth=Dgsth(:,2);
-    Tgsth=[Tgsth; Tgsth(end)];
-    [Tgst] = set_stpgst(t,Tgsth,tgsth,L,pom,0);
+
+    Tgsth   = [Tgsth; Tgsth(end)];
+    [Tgst]  = set_stpgst(t,tgsth,Tgsth,L,pom,0);
     
 elseif strcmp(gsth_form,'points')
     
-    Dgsth =importdata(gsth_file);
-    tgsth = Dgsth(:,1)*y2s;
-    Tgsth = Dgsth(:,2);
-    
-    [Tgst]=set_pntgst(t,tgsth,Tgsth,method,debug);
+    [Tgst]  = set_pntgst(t,tgsth,Tgsth,method,debug);
     
     
-    otherwise
+else
         
         error([mfilename,': option <',gsth_form,'> not defined. EXIT']);
 end
 
-timeGSTH = t;
-TempGsth = Tgst;
+timeGSTH = t(:);
+TempGsth = Tgst(:);
 F=strcat([name,'_Init']);
 disp([' ']);
 disp([ 'results to ',F]);
@@ -93,7 +87,6 @@ save(F,'timeGSTH','TempGSTH');
 
 if plotit
     figure
-       
     plot(-t(:)*tscal,[Tgst(:)] ,'-b','LineWidth',3);hold on
     grid on;
     xlim(tlimits);
