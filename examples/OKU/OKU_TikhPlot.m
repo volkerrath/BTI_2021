@@ -1,5 +1,5 @@
 % PLOT OF INVERSIONS
-clear all
+%clear all
 close all
 clc
 
@@ -13,7 +13,7 @@ addpath([srcpath,'/src/'])
 
 dfmt=1;ffmt='.zip';
 archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
-SITE='ULL';
+SITE='OKU';
 
 % LOCAL OPTIONS
 yeartosec=31557600;sectoyear=1/yeartosec;

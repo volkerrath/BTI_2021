@@ -1,4 +1,4 @@
-function [rcmT]=rcmT(rcm,cpm,T)
+function [rcmT]=rcmT(rcm,cpm,T,P)
 % calculates heat capacity of rocks as function of temperature
 
 T=T(:);rcm=rcm(:); 

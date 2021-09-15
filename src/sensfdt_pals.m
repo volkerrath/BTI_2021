@@ -1,4 +1,4 @@
-function[J,pointer,Tc]=sensfdt_pal(k,kA,kB,h,rc,p,qb,...
+function[J,pointer,Tc]=sensfdt_pal(k,kA,kB,h,r,c,p,qb,...
     dz,ip,dt,it,gst,T0,theta,maxitnl,tolnl,dp,freeze,out);
 % SENSFDT_PAL calculates transient Jacobians with respect to paleoclimate
 %
@@ -18,11 +18,11 @@ J = 0*ones(nz,ngst+1);
 dTref=1;
 % CALCULATE CENTRAL VALUE
 if isempty(T0)
-    T0=heat1dns(k,kA,kB,h,p,qb,...
+    T0=heat1dns(k,kA,kB,h,r,p,qb,...
         gst(1),dz,ip,maxitnl,tolnl,freeze,1);
 end
 
-Tc=heat1dnt(k,kA,kB,h,rc,p,qb,...
+Tc=heat1dnt(k,kA,kB,h,r,c,p,qb,...
     dz,ip,dt,it,gst,T0,theta,maxitnl,tolnl,freeze,1);
 ipoint=0;
 for i=1:ngst
@@ -40,7 +40,7 @@ for i=1:ngst
         Tsi  = gst(it(istart:nt));
         ni=length(Tsi);
         dti =  dt(istart:nt-1);
-        T=heat1dnt(k,kA,kB,h,rc,p,qb,...
+        T=heat1dnt(k,kA,kB,h,r,c,p,qb,...
             dz,ip,dti,iti,gst,T0i,theta,maxitnl,tolnl,freeze,0);
         ipoint=ipoint+1;
         J (:,ipoint)= (T(:)-Tc(:,nt))/del;
@@ -50,7 +50,7 @@ end
 % CALCULATE SENSITVITY WRT QB
 del=dp*qb;
 qbi=qb+del;
-T=heat1dnt(k,kA,kB,h,rc,p,qbi,...
+T=heat1dnt(k,kA,kB,h,r,c,p,qbi,...
     dz,ip,dti,iti,gst,T0,theta,maxitnl,tolnl,freeze,0);
 ipoint=ipoint+1;
 J (:,ipoint)= (T(:)-Tc(:,nt))/del;

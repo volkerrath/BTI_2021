@@ -337,7 +337,7 @@ Terr=errT*ones(size(id))';
 Tcov=spdiags(Terr.^2,0,nd,nd);
 
 
-sitepar=mstruct(k,kA,kB,h,p,c,r,rc,z,ip,t,it,qb,gts,Tobs,id,zobs,Tcov,Terr,props,name);
+sitepar=mstruct(k,kA,kB,h,p,c,r,z,ip,t,it,qb,gts,Tobs,id,zobs,Tcov,Terr,props,name);
 
 
 F=strcat([name '_SitePar.mat']);

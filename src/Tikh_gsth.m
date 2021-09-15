@@ -57,25 +57,25 @@ end
 disp([' ']); disp([' ...read & organize obs ' ]);
 nobs=0;
 
-F=strcat([name '_SiteMod.mat']);
+F=strcat([name '_SitePar.mat']);
 if exist(F,'file')
     load(F);
     disp([' >>>>> site obs read from: ' F]);
     disp([' ']);
-    mstruct(sitemod);
+    mstruct(sitepar);
 else
     error([F ' does not exist in path!']);
 end
 
-F=strcat([name '_SiteObs.mat']);
-if exist(F,'file')
-    load(F);
-    disp([' >>>>> site obs read from: ' F]);
-    disp([' ']);
-    mstruct(siteobs);
-else
-    error([F ' does not exist in path!']);
-end
+% F=strcat([name '_SiteObs.mat']);
+% if exist(F,'file')
+%     load(F);
+%     disp([' >>>>> site obs read from: ' F]);
+%     disp([' ']);
+%     mstruct(siteobs);
+% else
+%     error([F ' does not exist in path!']);
+% end
 
 nd=length(id);nobs=nobs+nd;
 
@@ -162,10 +162,11 @@ for iter=1:maxiter_inv
         T0=heat1dns(k, kA, kB,r,h,p,qb,POM,dz,ip,maxitnl,tolnl,freeze,out);
     end
 
-    [Tcalc,dTcalc,Qcalc,Tcon]=heat1dnt(k,kA,kB,h,r,c,rc,p,qb,...
-    dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,freeze,1);
+%     [Tcalc,dTcalc,Qcalc,Tcon]=heat1dnt(k,kA,kB,h,r,c,rc,p,qb,...
+%     dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,freeze,1);
 
-
+                [Tcalc,dTcalc,Qcalc,Tcon]=heat1dnt(k,kA,kB,h,r,c,p,qb,...
+                    dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,freeze,1);
     
 %     [Tcalc,dTcalc,Qcalc,Tcon]=forward_solve(m,...
 %         k,kA,kB,h,p,rc,ip,dz,qb,gts,...
@@ -237,10 +238,10 @@ for iter=1:maxiter_inv
     end
     
     if run_parallel
-        [Jb]=sensfdt_palp(k,kA,kB,h,r,c,rc,p,qb,...
+        [Jb]=sensfdt_palp(k,kA,kB,h,r,c,p,qb,...
             dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,dp,freeze,0);
     else
-        [Jb]=sensfdt_pals(k,kA,kB,h,r,c,rc,p,qb,...
+        [Jb]=sensfdt_pals(k,kA,kB,h,r,c,p,qb,...
             dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,dp,freeze,0);
     end
     J=[J;Jb(id,:)];[~,ms]=size(J);
@@ -276,8 +277,8 @@ for iter=1:maxiter_inv
 
             r_itr=r_iter(iter,:);reg_loc=reg_opt;
                         
-            locpar=mstruct(k,kA,kB,h,p,c,r,rc,ip,dz,qb,gts,...
-                it,dt,T0,theta,maxitnl,tolnl,freeze,r,c,rc,Tobs,id,r_itr,Terr);
+            locpar=mstruct(k,kA,kB,h,p,c,r,ip,dz,qb,gts,...
+                it,dt,T0,theta,maxitnl,tolnl,freeze,Tobs,id,r_itr,Terr);
             
             parfor L=1:lregpar
 
@@ -354,7 +355,7 @@ Jdag=inv(At*A)*Jw';
 Rmm=Jdag*Jdag';Rdd=Jdag'*Jdag;Cmm=inv(At*A);
 
 % if exist('matlabpool')==0
-if ~isempty(gcp('nocreate')),delete(gcp); end
+%if ~isempty(gcp('nocreate')),delete(gcp); end
 % else
 %      if matlabpool('size') ~= 0
 %         matlabpool ('close')

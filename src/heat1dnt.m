@@ -1,5 +1,5 @@
 function [T,dT,Q,kbulk,ipor]=...
-    heat1dnt(kl,kAl,kBl,hl,rl,cpl,rcl,porl,qb,...
+    heat1dnt(kl,kAl,kBl,hl,rl,cpl,porl,qb,...
         dz,ip,dt,it,GST,T0,theta,maxiter,tol,freeze,out)
 %ADiMat BMFUNC $$=spdiags($1, $#) DIFFTO call(@spdiags, $@1, $#)
 %
@@ -51,7 +51,6 @@ ip=ip(:); dz=dz(:);z=[0 ;cumsum(dz)];nc=length(ip);nz=nc+1;
 it=it(:); dt=dt(:);nt=length(dt)+1;
 
 thetstep=theta*ones(1,nt-1);
-
 
 k       =   kl(ip(1:  nc));     k=k(:);         % thermal conductivity
 kA      =   kAl(ip(1:  nc));   kA=kA(:);        % thermal conductivity coefficient A

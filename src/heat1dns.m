@@ -44,6 +44,7 @@ kA  =    kAl(ip(1:  nc));  kA = kA(:);    % thermal conductivity coefficient A
 kB  =    kBl(ip(1:  nc));  kB = kB(:);    % thermal conductivity coefficient B
 h   =     hl(ip(1:  nc));  h  = h(:);     % heat production
 rm  =    rl(ip(1:  nc));  rm  = rm(:);    % density
+
 por =  porl(ip(1:  nc));  por = por(:);   % porosity
 
 Pcl=[101325; 9.81*cumsum(dz.*rm)]  ;
