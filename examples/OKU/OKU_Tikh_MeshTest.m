@@ -36,8 +36,8 @@ rng('shuffle');
 %randn('state',sum(100*clock));
 
 %
-site       = 'ULL';
-props       = 'ull';
+site       = 'OKU';
+props       = 'oku';
 prepstr       = '';
 name=[site prepstr];
 

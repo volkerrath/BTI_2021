@@ -58,13 +58,11 @@ F=strcat([name,'_FwdPar.mat']);
 load(F);
 mstruct(fwdpar)
 
-
 % load MODEL
 disp(strcat([' load model for ' name ]));
 F=strcat([datpath name '_SitePar.mat']);
 load(F);
-mstruct(sitepar)
-size(r)
+mstruct(sitepar);
 
 Qb=qb;
 
@@ -91,7 +89,7 @@ nz = length(z);dz=diff(z);
 switch lower(init_type)
     case {'e' 'equi' 'equilibrium'}
         Tin=GST0-POM;
-        T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
+        T0=heat1dns(k, kA, kB,h,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
         Tinit = T0;
         zinit =z;
         GST=Tin;
@@ -126,7 +124,7 @@ switch lower(init_type)
                 
                 if iter==1
                     Tin=Tgst(1)+POM;
-                    T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
+                    T0=heat1dns(k, kA, kB,h,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
                     Tinit = T0;
 %                     Tref=Tgst(length(Tgst));
 %                     Tr=heat1dns(k, kA, kB,h,p,Qb,Tref,dz,ip,maxitnl,tolnl,freeze,out);
@@ -134,7 +132,7 @@ switch lower(init_type)
                 
                 GST=Tgst;
                 
-                [Tcalc,G,Q,K]=heat1dnt(k,kA,kB,h,r,c,p,Qb,...
+                [Tcalc,G,Q,K]=heat1dnt(k,kA,kB,h,rc,p,Qb,...
                     dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,freeze,out);
                 
                 T0old=T0;T0=Tcalc(:,nt);
@@ -163,7 +161,7 @@ switch lower(init_type)
                 
                 if iter==1
                     Tin=Tgst(1)+POM;
-                    T0=heat1dns(k, kA, kB,h,r,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
+                    T0=heat1dns(k, kA, kB,h,p,Qb,Tin,dz,ip,maxitnl,tolnl,freeze,out);
                     Tinit = T0;
 %                     Tref=Tgst(length(Tgst));
 %                     Tr=heat1dns(k, kA, kB,h,p,Qb,Tref,dz,ip,maxitnl,tolnl,freeze,out);
@@ -171,11 +169,8 @@ switch lower(init_type)
                 
                 GST=Tgst;
                 
-                [Tcalc,G,Q,K]=heat1dnt(k,kA,kB,h,r,c,p,Qb,...
+                [Tcalc,G,Q,K]=heat1dnt(k,kA,kB,h,rc,p,Qb,...
                     dz,ip,dt,it,GST,T0,theta,maxitnl,tolnl,freeze,out);
-     
-  
-                
                 
                 T0old=T0;T0=Tcalc(:,nt);
                 Tit=[Tit T0(:)];

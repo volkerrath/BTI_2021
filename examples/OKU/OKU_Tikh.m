@@ -16,8 +16,8 @@ addpath([srcpath,filesep,'src']);
 addpath([srcpath,filesep,strcat(['tools'])]);
 
 % ONLY FOR PARRALLEL  EXECUTION
-run_parallel=0;
-parcors=   1;
+run_parallel=1;
+parcors=   4;
 
 
 
@@ -25,10 +25,8 @@ save('common','srcpath','utlpath','datpath','pltpath','run_parallel','parcors'),
 
 
 
-%dfmt=1;ffmt='.zip';
-%archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
-
-
+dfmt=1;ffmt='.zip';
+archive(mfilename,strcat([mfilename '_' datestr(now,dfmt)]),ffmt);
 yeartosec=31557600;sectoyear=1/yeartosec;
 
 %GRAPHICS
@@ -44,7 +42,7 @@ props       = 'oku';
 
 
 
-for Qb = -[32.]*1e-3;
+for Qb = -[36. 38. 40. 42. 44.]*1e-3;
     
     prepstr       = strcat( ['_Q',num2str(abs(Qb*1000.)),'_gcv'] );
     name=[site prepstr];
