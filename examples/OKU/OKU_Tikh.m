@@ -12,8 +12,9 @@ datpath='./';
 srcpath='../../';
 utlpath='../../';
 
+addpath([srcpath,filesep,'./local']);
 addpath([srcpath,filesep,'src']);
-addpath([srcpath,filesep,strcat(['tools'])]);
+addpath([srcpath,filesep,'tools']);
 
 % ONLY FOR PARRALLEL  EXECUTION
 run_parallel=1;
