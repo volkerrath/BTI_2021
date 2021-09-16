@@ -10,6 +10,7 @@ yr2s=31557600;s2yr=1/yr2s;
 
 load('common.mat')
 
+addpath(['local'])
 addpath([srcpath,'./src']);
 addpath([srcpath,'./src/mcmc']);
 addpath([srcpath,'./tools'])

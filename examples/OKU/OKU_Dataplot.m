@@ -8,8 +8,9 @@ datpath='./';
 srcpath='../';
 utlpath='../';
 
-save('common','srcpath','utlpath','datpath','pltpath'),
+save('common','srcpath','utlpath','datpath','pltpath')
 
+addpath(['local']);
 addpath([srcpath,'/src']);
 addpath([srcpath,'/src/mcmc']);
 addpath([srcpath,'/tools'])

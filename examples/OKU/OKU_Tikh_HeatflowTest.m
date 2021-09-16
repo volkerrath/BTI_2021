@@ -9,7 +9,7 @@ datpath='./';
 srcpath='../';
 utlpath='../';
 
-addpath([srcpath,filesep,'src']);
+addpath(['local']);addpath([srcpath,filesep,'src']);
 addpath([srcpath,filesep,strcat(['tools'])]);
 
 % ONLY FOR PARRALLEL  EXECUTION

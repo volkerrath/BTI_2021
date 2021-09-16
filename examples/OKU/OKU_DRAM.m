@@ -14,6 +14,7 @@ datpath='./';
 srcpath='../../';
 utlpath='../../';
 
+addpath(['local']);
 addpath([srcpath,filesep,'src']);
 addpath([srcpath,filesep,strcat(['tools'])]);
 

@@ -8,10 +8,9 @@ load('common.mat')
 
 
 % SET PATHS
-
+addpath(['local']);
 addpath([srcpath,'/src']);
 addpath([srcpath,'/tools']);
-addpath([srcpath,'./local']);
 addpath([datpath]);
 % 
 % dfmt=1;ffmt='.zip';
