@@ -1,8 +1,7 @@
 # Borehole-Temperature-Inversion (BTI) 
 Inversion for ground surface temperature histories and thermalrock properties from borehole temperature profiles. This is an
 updated version of the software developed for the references below. 
-![BTI_2019_Laxemar](https://github.com/volkerrath/BTI_2021/assets/7248916/fb7e77d4-d746-42ce-8786-7b1d4b51e4e9)
-
+ <img src="https://github.com/volkerrath/BTI_2021/assets/7248916/fb7e77d4-d746-42ce-8786-7b1d4b51e4e9" alt="BTI_2019_Laxemar" width="500" height="400">
 # References 
 Kukkonen, I T; Rath, V; Kivekäs, L; Šafanda, J & Cermak, V: Geothermal studies of the Outokumpu Deep Drill Hole, Finland: vertical
 variation in heat flow and paleoclimatic implications, Phys Earth Planet Inter, 2011, 188, 9-25
@@ -17,7 +16,8 @@ Mottaghy, D & Rath, V: Latent heat effects in subsurface heat transport modeling
 reconstructions, Geophys. J. Int., 2006, 164, 236-245 
 
 Mottaghy, D; Majorowicz, J & Rath, V: Ground surface temperature histories reconstructed from boreholes in Poland: implications
-for spatial variability, in Przybylak, R; Majorowicz, J; Brázdil, R & Kejna, M (Eds.) G The climate of Poland in historical times in relation to the Climate of Europe, Springer, Berlin, 2010 
+for spatial variability, in Przybylak, R; Majorowicz, J; Brázdil, R & Kejna, M (Eds.) 
+The climate of Poland in historical times in relation to the Climate of Europe, Springer, Berlin, 2010 
 
 Mottaghy, D; Schwamborn, G & Rath, V: Past climate changes and permafrost depth at the Lake El'gygytgyn site: implications from
 data and thermal modelling, Climate of the Past, 2013, 8, 119-133 
@@ -28,4 +28,5 @@ parameter by generalized cross-validation, Geophys. J. Int., 2007, 171, 1440-144
 Rath, V; González-Rouco, J F & Goosse, H: Impact ofpostglacial warming on borehole reconstructions of last millennium
 temperatures, Climate of the Past, 2012, 8, 1059-1066 
 
-Rath, V; Sundberg, J; Näslund, J-O & Liljedahl, L C: Paleoclimatic inversion of temperature profiles from deep boreholes at Forsmark and Laxemar, SKB, Stockholm, SKB, Stockholm, 2019
+Rath, V; Sundberg, J; Näslund, J-O & Liljedahl, L C: Paleoclimatic inversion of temperature profiles from deep boreholes at 
+Forsmark and Laxemar, SKB, Stockholm, SKB, Stockholm, 2019
