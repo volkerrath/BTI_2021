@@ -1,6 +1,7 @@
 # Borehole-Temperature-Inversion (BTI) 
 Inversion for ground surface temperature histories and thermalrock properties from borehole temperature profiles. This is an
 updated version of the software developed for the references below. 
+![BTI_2019_Laxemar](https://github.com/volkerrath/BTI_2021/assets/7248916/fb7e77d4-d746-42ce-8786-7b1d4b51e4e9)
 
 # References 
 Kukkonen, I T; Rath, V; Kivekäs, L; Šafanda, J & Cermak, V: Geothermal studies of the Outokumpu Deep Drill Hole, Finland: vertical
