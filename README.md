@@ -31,3 +31,6 @@ temperatures, Climate of the Past, 2012, 8, 1059-1066
 
 Rath, V; Sundberg, J; Näslund, J-O & Liljedahl, L C: Paleoclimatic inversion of temperature profiles from deep boreholes at 
 Forsmark and Laxemar, SKB, Stockholm, SKB, Stockholm, 2019
+
+Liu, J; Jiang, G; Wu, Q.; Zhang, T; & Gao, S: Regional climate change signals inferred from a borehole temperature profile in Muli, Qilian
+Mountain, using the Tikhonov method, Arctic, Antarctic, and Alpine Research, 2020, 52:1, 450-460, 10.1080/15230430.2020.1801149
