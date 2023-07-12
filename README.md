@@ -13,6 +13,9 @@ of Finland, Geological Survey of Finland, 2011
 Kukkonen, I; Rath, V & Korpisalo, A: Paleoclimatic Inversion of Ground Surface Temperature History from Geothermal Data on the
 Olkiluoto Drill Hole OL-KR56, Posiva Oy, 2015 
 
+Liu, J; Jiang, G; Wu, Q.; Zhang, T; & Gao, S: Regional climate change signals inferred from a borehole temperature profile in Muli, Qilian
+Mountain, using the Tikhonov method, Arctic, Antarctic, and Alpine Research, 2020, 52:1, 450-460, 10.1080/15230430.2020.1801149
+
 Mottaghy, D & Rath, V: Latent heat effects in subsurface heat transport modeling and their impact on paleotemperature
 reconstructions, Geophys. J. Int., 2006, 164, 236-245 
 
@@ -32,5 +35,3 @@ temperatures, Climate of the Past, 2012, 8, 1059-1066
 Rath, V; Sundberg, J; Näslund, J-O & Liljedahl, L C: Paleoclimatic inversion of temperature profiles from deep boreholes at 
 Forsmark and Laxemar, SKB, Stockholm, SKB, Stockholm, 2019
 
-Liu, J; Jiang, G; Wu, Q.; Zhang, T; & Gao, S: Regional climate change signals inferred from a borehole temperature profile in Muli, Qilian
-Mountain, using the Tikhonov method, Arctic, Antarctic, and Alpine Research, 2020, 52:1, 450-460, 10.1080/15230430.2020.1801149
